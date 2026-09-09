@@ -37,7 +37,7 @@
                         <p class="text-sm text-gray-600 mt-3">{{ $plan['blurb'] }}</p>
 
                         <ul class="mt-4 space-y-2 text-sm text-gray-700 flex-1">
-                            <li>✓ Unlimited CoinPoker → PokerStars conversions</li>
+                            <li>✓ Unlimited CoinPoker → PokerTracker 4 conversions</li>
                             <li>✓ Cash &amp; tournament hand histories</li>
                             <li>✓ Re-download past conversions</li>
                             <li>✓ Cancel anytime from the billing portal</li>

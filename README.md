@@ -1,9 +1,9 @@
 # PokerCoinverter
 
-A Laravel web app that converts **CoinPoker** hand-history `.txt` files into
-**PokerStars-formatted** `.txt` files so they import cleanly into trackers/HUDs
-(Hold'em Manager 3, PokerTracker 4, DriveHUD, …). Access to the converter is
-gated behind a paid **Stripe subscription** (via Laravel Cashier).
+A Laravel web app that converts **CoinPoker** hand-history `.txt` files into the
+hand-history format that **PokerTracker 4** imports cleanly (Hold'em Manager 3
+and similar trackers read it too). Access to the converter is gated behind a
+paid **Stripe subscription** (via Laravel Cashier).
 
 ---
 
@@ -12,9 +12,10 @@ gated behind a paid **Stripe subscription** (via Laravel Cashier).
 Verified against real CoinPoker exports. Per hand:
 
 **Header** — `CoinPoker Hand #130114200045: NLH (₮0.01/₮0.02) 2026/09/09 12:01:21 CEST`
-becomes `PokerStars Hand #130114200045:  Hold'em No Limit ($0.01/$0.02 USD) - 2026/09/09 12:01:21 CET [2026/09/09 6:01:21 ET]`:
+becomes `... Hand #130114200045:  Hold'em No Limit ($0.01/$0.02 USD) - 2026/09/09 12:01:21 CET [2026/09/09 6:01:21 ET]`:
 
-1. Room prefix `CoinPoker → PokerStars`.
+1. Header marker rewritten to the one PokerTracker 4 / Hold'em Manager 3 parse
+   on (`config('pokercoinverter.converter.room_name')`).
 2. Game code expanded: `NLH → Hold'em No Limit`, `PLO → Omaha Pot Limit`, etc.
 3. Tether sign `₮ → $`, currency code (`USD`) added inside the parenthesis, ` - `
    inserted before the date.
@@ -43,7 +44,7 @@ becomes `PokerStars Hand #130114200045:  Hold'em No Limit ($0.01/$0.02 USD) - 20
 
 The logic lives in [`app/Poker/`](app/Poker) and is locked down by a full
 input→output fixture in [`tests/Fixtures/`](tests/Fixtures) (`coinpoker-cash.txt`
-→ `expected/cash-pokerstars.txt`). It is a **resilient line transformation**, not
+→ `expected/cash-pt4.txt`). It is a **resilient line transformation**, not
 a full parse-and-rebuild.
 
 > ⚠️ **Tune against your own files.** Rules are built from real samples but
@@ -156,7 +157,7 @@ Marketing pages render through the `<x-marketing-layout>` anonymous component
 | `/dashboard` | Subscription status, usage stats, recent conversions |
 | `/account/plans` | Pick a plan → Stripe Checkout |
 | `/billing` | Redirect to the Stripe customer portal |
-| `/convert` | Upload a CoinPoker `.txt`, get a PokerStars `.txt` — **requires an active subscription** |
+| `/convert` | Upload a CoinPoker `.txt`, get a PokerTracker 4-ready `.txt` — **requires an active subscription** |
 | `/conversions/{id}` | Result page: preview, warnings, download |
 
 The `subscribed` middleware (`App\Http\Middleware\EnsureSubscribed`) protects the
@@ -193,5 +194,7 @@ php artisan test
   CoinPoker's math and only reformats.
 - Run-it-twice hands are passed through with a warning — verify how your tracker
   handles them.
-- Not affiliated with CoinPoker or PokerStars. "PokerStars format" refers only to
-  the text layout that trackers expect.
+- Not affiliated with CoinPoker, PokerTracker or Hold'em Manager. Product names
+  describe compatibility only. The output keeps the literal header marker those
+  trackers' parsers match on (`App\Poker\ConverterOptions::$roomName`) — that is a
+  detail of the file format, not a brand claim.

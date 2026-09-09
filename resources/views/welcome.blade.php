@@ -20,9 +20,9 @@
                         <span class="text-indigo-400">readable by your tracker.</span>
                     </h1>
                     <p class="mt-6 max-w-xl text-lg text-slate-300">
-                        CoinPoker exports hand histories that Hold'em Manager and PokerTracker refuse to import.
-                        PokerCoinverter rewrites them into clean PokerStars format in seconds &mdash; header, currency,
-                        timezone and stakes, all fixed automatically.
+                        CoinPoker exports hand histories that Hold'em Manager and PokerTracker&nbsp;4 refuse to import.
+                        PokerCoinverter rewrites them in seconds into a format PokerTracker&nbsp;4 reads &mdash; header,
+                        currency, timezone and stakes, all fixed automatically.
                     </p>
 
                     <div class="mt-8 flex flex-col gap-3 sm:flex-row">
@@ -54,7 +54,7 @@
                         <span class="ml-3 text-xs text-slate-400">HH20240310.txt</span>
                     </div>
                     <pre class="overflow-x-auto rounded-xl bg-slate-950 p-4 text-[11px] leading-relaxed sm:text-xs"><code><span class="text-red-400">- CoinPoker Hand #130114200045: NLH (₮0.01/₮0.02) 2026/09/09 12:01:21 CEST</span>
-<span class="text-emerald-400">+ PokerStars Hand #130114200045:  Hold'em No Limit ($0.01/$0.02 USD) - 2026/09/09 12:01:21 CET [2026/09/09 6:01:21 ET]</span>
+<span class="text-emerald-400">+ ...Hand #130114200045:  Hold'em No Limit ($0.01/$0.02 USD) - 2026/09/09 12:01:21 CET [... ET]</span>
 <span class="text-red-400">- Seat 5: Hero (₮2 in chips)</span>
 <span class="text-emerald-400">+ Seat 5: Hero ($2 in chips)</span>
 <span class="text-red-400">- Dealt to 3d1b2c99</span>
@@ -66,6 +66,7 @@
 <span class="text-emerald-400">+ Uncalled bet ($0.04) returned to 3d2ba04f</span>
 <span class="text-red-400">- Seat 3: 3d2ba04f won (₮0.05)</span>
 <span class="text-emerald-400">+ Seat 3: 3d2ba04f (button) collected ($0.05)</span></code></pre>
+                    <p class="px-3 pb-1 pt-2 text-xs text-slate-500">Header, game code, currency and timezone rewritten to what PokerTracker&nbsp;4 expects.</p>
                 </div>
             </div>
         </div>
@@ -91,7 +92,7 @@
     <section class="mx-auto max-w-7xl px-6 py-20">
         <div class="mx-auto max-w-2xl text-center">
             <h2 class="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
-                CoinPoker's export is <span class="text-red-500">almost</span> PokerStars &mdash; and "almost" breaks your HUD
+                CoinPoker's export is <span class="text-red-500">almost</span> right &mdash; and "almost" breaks your HUD
             </h2>
             <p class="mt-4 text-lg text-slate-600">
                 The layout looks familiar, but four small differences are enough for trackers to reject the file
@@ -101,10 +102,10 @@
 
         <div class="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
             @foreach ([
-                ['The header', 'Files start with "CoinPoker Hand #" and use codes like "NLH". Trackers look for "PokerStars Hand #" and "Hold\'em No Limit".'],
-                ['The ₮ sign', 'Amounts use the USDT tether sign (₮0.02) with no currency code. Trackers expect $0.02 and a code like USD.'],
-                ['Extra "Dealt to" lines', 'CoinPoker prints a "Dealt to" line for every player. PokerStars only shows the hero\'s cards — the rest confuse the parser.'],
-                ['Timezone & noise', 'Times are CEST, not the CET/ET stamp trackers expect, plus "Hand was run once" and "Game ended:" lines PokerStars never writes.'],
+                ['The header', 'Files start with "CoinPoker Hand #" and use codes like "NLH". PokerTracker 4 looks for a different header and the full game name "Hold\'em No Limit".'],
+                ['The ₮ sign', 'Amounts use the USDT tether sign (₮0.02) with no currency code. The tracker expects $0.02 and a code like USD.'],
+                ['Extra "Dealt to" lines', 'CoinPoker prints a "Dealt to" line for every player. The tracker only wants the hero\'s cards — the rest confuse the parser.'],
+                ['Timezone & noise', 'Times are CEST, not the CET/ET stamp the tracker expects, plus "Hand was run once" and "Game ended:" lines that do not belong in the format.'],
             ] as [$t, $d])
                 <div class="rounded-2xl border border-slate-200 bg-white p-6">
                     <div class="text-sm font-semibold text-red-500">{{ $t }}</div>
@@ -125,8 +126,8 @@
             <div class="mt-14 grid gap-8 md:grid-cols-3">
                 @foreach ([
                     ['1', 'Upload your file', 'Drop in the .txt CoinPoker exported. Cash games and tournaments, single hands or full sessions.'],
-                    ['2', 'We reformat it', 'Header and game code, the ₮ sign &rarr; $, the timezone stamp, the "Dealt to" noise and the summary lines are all rewritten to PokerStars format. Tournament chip counts stay untouched.'],
-                    ['3', 'Import and review', 'Download the PokerStars-formatted .txt, point your tracker at it, and your HUD lights up. Past conversions stay in your history to re-download.'],
+                    ['2', 'We reformat it', 'Header and game code, the ₮ sign &rarr; $, the timezone stamp, the "Dealt to" noise and the summary lines are all rewritten to what PokerTracker 4 reads. Tournament chip counts stay untouched.'],
+                    ['3', 'Import and review', 'Download the converted .txt, point PokerTracker 4 at it, and your HUD lights up. Past conversions stay in your history to re-download.'],
                 ] as [$n, $t, $d])
                     <div class="relative rounded-2xl border border-slate-200 bg-white p-8">
                         <div class="grid h-10 w-10 place-items-center rounded-full bg-indigo-600 text-sm font-bold text-white">{{ $n }}</div>
@@ -155,9 +156,9 @@
 
         <div class="mt-14 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             @foreach ([
-                ['Cash &amp; tournaments', 'Detects the format per hand. Cash gets dollar amounts; tournaments keep bare chip counts, exactly like a real PokerStars tourney.'],
+                ['Cash &amp; tournaments', 'Detects the format per hand. Cash gets dollar amounts; tournaments keep bare chip counts, the way PokerTracker 4 expects a tourney.'],
                 ['Accurate money fixes', 'Blinds, antes, straddles, bets, raises, uncalled bets, collected pots, rake and the summary line &mdash; each amount fixed in context, never double-prefixed.'],
-                ['Timezone your way', 'Output the real PokerStars EU stamp (local time + "[… ET]"), a single Eastern-time stamp, or leave CoinPoker\'s time untouched. You choose per upload.'],
+                ['Timezone your way', 'Output the European dual stamp (local time + "[… ET]"), a single Eastern-time stamp, or leave CoinPoker\'s time untouched. You choose per upload.'],
                 ['Honest warnings', 'Run-it-twice boards, unparseable timestamps and stray blocks are flagged &mdash; the converter never silently guesses.'],
                 ['Conversion history', 'Every file you convert is kept in your account with hand counts and warnings, ready to re-download.'],
                 ['Your data stays yours', 'Files are processed for your account only and never shared. Card details go straight to Stripe &mdash; we never see them.'],
@@ -197,7 +198,7 @@
                         </div>
                         <p class="mt-3 text-sm text-slate-600">{{ $plan['blurb'] }}</p>
                         <ul class="mt-5 flex-1 space-y-2 text-sm text-slate-700">
-                            <li>&#10003; Unlimited CoinPoker &rarr; PokerStars conversions</li>
+                            <li>&#10003; Unlimited CoinPoker &rarr; PokerTracker&nbsp;4 conversions</li>
                             <li>&#10003; Cash &amp; tournament hand histories</li>
                             <li>&#10003; Conversion history &amp; re-downloads</li>
                             <li>&#10003; Cancel anytime, self-serve</li>
@@ -221,9 +222,9 @@
         <h2 class="text-center text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">Questions</h2>
         <div class="mt-10 divide-y divide-slate-200 border-y border-slate-200">
             @foreach ([
-                ['Does this work with Hold\'em Manager 3 and PokerTracker 4?', 'Yes. The output is standard PokerStars hand-history text, which is the format both import from. Point the tracker\'s auto-import or bulk-import at the converted file.'],
-                ['Cash games and tournaments both?', 'Both. Each hand is detected individually. Cash hands get dollar amounts added; tournament hands keep bare chip counts, matching how PokerStars writes tournaments.'],
-                ['What about the timezone / my time-based stats?', 'You pick per upload: keep the printed time and just relabel to ET (default), leave it as UTC, or actually shift UTC to ET. Nothing is changed without you choosing it.'],
+                ['Does this work with PokerTracker 4 (and Hold\'em Manager 3)?', 'Yes. The output is the standard hand-history text these trackers bulk-import. Point PokerTracker 4\'s import at the converted file.'],
+                ['Cash games and tournaments both?', 'Both. Each hand is detected individually. Cash hands get dollar amounts added; tournament hands keep bare chip counts, the way the tracker expects a tourney.'],
+                ['What about the timezone / my time-based stats?', 'You pick per upload: keep the local time and add the "[… ET]" stamp (default), output a single Eastern-time stamp, or leave CoinPoker\'s time untouched. Nothing changes without you choosing it.'],
                 ['Is my hand history data safe?', 'Files are converted for your account only and are never shared or sold. You can re-download or ignore past conversions. Payment details are handled entirely by Stripe.'],
                 ['Can I cancel?', 'Anytime, from your dashboard. You keep access until the end of the period you already paid for.'],
                 ['A hand didn\'t import cleanly. Now what?', 'The converter flags anything unusual (like run-it-twice boards) as a warning on the result page. Send us the flagged hand and we\'ll tune the rules.'],

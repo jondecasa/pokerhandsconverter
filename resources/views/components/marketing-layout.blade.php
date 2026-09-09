@@ -1,6 +1,6 @@
 @props([
-    'title' => 'PokerCoinverter — Convert CoinPoker hand histories to PokerStars format',
-    'description' => 'PokerCoinverter turns your CoinPoker hand-history files into PokerStars format so they import cleanly into Hold\'em Manager, PokerTracker and other poker trackers. Cash games and tournaments.',
+    'title' => 'PokerCoinverter — Convert CoinPoker hand histories for PokerTracker 4',
+    'description' => 'PokerCoinverter turns your CoinPoker hand-history files into a format PokerTracker 4 imports cleanly. Cash games and tournaments.',
 ])
 
 <!DOCTYPE html>
@@ -16,7 +16,11 @@
     <meta property="og:title" content="{{ $title }}">
     <meta property="og:description" content="{{ $description }}">
     <meta property="og:type" content="website">
-    <meta name="twitter:card" content="summary_large_image">
+    <meta property="og:image" content="{{ asset('logo.svg') }}">
+    <meta name="twitter:card" content="summary">
+
+    <link rel="icon" type="image/svg+xml" href="{{ asset('favicon.svg') }}">
+    <link rel="apple-touch-icon" href="{{ asset('favicon.svg') }}">
 
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600,700,800&display=swap" rel="stylesheet" />
@@ -31,12 +35,8 @@
         class="sticky top-0 z-50 border-b border-slate-200 bg-white/90 backdrop-blur"
     >
         <nav class="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
-            <a href="{{ route('home') }}" class="flex items-center gap-2 text-lg font-extrabold tracking-tight text-slate-900">
-                <span class="grid h-8 w-8 place-items-center rounded-lg bg-indigo-600 text-white">
-                    <svg viewBox="0 0 24 24" fill="none" class="h-5 w-5">
-                        <path d="M7 8h10M7 8l3-3M7 8l3 3M17 16H7m10 0l-3 3m3-3l-3-3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                </span>
+            <a href="{{ route('home') }}" class="flex items-center gap-2.5 text-lg font-extrabold tracking-tight text-slate-900">
+                <img src="{{ asset('logo.svg') }}" alt="PokerCoinverter" width="36" height="36" class="h-9 w-9 rounded-[10px]">
                 Poker<span class="text-indigo-600">Coinverter</span>
             </a>
 
@@ -98,7 +98,7 @@
                         Poker<span class="text-indigo-600">Coinverter</span>
                     </div>
                     <p class="mt-3 text-sm text-slate-500">
-                        Convert CoinPoker hand histories to PokerStars format so your tracker and HUD just work.
+                        Convert CoinPoker hand histories into a format PokerTracker 4 reads, so your tracker and HUD just work.
                     </p>
                 </div>
                 <div class="grid grid-cols-2 gap-8 text-sm sm:grid-cols-3">
@@ -131,8 +131,8 @@
                 </div>
             </div>
             <div class="mt-10 border-t border-slate-200 pt-6 text-xs text-slate-400">
-                &copy; {{ date('Y') }} PokerCoinverter. Not affiliated with, endorsed by, or sponsored by CoinPoker, PokerStars,
-                Hold'em Manager or PokerTracker. "PokerStars format" refers only to the hand-history text layout that trackers read.
+                &copy; {{ date('Y') }} PokerCoinverter. Not affiliated with, endorsed by, or sponsored by CoinPoker,
+                PokerTracker or Hold'em Manager. Product names are used only to describe compatibility.
             </div>
         </div>
     </footer>

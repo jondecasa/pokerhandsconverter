@@ -27,7 +27,7 @@
 
                     <ul class="mt-6 flex-1 space-y-3 text-sm text-slate-700">
                         @foreach ([
-                            'Unlimited CoinPoker → PokerStars conversions',
+                            'Unlimited CoinPoker → PokerTracker 4 conversions',
                             'Cash games and tournaments',
                             'Per-upload timezone handling',
                             'Conversion history and re-downloads',

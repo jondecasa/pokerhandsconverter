@@ -10,11 +10,11 @@ class ConvertHandHistory extends Command
 {
     protected $signature = 'pokerhh:convert
         {input : Path to the CoinPoker hand-history .txt file}
-        {output? : Where to write the PokerStars-formatted file (defaults to <input>-pokerstars.txt)}
+        {output? : Where to write the converted file (defaults to <input>-pokertracker.txt)}
         {--timezone-mode= : dual|et|keep (overrides config)}
         {--force : Overwrite the output file if it already exists}';
 
-    protected $description = 'Convert a CoinPoker hand-history file to PokerStars format';
+    protected $description = 'Convert a CoinPoker hand-history file to the PokerTracker 4 format';
 
     public function handle(): int
     {
@@ -27,7 +27,7 @@ class ConvertHandHistory extends Command
         }
 
         $output = $this->argument('output')
-            ?? preg_replace('/\.txt$/i', '', $input).'-pokerstars.txt';
+            ?? preg_replace('/\.txt$/i', '', $input).'-pokertracker.txt';
 
         if (is_file($output) && ! $this->option('force')) {
             $this->error("Output file already exists (use --force): {$output}");

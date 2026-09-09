@@ -3,16 +3,20 @@
 namespace App\Poker;
 
 /**
- * Tunable settings for the CoinPoker -> PokerStars conversion.
+ * Tunable settings for the CoinPoker -> PokerTracker 4 conversion.
  *
- * Defaults reproduce the layout that Hold'em Manager 3 / PokerTracker 4 expect
- * from a PokerStars hand history, including the European dual-timezone stamp
+ * Defaults reproduce the hand-history layout that PokerTracker 4 / Hold'em
+ * Manager 3 import, including the European dual-timezone stamp
  * ("... 12:01:21 CET [2026/09/09 6:01:21 ET]").
  */
 class ConverterOptions
 {
     public function __construct(
-        /** Room name written into the "<Room> Hand #..." header line. */
+        /**
+         * Room name written into the "<Room> Hand #..." header line. Keep this
+         * as "PokerStars" — it is the literal marker PokerTracker 4 / Hold'em
+         * Manager 3 match when parsing a hand history. Changing it breaks import.
+         */
         public string $roomName = 'PokerStars',
 
         /** Currency symbol that replaces CoinPoker's tether sign (₮) and any bare amounts. */
@@ -23,7 +27,7 @@ class ConverterOptions
 
         /**
          * Timezone rendering:
-         *  - 'dual': "<time> <STD label> [<ET time> ET]"  (real PokerStars EU format)
+         *  - 'dual': "<time> <STD label> [<ET time> ET]"  (European dual-stamp format)
          *  - 'et'  : "<ET time> ET"                        (US single-label format)
          *  - 'keep': leave the CoinPoker time and label untouched
          */

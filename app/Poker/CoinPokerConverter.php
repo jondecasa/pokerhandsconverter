@@ -6,15 +6,19 @@ use DateTimeImmutable;
 use DateTimeZone;
 
 /**
- * Converts a CoinPoker hand-history file into PokerStars format so that trackers
- * / HUDs (Hold'em Manager 3, PokerTracker 4, Hand2Note, ...) can import it.
+ * Converts a CoinPoker hand-history file into the hand-history format that
+ * PokerTracker 4 (and Hold'em Manager 3, Hand2Note, ...) can import.
+ *
+ * That target format keeps the literal "PokerStars Hand #" marker on the header
+ * line — the trackers' parsers match on it — so it appears in the output and in
+ * the regexes below. It is a technical detail of the format, not a brand claim.
  *
  * Verified against real CoinPoker exports. The transformation per hand:
  *
  *   Header
  *     - "CoinPoker Hand #<id>: NLH (₮a/₮b) <date> CEST"
  *       becomes
- *       "PokerStars Hand #<id>:  Hold'em No Limit ($a/$b USD) - <date> CET [<ET date/time> ET]"
+ *       "<...> Hand #<id>:  Hold'em No Limit ($a/$b USD) - <date> CET [<ET date/time> ET]"
  *     - game abbreviation expanded (NLH -> Hold'em No Limit, PLO -> Omaha Pot Limit, ...)
  *     - tether sign ₮ -> $, currency code (USD) added inside the parenthesis
  *     - " - " inserted before the date; timezone rendered per ConverterOptions
@@ -38,7 +42,7 @@ use DateTimeZone;
  */
 class CoinPokerConverter
 {
-    /** CoinPoker game codes -> PokerStars game names. */
+    /** CoinPoker game codes -> full game names PokerTracker 4 expects. */
     private const GAMES = [
         'NLH' => "Hold'em No Limit",
         'NLHE' => "Hold'em No Limit",
@@ -54,7 +58,7 @@ class CoinPokerConverter
         'PLO85' => '5 Card Omaha Hi/Lo Pot Limit',
     ];
 
-    /** Source tz abbreviation -> hours to subtract to reach PokerStars "ET". */
+    /** Source tz abbreviation -> hours to subtract to reach the "ET" stamp. */
     private const ET_OFFSETS = [
         'CET' => 6, 'CEST' => 6,
         'WET' => 5, 'WEST' => 5, 'GMT' => 5, 'UTC' => 5, 'BST' => 5,
@@ -63,7 +67,7 @@ class CoinPokerConverter
         'ET' => 0, 'EST' => 0, 'EDT' => 0,
     ];
 
-    /** Daylight-saving abbreviation -> the standard label PokerStars prints. */
+    /** Daylight-saving abbreviation -> the standard label the format prints. */
     private const STD_LABELS = [
         'CEST' => 'CET', 'WEST' => 'WET', 'BST' => 'GMT', 'EEST' => 'EET',
         'EDT' => 'ET', 'EST' => 'ET', 'PDT' => 'PT', 'PST' => 'PT',
@@ -316,7 +320,7 @@ class CoinPokerConverter
             return self::GAMES[$key];
         }
         if (stripos($code, 'limit') !== false) {
-            return trim($code); // already a PokerStars-style name
+            return trim($code); // already a full game name
         }
         $warnings[] = 'Unknown game code "'.trim($code).'" left unchanged — check it imports.';
 
@@ -400,7 +404,7 @@ class CoinPokerConverter
 
         $pos = $positions[$seat] ?? null;
         if ($pos === 'small blind' || $pos === 'big blind') {
-            // Blind posters did put money in — PokerStars omits "(didn't bet)".
+            // Blind posters did put money in — the format omits "(didn't bet)".
             $tail = preg_replace('/\s*\(didn\'t bet\)\s*$/', '', $tail) ?? $tail;
         }
 

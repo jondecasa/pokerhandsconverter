@@ -23,13 +23,13 @@ class CoinPokerConverterTest extends TestCase
     }
 
     #[Test]
-    public function it_converts_a_real_cash_hand_to_the_expected_pokerstars_output(): void
+    public function it_converts_a_real_cash_hand_to_the_expected_pokertracker_output(): void
     {
         $result = (new CoinPokerConverter)->convert($this->fixture('coinpoker-cash.txt'));
 
         $this->assertSame(1, $result->handCount);
         $this->assertSame(
-            $this->normalise($this->fixture('expected/cash-pokerstars.txt')),
+            $this->normalise($this->fixture('expected/cash-pt4.txt')),
             $this->normalise($result->output),
         );
     }

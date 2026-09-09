@@ -41,7 +41,7 @@ class Conversion extends Model
     {
         $base = pathinfo($this->original_filename, PATHINFO_FILENAME) ?: 'hand-history';
 
-        return $base.'-pokerstars.txt';
+        return $base.'-pokertracker.txt';
     }
 
     public function outputExists(): bool

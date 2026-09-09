@@ -9,9 +9,9 @@
 
             <h2 class="mt-8 text-lg font-semibold text-slate-900">1. Service</h2>
             <p>PokerCoinverter ("the Service", operated by [Your Company], "we") converts poker hand-history
-            text files from CoinPoker's export format into PokerStars-style formatting for use with
-            third-party tracking software. We are not affiliated with CoinPoker, PokerStars, Hold'em Manager,
-            PokerTracker or any tracker vendor.</p>
+            text files from CoinPoker's export format into the layout that PokerTracker 4 and similar
+            tracking software import. We are not affiliated with CoinPoker, PokerTracker, Hold'em Manager
+            or any tracker vendor.</p>
 
             <h2 class="mt-8 text-lg font-semibold text-slate-900">2. Accounts</h2>
             <p>You are responsible for activity under your account and for keeping your credentials secure.

@@ -50,11 +50,12 @@ return [
     */
 
     'converter' => [
+        // Header marker PokerTracker 4 / Hold'em Manager 3 parse on. Leave as-is.
         'room_name' => env('CONVERTER_ROOM_NAME', 'PokerStars'),
         'currency_symbol' => env('CONVERTER_CURRENCY_SYMBOL', '$'),
         'currency_code' => env('CONVERTER_CURRENCY_CODE', 'USD'),
 
-        // dual = "<time> CET [<time> ET]" (real PokerStars EU format)
+        // dual = "<time> CET [<time> ET]" (European dual-stamp format)
         // et   = "<time> ET" only
         // keep = leave CoinPoker's time and label untouched
         'timezone_mode' => env('CONVERTER_TIMEZONE_MODE', 'dual'),

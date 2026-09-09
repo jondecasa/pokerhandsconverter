@@ -13,8 +13,8 @@
             <div class="bg-white shadow-sm sm:rounded-lg p-6">
                 <p class="text-sm text-gray-600 mb-4">
                     Upload a <strong>CoinPoker</strong> hand-history <code>.txt</code> file. You will get back a
-                    <strong>PokerStars-formatted</strong> <code>.txt</code> you can import into Hold'em Manager 3,
-                    PokerTracker 4 and similar trackers. Max {{ number_format($maxUploadKb / 1024, 0) }} MB per file.
+                    <code>.txt</code> in the format <strong>PokerTracker&nbsp;4</strong> reads (Hold'em Manager&nbsp;3
+                    and similar trackers import it too). Max {{ number_format($maxUploadKb / 1024, 0) }} MB per file.
                 </p>
 
                 <form method="POST" action="{{ route('convert.store') }}" enctype="multipart/form-data" class="space-y-4">
@@ -31,7 +31,7 @@
                         <label for="timezone_mode" class="block text-sm font-medium text-gray-700">Timezone handling</label>
                         <select id="timezone_mode" name="timezone_mode"
                                 class="mt-1 block w-full border-gray-300 rounded-md shadow-sm text-sm">
-                            <option value="dual">PokerStars EU style: local time + "[… ET]" (default)</option>
+                            <option value="dual">European style: local time + "[… ET]" (default)</option>
                             <option value="et">US style: a single Eastern-time stamp</option>
                             <option value="keep">Leave the time and label exactly as CoinPoker wrote it</option>
                         </select>
