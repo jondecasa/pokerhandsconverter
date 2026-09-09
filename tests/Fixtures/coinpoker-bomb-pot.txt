@@ -1,0 +1,49 @@
+CoinPoker Hand #129794200777: NLH BombPot (₮0.01/₮0.02) 2026/09/09 12:45:02 CEST
+Table '200588' 6-max Seat #3 is the button
+Seat 1: Hero (₮2.10 in chips)
+Seat 2: 070fbf52 (₮3.05 in chips)
+Seat 3: 82db18cb (₮4.49 in chips)
+Seat 4: 2e9886c6 (₮3.90 in chips)
+Seat 5: 4f1fcfb2 (₮1.55 in chips)
+Seat 6: 82969875 (₮3.10 in chips)
+Hero: posts the ante ₮0.10
+070fbf52: posts the ante ₮0.10
+82db18cb: posts the ante ₮0.10
+2e9886c6: posts the ante ₮0.10
+4f1fcfb2: posts the ante ₮0.10
+82969875: posts the ante ₮0.10
+*** HOLE CARDS ***
+Dealt to Hero [Ah Kd]
+Dealt to 070fbf52
+Dealt to 82db18cb
+Dealt to 2e9886c6
+Dealt to 4f1fcfb2
+Dealt to 82969875
+*** FLOP *** [Kh 7c 2s]
+2e9886c6: checks
+4f1fcfb2: checks
+82969875: checks
+Hero: bets ₮0.30
+070fbf52: folds
+82db18cb: folds
+2e9886c6: calls ₮0.30
+4f1fcfb2: folds
+82969875: folds
+*** TURN *** [Kh 7c 2s] [9h]
+2e9886c6: checks
+Hero: bets ₮0.60
+2e9886c6: folds
+Uncalled bet (₮0.60) returned to Hero
+Hero collected ₮1.20 from pot
+Hero: doesn't show hand
+*** SUMMARY ***
+Total pot ₮1.20 | Rake ₮0
+Hand was run once
+Board [ Kh 7c 2s 9h ]
+Game ended: 2026/09/09 12:45:44 CEST
+Seat 1: Hero won (₮1.20)
+Seat 2: 070fbf52 folded on the Flop
+Seat 3: 82db18cb folded on the Flop
+Seat 4: 2e9886c6 folded on the Turn
+Seat 5: 4f1fcfb2 folded on the Flop
+Seat 6: 82969875 folded on the Flop

@@ -462,7 +462,8 @@ class CoinPokerConverter
 
     private function isBombPot(string $hand): bool
     {
-        if (preg_match('/\bbomb[ _-]?pot\b/i', $hand)) {
+        // CoinPoker tags the game code in the header, e.g. "NLH BombPot (...)".
+        if (preg_match('/\bBomb\s?Pot\b/i', $hand)) {
             return true;
         }
 
@@ -527,16 +528,21 @@ class CoinPokerConverter
 
     private function mapGame(string $code, array &$warnings): string
     {
-        $key = strtoupper(trim($code));
+        $code = trim($code);
+        // CoinPoker appends a variant tag to the game code for special pots,
+        // e.g. "NLH BombPot". The game itself is unchanged, so drop the tag.
+        $code = trim((string) preg_replace('/\s+Bomb\s?Pot$/i', '', $code));
+
+        $key = strtoupper($code);
         if (isset(self::GAMES[$key])) {
             return self::GAMES[$key];
         }
         if (stripos($code, 'limit') !== false) {
-            return trim($code); // already a full game name
+            return $code; // already a full game name
         }
-        $warnings[] = 'Unknown game code "'.trim($code).'" left unchanged — check it imports.';
+        $warnings[] = 'Unknown game code "'.$code.'" left unchanged — check it imports.';
 
-        return trim($code);
+        return $code;
     }
 
     private function normaliseStakes(string $stakes): string

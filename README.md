@@ -55,10 +55,11 @@ becomes `CoinPoker Hand #130114200045:  Hold'em No Limit ($0.01/$0.02 USD) - 202
 12. `keep` — left as a single hand with every board and a warning.
 
 **Per-file stats** — the result screen (and the `conversions` row) report the
-hand count plus **splash pots** (a `SPLASH dropped ₮…` line — dropped from the
-output, kept for the count) and **bomb pots** (a `bomb pot` line, or
-structurally: no blinds posted, everyone antes, straight to a flop). The
-bomb-pot detection is still heuristic — check against a real CoinPoker bomb pot.
+hand count plus **splash pots** (a `SPLASH dropped ₮…` / `MEGA SPLASH dropped ₮…`
+line — dropped from the output, kept for the count) and **bomb pots** (CoinPoker
+tags the game code `NLH BombPot` in the header; failing that, no blinds + everyone
+antes + straight to a flop). `NLH BombPot` is normalised to `Hold'em No Limit`
+(the bomb pot is expressed by the antes/no-blinds structure, as trackers expect).
 
 **Stake gate** — each package can set a **stake cap** (`stakes_cap`, e.g. `NL50`).
 On upload the file's highest cash big blind is compared to the cap
