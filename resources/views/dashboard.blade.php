@@ -46,7 +46,7 @@
                                 </form>
                             @endif
                         @else
-                            <a href="{{ route('pricing') }}" class="inline-flex items-center px-4 py-2 bg-indigo-600 text-white text-sm rounded-md hover:bg-indigo-500">See plans</a>
+                            <a href="{{ route('subscription.plans') }}" class="inline-flex items-center px-4 py-2 bg-indigo-600 text-white text-sm rounded-md hover:bg-indigo-500">See plans</a>
                         @endif
                     </div>
                 </div>

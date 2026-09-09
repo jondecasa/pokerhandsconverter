@@ -2,17 +2,27 @@
 
 use App\Http\Controllers\ConverterController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\MarketingController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SubscriptionController;
 use Illuminate\Support\Facades\Route;
 
-Route::view('/', 'welcome')->name('home');
+/*
+| Public marketing site
+*/
+Route::get('/', [MarketingController::class, 'home'])->name('home');
+Route::get('/pricing', [MarketingController::class, 'pricing'])->name('pricing');
+Route::view('/terms', 'marketing.terms')->name('terms');
+Route::view('/privacy', 'marketing.privacy')->name('privacy');
 
+/*
+| Authenticated app ("the back")
+*/
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', DashboardController::class)->name('dashboard');
 
     // Billing / subscription
-    Route::get('/pricing', [SubscriptionController::class, 'pricing'])->name('pricing');
+    Route::get('/account/plans', [SubscriptionController::class, 'pricing'])->name('subscription.plans');
     Route::post('/subscribe/{plan}', [SubscriptionController::class, 'checkout'])->name('subscription.checkout');
     Route::get('/subscription/success', [SubscriptionController::class, 'success'])->name('subscription.success');
     Route::get('/billing', [SubscriptionController::class, 'billingPortal'])->name('billing');

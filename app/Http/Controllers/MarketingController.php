@@ -1,0 +1,22 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\View\View;
+
+/**
+ * Public, unauthenticated marketing pages. The actual converter lives behind
+ * auth + the "subscribed" middleware.
+ */
+class MarketingController extends Controller
+{
+    public function home(): View
+    {
+        return view('welcome');
+    }
+
+    public function pricing(): View
+    {
+        return view('marketing.pricing');
+    }
+}

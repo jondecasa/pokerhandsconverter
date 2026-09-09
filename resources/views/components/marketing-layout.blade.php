@@ -1,0 +1,142 @@
+@props([
+    'title' => 'PokerCoinverter — Convert CoinPoker hand histories to PokerStars format',
+    'description' => 'PokerCoinverter turns your CoinPoker hand-history files into PokerStars format so they import cleanly into Hold\'em Manager, PokerTracker and other poker trackers. Cash games and tournaments.',
+])
+
+<!DOCTYPE html>
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="scroll-smooth">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
+    <title>{{ $title }}</title>
+    <meta name="description" content="{{ $description }}">
+
+    <meta property="og:title" content="{{ $title }}">
+    <meta property="og:description" content="{{ $description }}">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary_large_image">
+
+    <link rel="preconnect" href="https://fonts.bunny.net">
+    <link href="https://fonts.bunny.net/css?family=figtree:400,500,600,700,800&display=swap" rel="stylesheet" />
+
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+</head>
+<body class="font-sans antialiased text-slate-600 bg-white">
+
+    {{-- ===================== NAV ===================== --}}
+    <header
+        x-data="{ open: false }"
+        class="sticky top-0 z-50 border-b border-slate-200 bg-white/90 backdrop-blur"
+    >
+        <nav class="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
+            <a href="{{ route('home') }}" class="flex items-center gap-2 text-lg font-extrabold tracking-tight text-slate-900">
+                <span class="grid h-8 w-8 place-items-center rounded-lg bg-indigo-600 text-white">
+                    <svg viewBox="0 0 24 24" fill="none" class="h-5 w-5">
+                        <path d="M7 8h10M7 8l3-3M7 8l3 3M17 16H7m10 0l-3 3m3-3l-3-3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </span>
+                Poker<span class="text-indigo-600">Coinverter</span>
+            </a>
+
+            <div class="hidden items-center gap-8 md:flex">
+                <a href="{{ route('home') }}#how" class="text-sm font-medium text-slate-600 hover:text-slate-900">How it works</a>
+                <a href="{{ route('home') }}#features" class="text-sm font-medium text-slate-600 hover:text-slate-900">Features</a>
+                <a href="{{ route('pricing') }}" class="text-sm font-medium text-slate-600 hover:text-slate-900">Pricing</a>
+                <a href="{{ route('home') }}#faq" class="text-sm font-medium text-slate-600 hover:text-slate-900">FAQ</a>
+            </div>
+
+            <div class="hidden items-center gap-3 md:flex">
+                @auth
+                    <a href="{{ route('dashboard') }}" class="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-500">
+                        Go to dashboard
+                    </a>
+                @else
+                    <a href="{{ route('login') }}" class="text-sm font-semibold text-slate-700 hover:text-slate-900">Log in</a>
+                    <a href="{{ route('register') }}" class="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-500">
+                        Start free trial
+                    </a>
+                @endauth
+            </div>
+
+            <button @click="open = !open" class="md:hidden" aria-label="Toggle menu">
+                <svg class="h-6 w-6 text-slate-900" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path x-show="!open" stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+                    <path x-show="open" x-cloak stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+                </svg>
+            </button>
+        </nav>
+
+        <div x-show="open" x-cloak class="border-t border-slate-200 px-6 py-4 md:hidden">
+            <div class="flex flex-col gap-3">
+                <a href="{{ route('home') }}#how" class="text-sm font-medium text-slate-700">How it works</a>
+                <a href="{{ route('home') }}#features" class="text-sm font-medium text-slate-700">Features</a>
+                <a href="{{ route('pricing') }}" class="text-sm font-medium text-slate-700">Pricing</a>
+                <a href="{{ route('home') }}#faq" class="text-sm font-medium text-slate-700">FAQ</a>
+                <hr class="border-slate-200">
+                @auth
+                    <a href="{{ route('dashboard') }}" class="rounded-lg bg-indigo-600 px-4 py-2 text-center text-sm font-semibold text-white">Go to dashboard</a>
+                @else
+                    <a href="{{ route('login') }}" class="text-sm font-semibold text-slate-700">Log in</a>
+                    <a href="{{ route('register') }}" class="rounded-lg bg-indigo-600 px-4 py-2 text-center text-sm font-semibold text-white">Start free trial</a>
+                @endauth
+            </div>
+        </div>
+    </header>
+
+    <main>
+        {{ $slot }}
+    </main>
+
+    {{-- ===================== FOOTER ===================== --}}
+    <footer class="border-t border-slate-200 bg-slate-50">
+        <div class="mx-auto max-w-7xl px-6 py-12">
+            <div class="flex flex-col gap-8 md:flex-row md:items-start md:justify-between">
+                <div class="max-w-sm">
+                    <div class="flex items-center gap-2 text-base font-extrabold text-slate-900">
+                        Poker<span class="text-indigo-600">Coinverter</span>
+                    </div>
+                    <p class="mt-3 text-sm text-slate-500">
+                        Convert CoinPoker hand histories to PokerStars format so your tracker and HUD just work.
+                    </p>
+                </div>
+                <div class="grid grid-cols-2 gap-8 text-sm sm:grid-cols-3">
+                    <div>
+                        <div class="font-semibold text-slate-900">Product</div>
+                        <ul class="mt-3 space-y-2">
+                            <li><a href="{{ route('home') }}#features" class="text-slate-500 hover:text-slate-900">Features</a></li>
+                            <li><a href="{{ route('home') }}#how" class="text-slate-500 hover:text-slate-900">How it works</a></li>
+                            <li><a href="{{ route('pricing') }}" class="text-slate-500 hover:text-slate-900">Pricing</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <div class="font-semibold text-slate-900">Account</div>
+                        <ul class="mt-3 space-y-2">
+                            @auth
+                                <li><a href="{{ route('dashboard') }}" class="text-slate-500 hover:text-slate-900">Dashboard</a></li>
+                            @else
+                                <li><a href="{{ route('login') }}" class="text-slate-500 hover:text-slate-900">Log in</a></li>
+                                <li><a href="{{ route('register') }}" class="text-slate-500 hover:text-slate-900">Create account</a></li>
+                            @endauth
+                        </ul>
+                    </div>
+                    <div>
+                        <div class="font-semibold text-slate-900">Legal</div>
+                        <ul class="mt-3 space-y-2">
+                            <li><a href="{{ route('terms') }}" class="text-slate-500 hover:text-slate-900">Terms</a></li>
+                            <li><a href="{{ route('privacy') }}" class="text-slate-500 hover:text-slate-900">Privacy</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-10 border-t border-slate-200 pt-6 text-xs text-slate-400">
+                &copy; {{ date('Y') }} PokerCoinverter. Not affiliated with, endorsed by, or sponsored by CoinPoker, PokerStars,
+                Hold'em Manager or PokerTracker. "PokerStars format" refers only to the hand-history text layout that trackers read.
+            </div>
+        </div>
+    </footer>
+
+    <style>[x-cloak]{display:none!important}</style>
+</body>
+</html>

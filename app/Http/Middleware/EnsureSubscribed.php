@@ -19,7 +19,7 @@ class EnsureSubscribed
 
         if (! $user || ! $user->subscribed($name)) {
             return redirect()
-                ->route('pricing')
+                ->route('subscription.plans')
                 ->with('status', 'You need an active subscription to use the converter.');
         }
 

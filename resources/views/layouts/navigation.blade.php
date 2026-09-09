@@ -18,8 +18,8 @@
                     <x-nav-link :href="route('convert.create')" :active="request()->routeIs('convert.*') || request()->routeIs('conversions.*')">
                         {{ __('Convert') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('pricing')" :active="request()->routeIs('pricing')">
-                        {{ __('Pricing') }}
+                    <x-nav-link :href="route('subscription.plans')" :active="request()->routeIs('subscription.plans')">
+                        {{ __('Plans') }}
                     </x-nav-link>
                 </div>
             </div>
@@ -79,8 +79,8 @@
             <x-responsive-nav-link :href="route('convert.create')" :active="request()->routeIs('convert.*') || request()->routeIs('conversions.*')">
                 {{ __('Convert') }}
             </x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('pricing')" :active="request()->routeIs('pricing')">
-                {{ __('Pricing') }}
+            <x-responsive-nav-link :href="route('subscription.plans')" :active="request()->routeIs('subscription.plans')">
+                {{ __('Plans') }}
             </x-responsive-nav-link>
         </div>
 

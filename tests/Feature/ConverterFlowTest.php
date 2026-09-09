@@ -50,17 +50,27 @@ class ConverterFlowTest extends TestCase
     }
 
     #[Test]
-    public function subscribers_without_a_plan_are_sent_to_pricing(): void
+    public function subscribers_without_a_plan_are_sent_to_the_plan_picker(): void
     {
         $user = User::factory()->create(['email_verified_at' => now()]);
 
-        $this->actingAs($user)->get('/convert')->assertRedirect(route('pricing'));
+        $this->actingAs($user)->get('/convert')->assertRedirect(route('subscription.plans'));
     }
 
     #[Test]
     public function a_subscriber_can_open_the_converter(): void
     {
         $this->actingAs($this->subscribedUser())->get('/convert')->assertOk();
+    }
+
+    #[Test]
+    public function the_in_app_plan_picker_renders(): void
+    {
+        $user = User::factory()->create(['email_verified_at' => now()]);
+
+        $this->actingAs($user)->get(route('subscription.plans'))
+            ->assertOk()
+            ->assertSee('Monthly');
     }
 
     #[Test]

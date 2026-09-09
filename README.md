@@ -119,18 +119,31 @@ Plans, trial length, subscription name and every converter knob are in
 
 ### Web
 
+**Public marketing site** (no auth — sells the product, explains the conversion):
+
 | Route | Purpose |
 |---|---|
-| `/` | Marketing landing page (public) |
+| `/` | Landing page: hero with before/after, problem, how-it-works, features, pricing, FAQ, CTAs |
+| `/pricing` | Public pricing + billing FAQ |
+| `/terms`, `/privacy` | Legal (template wording — replace placeholders) |
 | `/register`, `/login` | Auth (Laravel Breeze) |
+
+Marketing pages render through the `<x-marketing-layout>` anonymous component
+(`resources/views/components/marketing-layout.blade.php`); page content lives in
+`resources/views/welcome.blade.php` and `resources/views/marketing/`.
+
+**The app ("the back") — requires login:**
+
+| Route | Purpose |
+|---|---|
 | `/dashboard` | Subscription status, usage stats, recent conversions |
-| `/pricing` | Plan selection → Stripe Checkout |
+| `/account/plans` | Pick a plan → Stripe Checkout |
 | `/billing` | Redirect to the Stripe customer portal |
 | `/convert` | Upload a CoinPoker `.txt`, get a PokerStars `.txt` — **requires an active subscription** |
 | `/conversions/{id}` | Result page: preview, warnings, download |
 
 The `subscribed` middleware (`App\Http\Middleware\EnsureSubscribed`) protects the
-converter routes and redirects non-subscribers to `/pricing`.
+converter routes and redirects non-subscribers to `/account/plans`.
 
 ### CLI (no subscription needed — handy for tuning)
 
