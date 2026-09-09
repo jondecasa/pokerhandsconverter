@@ -431,8 +431,29 @@ class CoinPokerConverter
 
         $text = implode("\n", $out);
         $summary = $this->summarise($out, $isTournament);
+        if ($summary !== null) {
+            $summary->splashPot = $this->isSplashPot($hand);
+            $summary->bombPot = $this->isBombPot($hand);
+        }
 
         return [$text, $summary, $warnings];
+    }
+
+    private function isSplashPot(string $hand): bool
+    {
+        return (bool) preg_match('/\bsplash[ _-]?pot\b/i', $hand);
+    }
+
+    private function isBombPot(string $hand): bool
+    {
+        if (preg_match('/\bbomb[ _-]?pot\b/i', $hand)) {
+            return true;
+        }
+
+        // Structural fallback: no blinds posted, everyone antes, straight to a flop.
+        return ! preg_match('/:\s+posts (?:small|big) blind/i', $hand)
+            && (bool) preg_match('/:\s+posts [^\n]*ante/i', $hand)
+            && (bool) preg_match('/\*\*\*\s+(?:FIRST\s+)?FLOP\s+\*\*\*/', $hand);
     }
 
     private function convertCashHeader(string $header, array &$warnings): string

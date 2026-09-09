@@ -18,6 +18,8 @@ class Conversion extends Model
         'original_filename',
         'output_path',
         'hand_count',
+        'splash_pots',
+        'bomb_pots',
         'warning_count',
         'input_bytes',
         'format_breakdown',

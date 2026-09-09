@@ -20,6 +20,8 @@ class ConversionFactory extends Factory
             'original_filename' => 'HH'.fake()->numerify('########').'.txt',
             'output_path' => 'conversions/'.fake()->uuid().'.txt',
             'hand_count' => $hands,
+            'splash_pots' => 0,
+            'bomb_pots' => 0,
             'warning_count' => 0,
             'input_bytes' => $hands * 800,
             'format_breakdown' => ['Cash' => $hands],

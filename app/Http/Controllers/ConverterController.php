@@ -66,6 +66,8 @@ class ConverterController extends Controller
             'original_filename' => $uploaded->getClientOriginalName(),
             'output_path' => $path,
             'hand_count' => $result->handCount,
+            'splash_pots' => $result->splashPotCount(),
+            'bomb_pots' => $result->bombPotCount(),
             'warning_count' => count($result->warnings),
             'input_bytes' => strlen($raw),
             'format_breakdown' => $result->formatBreakdown(),

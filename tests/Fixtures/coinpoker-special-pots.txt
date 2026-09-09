@@ -1,0 +1,73 @@
+CoinPoker Hand #130114400001: NLH (₮0.05/₮0.10) 2026/09/09 14:00:00 CEST
+Table 'Mars' 6-max Seat #1 is the button
+Seat 1: alpha (₮10 in chips)
+Seat 2: bravo (₮10 in chips)
+Seat 3: Hero (₮10 in chips)
+alpha: posts the ante ₮0.50
+bravo: posts the ante ₮0.50
+Hero: posts the ante ₮0.50
+*** HOLE CARDS ***
+Dealt to alpha
+Dealt to bravo
+Dealt to Hero [Ah Kd]
+*** FLOP *** [7c 2d 9s]
+bravo: checks
+Hero: bets ₮0.50
+alpha: folds
+bravo: folds
+Uncalled bet (₮0.50) returned to Hero
+Hero collected ₮1.50 from pot
+*** SUMMARY ***
+Total pot ₮1.50 | Rake ₮0
+Hand was run once
+Board [7c 2d 9s]
+Game ended: 2026/09/09 14:00:20 CEST
+Seat 1: alpha folded on the Flop
+Seat 2: bravo folded on the Flop
+Seat 3: Hero won (₮1.50)
+
+CoinPoker Hand #130114500001: NLH (₮0.05/₮0.10) 2026/09/09 15:00:00 CEST
+Table 'Venus' 6-max Seat #2 is the button
+Seat 1: alpha (₮10 in chips)
+Seat 3: bravo (₮10 in chips)
+Splash pot: ₮5.00 added to the pot
+alpha: posts small blind ₮0.05
+bravo: posts big blind ₮0.10
+*** HOLE CARDS ***
+Dealt to alpha
+Dealt to bravo [As Ah]
+alpha: raises ₮0.30 to ₮0.40
+bravo: calls ₮0.30
+*** FLOP *** [7c 2d 9s]
+alpha: checks
+bravo: bets ₮0.50
+alpha: folds
+Uncalled bet (₮0.50) returned to bravo
+bravo collected ₮5.80 from pot
+*** SUMMARY ***
+Total pot ₮5.80 | Rake ₮0
+Hand was run once
+Board [7c 2d 9s]
+Game ended: 2026/09/09 15:00:20 CEST
+Seat 1: alpha folded on the Flop
+Seat 3: bravo won (₮5.80)
+
+CoinPoker Hand #130114600001: NLH (₮0.05/₮0.10) 2026/09/09 16:00:00 CEST
+Table 'Venus' 6-max Seat #2 is the button
+Seat 1: alpha (₮10 in chips)
+Seat 3: bravo (₮10 in chips)
+alpha: posts small blind ₮0.05
+bravo: posts big blind ₮0.10
+*** HOLE CARDS ***
+Dealt to alpha
+Dealt to bravo [Qs Qc]
+alpha: folds
+Uncalled bet (₮0.05) returned to bravo
+bravo collected ₮0.10 from pot
+*** SUMMARY ***
+Total pot ₮0.10 | Rake ₮0
+Hand was run once
+Board [  ]
+Game ended: 2026/09/09 16:00:10 CEST
+Seat 1: alpha folded before Flop (didn't bet)
+Seat 3: bravo won (₮0.10)

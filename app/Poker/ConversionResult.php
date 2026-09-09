@@ -32,4 +32,14 @@ class ConversionResult
 
         return $out;
     }
+
+    public function splashPotCount(): int
+    {
+        return count(array_filter($this->hands, fn (HandSummary $h) => $h->splashPot));
+    }
+
+    public function bombPotCount(): int
+    {
+        return count(array_filter($this->hands, fn (HandSummary $h) => $h->bombPot));
+    }
 }

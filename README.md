@@ -50,6 +50,11 @@ becomes `CoinPoker Hand #130114200045:  Hold'em No Limit ($0.01/$0.02 USD) - 202
     A warning is emitted so you can sanity-check the amounts.
 12. `keep` — left as a single hand with every board and a warning.
 
+**Per-file stats** — the result screen (and the `conversions` row) report the
+hand count plus **splash pots** (a `Splash pot: …` line) and **bomb pots**
+(a `bomb pot` line, or structurally: no blinds posted, everyone antes, straight
+to a flop). Both detections are heuristic — check against real CoinPoker exports.
+
 Warnings (never exceptions) also cover unknown game codes, unknown timezones and
 blocks that are not hands.
 
@@ -196,7 +201,7 @@ Marketing pages render through the `<x-marketing-layout>` anonymous component
 | `/account/plans` | Pick a plan → Stripe Checkout |
 | `/billing` | Redirect to the Stripe customer portal |
 | `/convert` | Upload a CoinPoker `.txt`, get a PokerTracker 4-ready `.txt` — **requires an active subscription** |
-| `/conversions/{id}` | Result page: preview, warnings, download |
+| `/conversions/{id}` | Result screen: hands / splash pots / bomb pots counts, warnings, preview, download |
 | `/admin/plans` | Package & pricing maintenance — **admins only** (`users.is_admin`) |
 
 The `subscribed` middleware (`App\Http\Middleware\EnsureSubscribed`) protects the

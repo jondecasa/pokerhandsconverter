@@ -17,6 +17,8 @@ class HandSummary
         public ?int $maxSeats,   // 2, 6, 9...
         public ?string $playedAt,// "2024/01/15 18:30:00"
         public ?string $hero,    // hero screen name, if detectable
+        public bool $splashPot = false,
+        public bool $bombPot = false,
     ) {}
 
     public function toArray(): array
@@ -30,6 +32,8 @@ class HandSummary
             'max_seats' => $this->maxSeats,
             'played_at' => $this->playedAt,
             'hero' => $this->hero,
+            'splash_pot' => $this->splashPot,
+            'bomb_pot' => $this->bombPot,
         ];
     }
 }
