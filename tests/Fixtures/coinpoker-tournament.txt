@@ -1,0 +1,26 @@
+CoinPoker Hand #2200000001: Tournament #9911002, 10+1 Hold'em No Limit - Level V (75/150) - 2024/03/11 20:05:00 UTC
+Table '9911002 3' 9-max Seat #4 is the button
+Seat 1: north (3000 in chips)
+Seat 2: south (4200 in chips)
+Seat 4: Hero (5100 in chips)
+Seat 7: west (2750 in chips)
+Hero: posts small blind 75
+west: posts big blind 150
+*** HOLE CARDS ***
+Dealt to Hero [Ad Qs]
+north: folds
+south: folds
+Hero: raises 225 to 375
+west: calls 225
+*** FLOP *** [Qh 8c 3d]
+Hero: bets 400
+west: folds
+Uncalled bet (400) returned to Hero
+Hero collected 825 from pot
+*** SUMMARY ***
+Total pot 825 | Rake 0
+Board [Qh 8c 3d]
+Seat 1: north folded before Flop (didn't bet)
+Seat 2: south folded before Flop (didn't bet)
+Seat 4: Hero (small blind) collected (825)
+Seat 7: west (big blind) folded on the Flop

@@ -1,0 +1,59 @@
+CoinPoker Hand #2100000001: Hold'em No Limit ($0.02/$0.05 USDT) - 2024/03/10 18:30:12 UTC
+Table 'Saturn' 6-max Seat #1 is the button
+Seat 1: alpha (5 in chips)
+Seat 2: bravo (4.85 in chips)
+Seat 3: Hero (5.20 in chips)
+Seat 5: echo (6 in chips)
+bravo: posts small blind 0.02
+Hero: posts big blind 0.05
+*** HOLE CARDS ***
+Dealt to Hero [Ah Kd]
+echo: folds
+alpha: raises 0.10 to 0.15
+bravo: folds
+Hero: calls 0.10
+*** FLOP *** [7c 2d Js]
+Hero: checks
+alpha: bets 0.20
+Hero: calls 0.20
+*** TURN *** [7c 2d Js] [Th]
+Hero: checks
+alpha: checks
+*** RIVER *** [7c 2d Js Th] [4c]
+Hero: bets 0.35
+alpha: folds
+Uncalled bet (0.35) returned to Hero
+Hero collected 0.70 from pot
+Hero: doesn't show hand
+*** SUMMARY ***
+Total pot 0.72 | Rake 0.02
+Board [7c 2d Js Th 4c]
+Seat 1: alpha (button) folded on the River
+Seat 2: bravo (small blind) folded before Flop
+Seat 3: Hero (big blind) collected (0.70)
+Seat 5: echo folded before Flop (didn't bet)
+
+CoinPoker Hand #2100000002: Hold'em No Limit ($0.02/$0.05 USDT) - 2024/03/10 18:32:40 UTC
+Table 'Saturn' 6-max Seat #2 is the button
+Seat 1: alpha (5.55 in chips)
+Seat 2: bravo (4.80 in chips)
+Seat 3: Hero (5.90 in chips)
+Hero: posts small blind 0.02
+alpha: posts big blind 0.05
+*** HOLE CARDS ***
+Dealt to Hero [Qs Qc]
+bravo: raises 0.10 to 0.15
+Hero: raises 0.35 to 0.50
+alpha: folds
+bravo: calls 0.35
+*** FLOP *** [2h 5s 9d]
+Hero: bets 0.60
+bravo: folds
+Uncalled bet (0.60) returned to Hero
+Hero collected 1.07 from pot
+*** SUMMARY ***
+Total pot 1.10 | Rake 0.03
+Board [2h 5s 9d]
+Seat 1: alpha (button) folded before Flop
+Seat 2: bravo (big blind) folded on the Flop
+Seat 3: Hero (small blind) collected (1.07)
