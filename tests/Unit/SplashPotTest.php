@@ -42,4 +42,13 @@ class SplashPotTest extends TestCase
         $this->assertStringContainsString('*** RIVER *** [Qh Ks Jh 7d] [Kh]', $out);
         $this->assertStringNotContainsString('₮', $out);
     }
+
+    #[Test]
+    public function it_rewrites_the_didnt_show_summary_line_to_mucked(): void
+    {
+        $out = $this->convert()->output;
+
+        $this->assertStringNotContainsString("didn't show", $out);
+        $this->assertStringContainsString('Seat 2: 070fbf52 mucked', $out);
+    }
 }

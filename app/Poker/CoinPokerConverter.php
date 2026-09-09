@@ -724,6 +724,9 @@ class CoinPokerConverter
      */
     private function rewriteSeatSummary(int $seat, string $rest, array $positions): string
     {
+        // CoinPoker: "didn't show" is not a summary phrase the trackers parse.
+        $rest = preg_replace('/\bdidn\'t show\b/i', 'mucked', $rest) ?? $rest;
+
         // Already converted (has a position tag) — leave it alone.
         if (preg_match('/^\S.*\s\((?:button|small blind|big blind)\)\s/', $rest)) {
             return $rest;
