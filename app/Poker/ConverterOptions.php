@@ -13,11 +13,12 @@ class ConverterOptions
 {
     public function __construct(
         /**
-         * Room name written into the "<Room> Hand #..." header line. Keep this
-         * as "PokerStars" — it is the literal marker PokerTracker 4 / Hold'em
-         * Manager 3 match when parsing a hand history. Changing it breaks import.
+         * Room name written into the "<Room> Hand #..." header line. Kept as
+         * "CoinPoker" so PokerTracker 4 / Hold'em Manager 3 import the file with
+         * their native CoinPoker profile. Only override this if your tracker
+         * needs a different site name on the header.
          */
-        public string $roomName = 'PokerStars',
+        public string $roomName = 'CoinPoker',
 
         /** Currency symbol that replaces CoinPoker's tether sign (₮) and any bare amounts. */
         public string $currencySymbol = '$',
@@ -51,7 +52,7 @@ class ConverterOptions
         $c = config('pokercoinverter.converter', []);
 
         return new self(
-            roomName: $overrides['room_name'] ?? $c['room_name'] ?? 'PokerStars',
+            roomName: $overrides['room_name'] ?? $c['room_name'] ?? 'CoinPoker',
             currencySymbol: $overrides['currency_symbol'] ?? $c['currency_symbol'] ?? '$',
             currencyCode: $overrides['currency_code'] ?? $c['currency_code'] ?? 'USD',
             timezoneMode: $overrides['timezone_mode'] ?? $c['timezone_mode'] ?? 'dual',

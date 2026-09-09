@@ -97,8 +97,8 @@ class ConverterFlowTest extends TestCase
         $download = $this->actingAs($user)->get(route('conversions.download', $conversion));
         $download->assertOk();
         $download->assertDownload('coinpoker-cash-pokertracker.txt');
-        $this->assertStringContainsString('PokerStars Hand #130114200045', $download->streamedContent());
-        $this->assertStringNotContainsString('CoinPoker Hand #', $download->streamedContent());
+        $this->assertStringContainsString('CoinPoker Hand #130114200045:  Hold\'em No Limit', $download->streamedContent());
+        $this->assertStringNotContainsString('PokerStars', $download->streamedContent());
         $this->assertStringNotContainsString('₮', $download->streamedContent());
     }
 

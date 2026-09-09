@@ -35,15 +35,15 @@ class CoinPokerConverterTest extends TestCase
     }
 
     #[Test]
-    public function it_rewrites_the_header(): void
+    public function it_rewrites_the_header_but_keeps_the_coinpoker_prefix(): void
     {
         $out = (new CoinPokerConverter)->convert($this->fixture('coinpoker-cash.txt'))->output;
 
         $this->assertStringContainsString(
-            "PokerStars Hand #130114200045:  Hold'em No Limit (\$0.01/\$0.02 USD) - 2026/09/09 12:01:21 CET [2026/09/09 6:01:21 ET]",
+            "CoinPoker Hand #130114200045:  Hold'em No Limit (\$0.01/\$0.02 USD) - 2026/09/09 12:01:21 CET [2026/09/09 6:01:21 ET]",
             $out,
         );
-        $this->assertStringNotContainsString('CoinPoker Hand #', $out);
+        $this->assertStringNotContainsString('PokerStars', $out);
         $this->assertStringNotContainsString('₮', $out);
         $this->assertStringNotContainsString('NLH', $out);
     }
@@ -137,7 +137,7 @@ class CoinPokerConverterTest extends TestCase
         $result = (new CoinPokerConverter)->convert($this->fixture('coinpoker-tournament.txt'));
         $out = $result->output;
 
-        $this->assertStringContainsString('PokerStars Hand #130114300001: Tournament #55012,', $out);
+        $this->assertStringContainsString('CoinPoker Hand #130114300001: Tournament #55012,', $out);
         $this->assertStringContainsString('Hero: posts small blind 75', $out);
         $this->assertStringContainsString('Seat 1: north (3000 in chips)', $out);
         $this->assertStringContainsString('Hero: raises 225 to 375', $out);

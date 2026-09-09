@@ -12,10 +12,11 @@ paid **Stripe subscription** (via Laravel Cashier).
 Verified against real CoinPoker exports. Per hand:
 
 **Header** — `CoinPoker Hand #130114200045: NLH (₮0.01/₮0.02) 2026/09/09 12:01:21 CEST`
-becomes `... Hand #130114200045:  Hold'em No Limit ($0.01/$0.02 USD) - 2026/09/09 12:01:21 CET [2026/09/09 6:01:21 ET]`:
+becomes `CoinPoker Hand #130114200045:  Hold'em No Limit ($0.01/$0.02 USD) - 2026/09/09 12:01:21 CET [2026/09/09 6:01:21 ET]`:
 
-1. Header marker rewritten to the one PokerTracker 4 / Hold'em Manager 3 parse
-   on (`config('pokercoinverter.converter.room_name')`).
+1. The `CoinPoker Hand #` prefix is **kept** — PokerTracker 4 / Hold'em Manager 3
+   import CoinPoker natively (change `config('pokercoinverter.converter.room_name')`
+   only if your tracker needs a different site name).
 2. Game code expanded: `NLH → Hold'em No Limit`, `PLO → Omaha Pot Limit`, etc.
 3. Tether sign `₮ → $`, currency code (`USD`) added inside the parenthesis, ` - `
    inserted before the date.
@@ -224,6 +225,6 @@ php artisan test
 - Run-it-twice hands are passed through with a warning — verify how your tracker
   handles them.
 - Not affiliated with CoinPoker, PokerTracker or Hold'em Manager. Product names
-  describe compatibility only. The output keeps the literal header marker those
-  trackers' parsers match on (`App\Poker\ConverterOptions::$roomName`) — that is a
-  detail of the file format, not a brand claim.
+  describe compatibility only. The `CoinPoker Hand #` header prefix is preserved
+  so trackers import the file with their native CoinPoker profile
+  (`App\Poker\ConverterOptions::$roomName`).

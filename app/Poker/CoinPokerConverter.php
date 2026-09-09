@@ -6,19 +6,21 @@ use DateTimeImmutable;
 use DateTimeZone;
 
 /**
- * Converts a CoinPoker hand-history file into the hand-history format that
- * PokerTracker 4 (and Hold'em Manager 3, Hand2Note, ...) can import.
+ * Cleans a CoinPoker hand-history file so PokerTracker 4 (and Hold'em Manager 3,
+ * Hand2Note, ...) import it with their native CoinPoker profile.
  *
- * That target format keeps the literal "PokerStars Hand #" marker on the header
- * line — the trackers' parsers match on it — so it appears in the output and in
- * the regexes below. It is a technical detail of the format, not a brand claim.
+ * The "CoinPoker Hand #..." header prefix is preserved; only the parts that
+ * break those parsers are fixed (game code, the ₮ sign, per-player "Dealt to"
+ * lines, the RETURN line, "Hand was run once" / "Game ended:" noise, the
+ * timezone stamp, and "won" -> "collected" plus position tags in the summary).
  *
  * Verified against real CoinPoker exports. The transformation per hand:
  *
  *   Header
  *     - "CoinPoker Hand #<id>: NLH (₮a/₮b) <date> CEST"
  *       becomes
- *       "<...> Hand #<id>:  Hold'em No Limit ($a/$b USD) - <date> CET [<ET date/time> ET]"
+ *       "CoinPoker Hand #<id>:  Hold'em No Limit ($a/$b USD) - <date> CET [<ET date/time> ET]"
+ *     - "CoinPoker Hand #" prefix is preserved (native tracker import)
  *     - game abbreviation expanded (NLH -> Hold'em No Limit, PLO -> Omaha Pot Limit, ...)
  *     - tether sign ₮ -> $, currency code (USD) added inside the parenthesis
  *     - " - " inserted before the date; timezone rendered per ConverterOptions

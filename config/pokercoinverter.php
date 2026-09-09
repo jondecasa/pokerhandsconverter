@@ -36,8 +36,9 @@ return [
     */
 
     'converter' => [
-        // Header marker PokerTracker 4 / Hold'em Manager 3 parse on. Leave as-is.
-        'room_name' => env('CONVERTER_ROOM_NAME', 'PokerStars'),
+        // Site name kept on the "<Room> Hand #..." header so PokerTracker 4 /
+        // Hold'em Manager 3 import with their native CoinPoker profile.
+        'room_name' => env('CONVERTER_ROOM_NAME', 'CoinPoker'),
         'currency_symbol' => env('CONVERTER_CURRENCY_SYMBOL', '$'),
         'currency_code' => env('CONVERTER_CURRENCY_CODE', 'USD'),
 

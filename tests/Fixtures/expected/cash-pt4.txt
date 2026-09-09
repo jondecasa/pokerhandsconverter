@@ -1,4 +1,4 @@
-PokerStars Hand #130114200045:  Hold'em No Limit ($0.01/$0.02 USD) - 2026/09/09 12:01:21 CET [2026/09/09 6:01:21 ET]
+CoinPoker Hand #130114200045:  Hold'em No Limit ($0.01/$0.02 USD) - 2026/09/09 12:01:21 CET [2026/09/09 6:01:21 ET]
 Table '200588' 6-max Seat #3 is the button
 Seat 1: 3d1b2c99 ($2.10 in chips)
 Seat 2: d0077f71 ($2.93 in chips)
