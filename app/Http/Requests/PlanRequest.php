@@ -23,7 +23,11 @@ class PlanRequest extends FormRequest
             'price' => ['required', 'numeric', 'min:0', 'max:100000'],
             'currency' => ['required', 'string', 'size:3'],
             'interval' => ['required', Rule::in(['month', 'year'])],
-            'stripe_price_id' => ['nullable', 'string', 'max:255'],
+            // Required for paid packages; a $0 package may be saved without it.
+            'stripe_price_id' => [
+                Rule::requiredIf(fn () => (float) $this->input('price') > 0),
+                'nullable', 'string', 'max:255',
+            ],
             'stakes_cap' => ['nullable', Rule::in(config('pokercoinverter.stakes'))],
             'stakes_label' => ['nullable', 'string', 'max:120'],
             'features' => ['nullable', 'string'], // textarea, one feature per line

@@ -17,6 +17,7 @@ class DashboardController extends Controller
             'subscribed' => (bool) $user->subscribed($name),
             'onTrial' => (bool) $user->onTrial($name),
             'onGracePeriod' => (bool) $subscription?->onGracePeriod(),
+            'onFreePlan' => str_starts_with((string) $subscription?->stripe_id, 'free_'),
             'subscription' => $subscription,
             'recent' => $user->conversions()->latest()->take(10)->get(),
             'stats' => [

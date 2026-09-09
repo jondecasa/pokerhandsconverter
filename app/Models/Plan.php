@@ -61,6 +61,10 @@ class Plan extends Model
 
     public function priceLabel(): string
     {
+        if ((float) $this->price <= 0) {
+            return 'Free';
+        }
+
         $symbol = $this->currency === 'USD' ? '$' : '';
         $amount = rtrim(rtrim(number_format((float) $this->price, 2), '0'), '.');
 
@@ -80,5 +84,20 @@ class Plan extends Model
     public function featureList(): array
     {
         return array_values(array_filter(array_map('trim', $this->features ?? [])));
+    }
+
+    /** A $0 package with no Stripe price — granted locally, no checkout. */
+    public function isFree(): bool
+    {
+        return (float) $this->price <= 0 && blank($this->stripe_price_id);
+    }
+
+    /**
+     * Value stored in the subscription's `stripe_price` column so a package can
+     * be matched back to its subscription (real price id, or a "free:" marker).
+     */
+    public function priceKey(): string
+    {
+        return $this->stripe_price_id ?: 'free:'.$this->slug;
     }
 }

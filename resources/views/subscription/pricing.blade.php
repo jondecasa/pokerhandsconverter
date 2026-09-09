@@ -32,7 +32,7 @@
                         <h3 class="text-xl font-bold text-gray-900">{{ $plan->name }}</h3>
                         <div class="mt-3">
                             <span class="text-4xl font-extrabold text-gray-900">{{ $plan->priceLabel() }}</span>
-                            <span class="text-gray-500">/ {{ $plan->interval }}</span>
+                            @unless ($plan->isFree())<span class="text-gray-500">/ {{ $plan->interval }}</span>@endunless
                         </div>
                         @if ($plan->stakesText())
                             <div class="mt-2 inline-flex w-max rounded-full bg-gray-100 px-2.5 py-1 text-xs font-medium text-gray-600">{{ $plan->stakesText() }}</div>
@@ -47,13 +47,15 @@
                             @endforelse
                         </ul>
 
-                        @if ($currentPrice && $currentPrice === $plan->stripe_price_id)
+                        @if ($currentPrice && $currentPrice === $plan->priceKey())
                             <span class="mt-6 inline-flex justify-center px-4 py-2 bg-gray-100 text-gray-600 text-sm rounded-md">Current package</span>
                         @else
                             <form method="POST" action="{{ route('subscription.checkout', $plan) }}" class="mt-6">
                                 @csrf
                                 <button class="w-full inline-flex justify-center px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-md hover:bg-indigo-500">
-                                    @if ($plan->effectiveTrialDays() > 0 && ! $subscribed)
+                                    @if ($plan->isFree())
+                                        Get it free
+                                    @elseif ($plan->effectiveTrialDays() > 0 && ! $subscribed)
                                         Start {{ $plan->effectiveTrialDays() }}-day free trial
                                     @else
                                         Choose {{ $plan->name }}

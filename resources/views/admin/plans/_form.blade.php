@@ -46,7 +46,7 @@
     </div>
 
     <div class="sm:col-span-2">
-        <label class="block text-sm font-medium text-gray-700">Stripe Price ID <span class="text-gray-400">(<code>price_...</code> — required before anyone can subscribe)</span></label>
+        <label class="block text-sm font-medium text-gray-700">Stripe Price ID <span class="text-gray-400">(<code>price_...</code> — required for paid packages; leave blank for a $0 free package)</span></label>
         <input name="stripe_price_id" value="{{ old('stripe_price_id', $plan->stripe_price_id) }}"
                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm text-sm font-mono">
         <x-input-error :messages="$errors->get('stripe_price_id')" class="mt-1" />

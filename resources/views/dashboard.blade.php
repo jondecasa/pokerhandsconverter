@@ -21,7 +21,9 @@
                         <h3 class="text-lg font-semibold text-gray-900">Subscription</h3>
                         @if ($subscribed)
                             <p class="text-sm text-gray-600 mt-1">
-                                @if ($onTrial)
+                                @if ($onFreePlan)
+                                    Active on a free package.
+                                @elseif ($onTrial)
                                     On free trial until {{ optional($subscription->trial_ends_at)->toFormattedDateString() }}.
                                 @elseif ($onGracePeriod)
                                     Cancelled — access ends {{ optional($subscription->ends_at)->toFormattedDateString() }}.
@@ -35,14 +37,16 @@
                     </div>
                     <div class="flex items-center gap-3">
                         @if ($subscribed)
-                            <a href="{{ route('billing') }}" class="inline-flex items-center px-4 py-2 bg-gray-800 text-white text-sm rounded-md hover:bg-gray-700">Manage billing</a>
+                            @unless ($onFreePlan)
+                                <a href="{{ route('billing') }}" class="inline-flex items-center px-4 py-2 bg-gray-800 text-white text-sm rounded-md hover:bg-gray-700">Manage billing</a>
+                            @endunless
                             @if ($onGracePeriod)
                                 <form method="POST" action="{{ route('subscription.resume') }}">@csrf
                                     <button class="inline-flex items-center px-4 py-2 bg-green-600 text-white text-sm rounded-md hover:bg-green-500">Resume</button>
                                 </form>
                             @else
-                                <form method="POST" action="{{ route('subscription.cancel') }}" onsubmit="return confirm('Cancel at the end of the billing period?')">@csrf
-                                    <button class="inline-flex items-center px-4 py-2 border border-gray-300 text-sm rounded-md hover:bg-gray-50">Cancel</button>
+                                <form method="POST" action="{{ route('subscription.cancel') }}" onsubmit="return confirm(@js($onFreePlan ? 'Remove the free package? You will lose access to the converter.' : 'Cancel at the end of the billing period?'))">@csrf
+                                    <button class="inline-flex items-center px-4 py-2 border border-gray-300 text-sm rounded-md hover:bg-gray-50">{{ $onFreePlan ? 'Remove package' : 'Cancel' }}</button>
                                 </form>
                             @endif
                         @else

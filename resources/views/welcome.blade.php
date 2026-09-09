@@ -193,7 +193,7 @@
                         <div class="text-sm font-semibold text-slate-900">{{ $plan->name }}</div>
                         <div class="mt-2">
                             <span class="text-4xl font-extrabold text-slate-900">{{ $plan->priceLabel() }}</span>
-                            <span class="text-slate-500">/ {{ $plan->interval }}</span>
+                            @unless ($plan->isFree())<span class="text-slate-500">/ {{ $plan->interval }}</span>@endunless
                         </div>
                         @if ($plan->stakesText())
                             <div class="mt-2 inline-flex w-max rounded-full bg-slate-100 px-2.5 py-1 text-xs font-medium text-slate-600">{{ $plan->stakesText() }}</div>

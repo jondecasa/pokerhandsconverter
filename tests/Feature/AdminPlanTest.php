@@ -84,6 +84,7 @@ class AdminPlanTest extends TestCase
             'price' => '12.50',
             'currency' => 'USD',
             'interval' => $plan->interval,
+            'stripe_price_id' => 'price_updated',
             'is_visible' => '1',
             'is_active' => '1',
         ])->assertRedirect(route('admin.plans.index'));
@@ -115,5 +116,56 @@ class AdminPlanTest extends TestCase
         $user = User::factory()->create(['email_verified_at' => now()]);
 
         $this->actingAs($user)->post('/subscribe/retired')->assertNotFound();
+    }
+
+    #[Test]
+    public function a_zero_dollar_package_can_be_created_without_a_stripe_id(): void
+    {
+        $this->actingAs($this->admin())->post('/admin/plans', [
+            'name' => 'Free Starter',
+            'slug' => 'free-starter',
+            'price' => '0',
+            'currency' => 'USD',
+            'interval' => 'month',
+            'is_visible' => '1',
+            'is_active' => '1',
+        ])->assertRedirect(route('admin.plans.index'));
+
+        $plan = Plan::where('slug', 'free-starter')->firstOrFail();
+        $this->assertTrue($plan->isFree());
+        $this->assertSame('Free', $plan->priceLabel());
+    }
+
+    #[Test]
+    public function a_paid_package_still_requires_a_stripe_id(): void
+    {
+        $this->actingAs($this->admin())->post('/admin/plans', [
+            'name' => 'Paid No Price',
+            'slug' => 'paid-no-price',
+            'price' => '15',
+            'currency' => 'USD',
+            'interval' => 'month',
+            'is_visible' => '1',
+            'is_active' => '1',
+        ])->assertSessionHasErrors('stripe_price_id');
+    }
+
+    #[Test]
+    public function subscribing_to_a_free_package_grants_access_without_stripe(): void
+    {
+        Plan::factory()->create([
+            'slug' => 'free', 'price' => 0, 'stripe_price_id' => null,
+        ]);
+        $user = User::factory()->create(['email_verified_at' => now()]);
+
+        $this->actingAs($user)->post('/subscribe/free')
+            ->assertRedirect(route('subscription.success'));
+
+        $user = $user->fresh();
+        $this->assertTrue($user->subscribed('default'));
+        $this->assertNull($user->stripeId());
+
+        // ...and the converter is now reachable.
+        $this->actingAs($user)->get('/convert')->assertOk();
     }
 }
