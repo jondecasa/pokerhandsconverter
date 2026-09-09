@@ -53,9 +53,17 @@ return [
         'room_name' => env('CONVERTER_ROOM_NAME', 'PokerStars'),
         'currency_symbol' => env('CONVERTER_CURRENCY_SYMBOL', '$'),
         'currency_code' => env('CONVERTER_CURRENCY_CODE', 'USD'),
-        'timezone_mode' => env('CONVERTER_TIMEZONE_MODE', 'relabel'), // relabel | keep | convert
-        'timezone_label' => env('CONVERTER_TIMEZONE_LABEL', 'ET'),
-        'offset_hours' => (int) env('CONVERTER_OFFSET_HOURS', -5),
+
+        // dual = "<time> CET [<time> ET]" (real PokerStars EU format)
+        // et   = "<time> ET" only
+        // keep = leave CoinPoker's time and label untouched
+        'timezone_mode' => env('CONVERTER_TIMEZONE_MODE', 'dual'),
+        'et_label' => env('CONVERTER_ET_LABEL', 'ET'),
+
+        // Hours to subtract from the source time for timezones not in the
+        // built-in table (Central Europe -> US Eastern is 6).
+        'fallback_et_offset_hours' => (int) env('CONVERTER_FALLBACK_ET_OFFSET_HOURS', 6),
+
         'normalize_tether_sign' => (bool) env('CONVERTER_NORMALIZE_TETHER', true),
     ],
 

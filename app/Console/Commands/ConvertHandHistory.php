@@ -11,7 +11,7 @@ class ConvertHandHistory extends Command
     protected $signature = 'pokerhh:convert
         {input : Path to the CoinPoker hand-history .txt file}
         {output? : Where to write the PokerStars-formatted file (defaults to <input>-pokerstars.txt)}
-        {--timezone-mode= : relabel|keep|convert (overrides config)}
+        {--timezone-mode= : dual|et|keep (overrides config)}
         {--force : Overwrite the output file if it already exists}';
 
     protected $description = 'Convert a CoinPoker hand-history file to PokerStars format';

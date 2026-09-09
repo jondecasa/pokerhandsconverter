@@ -53,18 +53,19 @@
                         <span class="h-3 w-3 rounded-full bg-emerald-400/80"></span>
                         <span class="ml-3 text-xs text-slate-400">HH20240310.txt</span>
                     </div>
-                    <pre class="overflow-x-auto rounded-xl bg-slate-950 p-4 text-[11px] leading-relaxed sm:text-xs"><code><span class="text-red-400">- CoinPoker Hand #2100000001: Hold'em No Limit ($0.02/$0.05 USDT) - 2024/03/10 18:30:12 UTC</span>
-<span class="text-emerald-400">+ PokerStars Hand #2100000001: Hold'em No Limit ($0.02/$0.05 USD) - 2024/03/10 18:30:12 ET</span>
-<span class="text-slate-500">  Table 'Saturn' 6-max Seat #1 is the button</span>
-<span class="text-red-400">- Seat 1: alpha (5 in chips)</span>
-<span class="text-emerald-400">+ Seat 1: alpha ($5 in chips)</span>
-<span class="text-red-400">- bravo: posts small blind 0.02</span>
-<span class="text-emerald-400">+ bravo: posts small blind $0.02</span>
-<span class="text-red-400">- Hero: posts big blind 0.05</span>
-<span class="text-emerald-400">+ Hero: posts big blind $0.05</span>
-<span class="text-slate-500">  *** SUMMARY ***</span>
-<span class="text-red-400">- Total pot 0.72 | Rake 0.02</span>
-<span class="text-emerald-400">+ Total pot $0.72 | Rake $0.02</span></code></pre>
+                    <pre class="overflow-x-auto rounded-xl bg-slate-950 p-4 text-[11px] leading-relaxed sm:text-xs"><code><span class="text-red-400">- CoinPoker Hand #130114200045: NLH (₮0.01/₮0.02) 2026/09/09 12:01:21 CEST</span>
+<span class="text-emerald-400">+ PokerStars Hand #130114200045:  Hold'em No Limit ($0.01/$0.02 USD) - 2026/09/09 12:01:21 CET [2026/09/09 6:01:21 ET]</span>
+<span class="text-red-400">- Seat 5: Hero (₮2 in chips)</span>
+<span class="text-emerald-400">+ Seat 5: Hero ($2 in chips)</span>
+<span class="text-red-400">- Dealt to 3d1b2c99</span>
+<span class="text-red-400">- Dealt to d0077f71</span>
+<span class="text-slate-500">  Dealt to Hero [Th 2s]</span>
+<span class="text-red-400">- 3d2ba04f: raises ₮0.04 to ₮0.06</span>
+<span class="text-emerald-400">+ 3d2ba04f: raises $0.04 to $0.06</span>
+<span class="text-red-400">- 3d2ba04f: RETURN ₮0.04</span>
+<span class="text-emerald-400">+ Uncalled bet ($0.04) returned to 3d2ba04f</span>
+<span class="text-red-400">- Seat 3: 3d2ba04f won (₮0.05)</span>
+<span class="text-emerald-400">+ Seat 3: 3d2ba04f (button) collected ($0.05)</span></code></pre>
                 </div>
             </div>
         </div>
@@ -100,10 +101,10 @@
 
         <div class="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
             @foreach ([
-                ['The header', 'Files start with "CoinPoker Hand #". Trackers look for "PokerStars Hand #" and skip the rest.'],
-                ['Bare amounts', 'Blinds, bets and pots are written as 0.05 instead of $0.05, so cash stakes come in wrong.'],
-                ['Currency code', 'USDT in the stakes line is not a currency your tracker recognises.'],
-                ['Timezone', 'Times are tagged UTC; site profiles expect ET, which shifts your time-based stats.'],
+                ['The header', 'Files start with "CoinPoker Hand #" and use codes like "NLH". Trackers look for "PokerStars Hand #" and "Hold\'em No Limit".'],
+                ['The ₮ sign', 'Amounts use the USDT tether sign (₮0.02) with no currency code. Trackers expect $0.02 and a code like USD.'],
+                ['Extra "Dealt to" lines', 'CoinPoker prints a "Dealt to" line for every player. PokerStars only shows the hero\'s cards — the rest confuse the parser.'],
+                ['Timezone & noise', 'Times are CEST, not the CET/ET stamp trackers expect, plus "Hand was run once" and "Game ended:" lines PokerStars never writes.'],
             ] as [$t, $d])
                 <div class="rounded-2xl border border-slate-200 bg-white p-6">
                     <div class="text-sm font-semibold text-red-500">{{ $t }}</div>
@@ -124,7 +125,7 @@
             <div class="mt-14 grid gap-8 md:grid-cols-3">
                 @foreach ([
                     ['1', 'Upload your file', 'Drop in the .txt CoinPoker exported. Cash games and tournaments, single hands or full sessions.'],
-                    ['2', 'We reformat it', 'Header, currency symbols, USDT&rarr;USD and the timezone label are rewritten to PokerStars format. Tournament chip counts stay untouched.'],
+                    ['2', 'We reformat it', 'Header and game code, the ₮ sign &rarr; $, the timezone stamp, the "Dealt to" noise and the summary lines are all rewritten to PokerStars format. Tournament chip counts stay untouched.'],
                     ['3', 'Import and review', 'Download the PokerStars-formatted .txt, point your tracker at it, and your HUD lights up. Past conversions stay in your history to re-download.'],
                 ] as [$n, $t, $d])
                     <div class="relative rounded-2xl border border-slate-200 bg-white p-8">
@@ -156,7 +157,7 @@
             @foreach ([
                 ['Cash &amp; tournaments', 'Detects the format per hand. Cash gets dollar amounts; tournaments keep bare chip counts, exactly like a real PokerStars tourney.'],
                 ['Accurate money fixes', 'Blinds, antes, straddles, bets, raises, uncalled bets, collected pots, rake and the summary line &mdash; each amount fixed in context, never double-prefixed.'],
-                ['Timezone your way', 'Keep the printed time and relabel to ET, leave it as UTC, or shift UTC&rarr;ET properly. You choose per upload.'],
+                ['Timezone your way', 'Output the real PokerStars EU stamp (local time + "[… ET]"), a single Eastern-time stamp, or leave CoinPoker\'s time untouched. You choose per upload.'],
                 ['Honest warnings', 'Run-it-twice boards, unparseable timestamps and stray blocks are flagged &mdash; the converter never silently guesses.'],
                 ['Conversion history', 'Every file you convert is kept in your account with hand counts and warnings, ready to re-download.'],
                 ['Your data stays yours', 'Files are processed for your account only and never shared. Card details go straight to Stripe &mdash; we never see them.'],

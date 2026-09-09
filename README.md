@@ -9,30 +9,47 @@ gated behind a paid **Stripe subscription** (via Laravel Cashier).
 
 ## What it does
 
-Given a CoinPoker export, the converter:
+Verified against real CoinPoker exports. Per hand:
 
-1. Rewrites the header `CoinPoker Hand #… → PokerStars Hand #…`.
-2. Normalises the currency code in the header (`USDT → USD`, configurable).
-3. Relabels or shifts the trailing timezone token on the date (`UTC → ET`).
-4. **Cash games only:** prefixes a currency symbol to the bare decimal amounts
-   CoinPoker prints without one — blinds/antes, `(5 in chips)`, bets/raises,
-   `Uncalled bet (…)`, `collected … from pot`, `Total pot … | Rake …`, and the
-   per-seat summary `collected (…)` / `won (…)`.
-   Tournament chip amounts stay bare, exactly like a real PokerStars tournament.
-5. Replaces the USDT tether sign `₮` with the configured symbol.
-6. Records a warning (never throws) for run-it-twice boards, unparseable
-   timestamps, and blocks that are not hands.
+**Header** — `CoinPoker Hand #130114200045: NLH (₮0.01/₮0.02) 2026/09/09 12:01:21 CEST`
+becomes `PokerStars Hand #130114200045:  Hold'em No Limit ($0.01/$0.02 USD) - 2026/09/09 12:01:21 CET [2026/09/09 6:01:21 ET]`:
 
-The conversion logic lives in [`app/Poker/`](app/Poker) and is fully unit-tested
-against fixtures in [`tests/Fixtures/`](tests/Fixtures). It is intentionally a
-**resilient line transformation**, not a full parse-and-rebuild, because
-CoinPoker's layout already mirrors PokerStars.
+1. Room prefix `CoinPoker → PokerStars`.
+2. Game code expanded: `NLH → Hold'em No Limit`, `PLO → Omaha Pot Limit`, etc.
+3. Tether sign `₮ → $`, currency code (`USD`) added inside the parenthesis, ` - `
+   inserted before the date.
+4. Timezone rendered per `timezone_mode`: `dual` (default) keeps the local time
+   and appends `[<Eastern time> ET]`; `et` emits a single Eastern stamp; `keep`
+   leaves it as-is.
 
-> ⚠️ **Tune against your own files.** The regex rules are built from the
-> documented CoinPoker format. Run a few of *your* real exports through the CLI
-> command below and, if a line does not import, adjust the rules in
-> `App\Poker\CoinPokerConverter::addCurrencySymbols()` / `convertHeader()` and
-> add a fixture + test.
+**Body**
+
+5. `₮ → $` everywhere (bare amounts get a `$` as a safety net for exports that
+   omit the sign); tournament chip counts stay bare.
+6. The per-player `Dealt to <name>` lines are dropped — only
+   `Dealt to Hero [Xx Yy]` is kept.
+7. `<player>: RETURN <amt>` → `Uncalled bet ($amt) returned to <player>`.
+8. `*** SHOWDOWN ***` → `*** SHOW DOWN ***`, or dropped when nobody shows.
+
+**Summary**
+
+9. CoinPoker-only lines removed: `Hand was run once`, empty `Board [  ]`,
+   `Game ended:` / `Game started:`.
+10. `Seat N: NAME won (amt)` → `Seat N: NAME (position) collected ($amt)`;
+    `(button)` / `(small blind)` / `(big blind)` tags inserted; the misleading
+    `(didn't bet)` stripped from blind posters.
+11. Warnings (never exceptions) for run-it-twice, unknown game codes, unknown
+    timezones and blocks that are not hands.
+
+The logic lives in [`app/Poker/`](app/Poker) and is locked down by a full
+input→output fixture in [`tests/Fixtures/`](tests/Fixtures) (`coinpoker-cash.txt`
+→ `expected/cash-pokerstars.txt`). It is a **resilient line transformation**, not
+a full parse-and-rebuild.
+
+> ⚠️ **Tune against your own files.** Rules are built from real samples but
+> CoinPoker has many game types / layouts. Run your exports through the CLI
+> command below; if a line does not import, adjust
+> `App\Poker\CoinPokerConverter` and add a fixture + test.
 
 ---
 

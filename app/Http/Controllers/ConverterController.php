@@ -31,7 +31,7 @@ class ConverterController extends Controller
             // size limit and then verify it is text hand-history content below,
             // because browsers/OSes report inconsistent MIME types for .txt.
             'file' => ['required', 'file', 'max:'.$maxKb],
-            'timezone_mode' => ['nullable', 'in:relabel,keep,convert'],
+            'timezone_mode' => ['nullable', 'in:dual,et,keep'],
         ]);
 
         $uploaded = $validated['file'];

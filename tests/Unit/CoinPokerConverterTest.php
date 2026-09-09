@@ -9,151 +9,181 @@ use PHPUnit\Framework\TestCase;
 
 class CoinPokerConverterTest extends TestCase
 {
-    private function cash(): string
+    private function fixture(string $name): string
     {
-        return file_get_contents(__DIR__.'/../Fixtures/coinpoker-cash.txt');
+        return file_get_contents(__DIR__.'/../Fixtures/'.$name);
     }
 
-    private function tournament(): string
+    /** Compare ignoring trailing whitespace and blank-line runs. */
+    private function normalise(string $text): string
     {
-        return file_get_contents(__DIR__.'/../Fixtures/coinpoker-tournament.txt');
-    }
+        $lines = array_map('rtrim', explode("\n", str_replace(["\r\n", "\r"], "\n", $text)));
 
-    #[Test]
-    public function it_rewrites_the_room_prefix_and_counts_hands(): void
-    {
-        $result = (new CoinPokerConverter)->convert($this->cash());
-
-        $this->assertSame(2, $result->handCount);
-        $this->assertStringContainsString('PokerStars Hand #2100000001:', $result->output);
-        $this->assertStringNotContainsString('CoinPoker Hand #', $result->output);
+        return trim(implode("\n", $lines));
     }
 
     #[Test]
-    public function it_normalises_currency_code_and_timezone_in_the_header(): void
+    public function it_converts_a_real_cash_hand_to_the_expected_pokerstars_output(): void
     {
-        $result = (new CoinPokerConverter)->convert($this->cash());
+        $result = (new CoinPokerConverter)->convert($this->fixture('coinpoker-cash.txt'));
 
-        $this->assertStringContainsString('($0.02/$0.05 USD) - 2024/03/10 18:30:12 ET', $result->output);
-        $this->assertStringNotContainsString('USDT', $result->output);
-        $this->assertStringNotContainsString(' UTC', $result->output);
+        $this->assertSame(1, $result->handCount);
+        $this->assertSame(
+            $this->normalise($this->fixture('expected/cash-pokerstars.txt')),
+            $this->normalise($result->output),
+        );
     }
 
     #[Test]
-    public function it_prefixes_currency_symbols_to_bare_cash_amounts(): void
+    public function it_rewrites_the_header(): void
     {
-        $out = (new CoinPokerConverter)->convert($this->cash())->output;
+        $out = (new CoinPokerConverter)->convert($this->fixture('coinpoker-cash.txt'))->output;
 
-        $this->assertStringContainsString('bravo: posts small blind $0.02', $out);
-        $this->assertStringContainsString('Hero: posts big blind $0.05', $out);
-        $this->assertStringContainsString('Seat 1: alpha ($5 in chips)', $out);
-        $this->assertStringContainsString('alpha: raises $0.10 to $0.15', $out);
-        $this->assertStringContainsString('alpha: bets $0.20', $out);
-        $this->assertStringContainsString('Hero: calls $0.10', $out);
-        $this->assertStringContainsString('Uncalled bet ($0.35) returned to Hero', $out);
-        $this->assertStringContainsString('Hero collected $0.70 from pot', $out);
-        $this->assertStringContainsString('Total pot $0.72 | Rake $0.02', $out);
-        $this->assertStringContainsString('Seat 3: Hero (big blind) collected ($0.70)', $out);
+        $this->assertStringContainsString(
+            "PokerStars Hand #130114200045:  Hold'em No Limit (\$0.01/\$0.02 USD) - 2026/09/09 12:01:21 CET [2026/09/09 6:01:21 ET]",
+            $out,
+        );
+        $this->assertStringNotContainsString('CoinPoker Hand #', $out);
+        $this->assertStringNotContainsString('₮', $out);
+        $this->assertStringNotContainsString('NLH', $out);
     }
 
     #[Test]
-    public function it_does_not_double_prefix_amounts_that_already_have_a_symbol(): void
+    public function it_drops_the_per_player_dealt_to_lines_but_keeps_the_hero_cards(): void
     {
-        $out = (new CoinPokerConverter)->convert($this->cash())->output;
+        $out = (new CoinPokerConverter)->convert($this->fixture('coinpoker-cash.txt'))->output;
 
-        $this->assertStringNotContainsString('$$', $out);
+        $this->assertStringContainsString('Dealt to Hero [Th 2s]', $out);
+        $this->assertStringNotContainsString("Dealt to 3d1b2c99\n", $out);
+        $this->assertStringNotContainsString('Dealt to ef025952', $out);
+        $this->assertSame(1, substr_count($out, 'Dealt to '));
+    }
+
+    #[Test]
+    public function it_converts_the_return_line_to_an_uncalled_bet(): void
+    {
+        $out = (new CoinPokerConverter)->convert($this->fixture('coinpoker-cash.txt'))->output;
+
+        $this->assertStringContainsString('Uncalled bet ($0.04) returned to 3d2ba04f', $out);
+        $this->assertStringNotContainsString('RETURN', $out);
+    }
+
+    #[Test]
+    public function it_removes_coinpoker_only_summary_lines(): void
+    {
+        $out = (new CoinPokerConverter)->convert($this->fixture('coinpoker-cash.txt'))->output;
+
+        $this->assertStringNotContainsString('Hand was run once', $out);
+        $this->assertStringNotContainsString('Board [', $out);          // empty board dropped entirely
+        $this->assertStringNotContainsString('Game ended:', $out);
+    }
+
+    #[Test]
+    public function it_drops_a_showdown_section_when_nobody_shows(): void
+    {
+        $out = (new CoinPokerConverter)->convert($this->fixture('coinpoker-cash.txt'))->output;
+
+        $this->assertStringNotContainsString('SHOWDOWN', $out);
+        $this->assertStringNotContainsString('SHOW DOWN', $out);
+        $this->assertStringContainsString('3d2ba04f collected $0.05 from pot', $out);
+    }
+
+    #[Test]
+    public function it_adds_position_tags_and_fixes_won_to_collected_in_the_summary(): void
+    {
+        $out = (new CoinPokerConverter)->convert($this->fixture('coinpoker-cash.txt'))->output;
+
+        $this->assertStringContainsString('Seat 3: 3d2ba04f (button) collected ($0.05)', $out);
+        $this->assertStringContainsString('Seat 4: d92d5781 (small blind) folded before Flop', $out);
+        $this->assertStringContainsString('Seat 5: Hero (big blind) folded before Flop', $out);
+        $this->assertStringNotContainsString("(small blind) folded before Flop (didn't bet)", $out);
+        $this->assertStringContainsString("Seat 6: ef025952 folded before Flop (didn't bet)", $out);
+        $this->assertStringNotContainsString(' won (', $out);
     }
 
     #[Test]
     public function converting_the_output_again_is_stable(): void
     {
         $converter = new CoinPokerConverter;
-        $once = $converter->convert($this->cash())->output;
+        $once = $converter->convert($this->fixture('coinpoker-cash.txt'))->output;
         $twice = $converter->convert($once)->output;
 
-        $this->assertSame($once, $twice);
+        $this->assertSame($this->normalise($once), $this->normalise($twice));
     }
 
     #[Test]
-    public function tournament_chip_amounts_stay_bare(): void
+    public function timezone_keep_mode_leaves_the_source_time_untouched(): void
     {
-        $out = (new CoinPokerConverter)->convert($this->tournament())->output;
+        $out = (new CoinPokerConverter(new ConverterOptions(timezoneMode: 'keep')))
+            ->convert($this->fixture('coinpoker-cash.txt'))->output;
 
-        $this->assertStringContainsString('PokerStars Hand #2200000001: Tournament #9911002, $10+$1 USD Hold\'em No Limit - Level V (75/150) - 2024/03/11 20:05:00 ET', $out);
+        $this->assertStringContainsString('2026/09/09 12:01:21 CEST', $out);
+        $this->assertStringNotContainsString('[', explode("\n", $out)[0]);
+    }
+
+    #[Test]
+    public function timezone_et_mode_emits_a_single_eastern_stamp(): void
+    {
+        $out = (new CoinPokerConverter(new ConverterOptions(timezoneMode: 'et')))
+            ->convert($this->fixture('coinpoker-cash.txt'))->output;
+
+        $this->assertStringContainsString(' - 2026/09/09 6:01:21 ET', $out);
+        $this->assertStringNotContainsString('CET', $out);
+    }
+
+    #[Test]
+    public function tournament_hands_keep_bare_chip_amounts(): void
+    {
+        $result = (new CoinPokerConverter)->convert($this->fixture('coinpoker-tournament.txt'));
+        $out = $result->output;
+
+        $this->assertStringContainsString('PokerStars Hand #130114300001: Tournament #55012,', $out);
         $this->assertStringContainsString('Hero: posts small blind 75', $out);
-        $this->assertStringContainsString('west: posts big blind 150', $out);
         $this->assertStringContainsString('Seat 1: north (3000 in chips)', $out);
         $this->assertStringContainsString('Hero: raises 225 to 375', $out);
+        $this->assertStringContainsString('Uncalled bet (225) returned to Hero', $out);
         $this->assertStringContainsString('Total pot 825 | Rake 0', $out);
-        $this->assertStringNotContainsString('$', $out === null ? '' : substr($out, strpos($out, '*** HOLE CARDS ***')));
-    }
-
-    #[Test]
-    public function it_builds_per_hand_summaries(): void
-    {
-        $result = (new CoinPokerConverter)->convert($this->cash());
-
-        $first = $result->hands[0];
-        $this->assertSame('2100000001', $first->handId);
-        $this->assertSame('Cash', $first->format);
-        $this->assertSame("Hold'em No Limit", $first->game);
-        $this->assertSame('Saturn', $first->table);
-        $this->assertSame(6, $first->maxSeats);
-        $this->assertSame('Hero', $first->hero);
-        $this->assertSame(['Cash' => 2], $result->formatBreakdown());
-    }
-
-    #[Test]
-    public function tournament_summary_is_detected(): void
-    {
-        $result = (new CoinPokerConverter)->convert($this->tournament());
-
+        $this->assertStringContainsString('Seat 4: Hero (button) collected (825)', $out);
+        $this->assertStringContainsString('Dealt to Hero [Ad Qs]', $out);
         $this->assertSame('Tournament', $result->hands[0]->format);
-        $this->assertSame(9, $result->hands[0]->maxSeats);
     }
 
     #[Test]
-    public function timezone_keep_mode_leaves_utc_untouched(): void
+    public function it_maps_game_codes(): void
     {
-        $options = new ConverterOptions(timezoneMode: 'keep');
-        $out = (new CoinPokerConverter($options))->convert($this->cash())->output;
+        $hand = "CoinPoker Hand #9: PLO (₮0.05/₮0.10) 2026/01/02 03:04:05 CET\n"
+            ."Table 'x' 6-max Seat #1 is the button\n"
+            ."Seat 1: a (₮10 in chips)\n"
+            ."Seat 2: b (₮10 in chips)\n"
+            .'*** SUMMARY ***';
 
-        $this->assertStringContainsString('2024/03/10 18:30:12 UTC', $out);
+        $out = (new CoinPokerConverter)->convert($hand)->output;
+
+        $this->assertStringContainsString('Omaha Pot Limit ($0.05/$0.10 USD)', $out);
     }
 
     #[Test]
-    public function timezone_convert_mode_shifts_the_printed_time(): void
+    public function it_warns_about_run_it_twice(): void
     {
-        $options = new ConverterOptions(timezoneMode: 'convert', offsetHours: -5);
-        $out = (new CoinPokerConverter($options))->convert($this->cash())->output;
-
-        $this->assertStringContainsString('2024/03/10 13:30:12 ET', $out);
-    }
-
-    #[Test]
-    public function it_warns_about_run_it_twice_boards(): void
-    {
-        $hand = <<<'TXT'
-        CoinPoker Hand #3: Hold'em No Limit ($1/$2 USDT) - 2024/03/12 10:00:00 UTC
-        Table 'RIT' 6-max Seat #1 is the button
-        Seat 1: a ($200 in chips)
-        Seat 2: b ($200 in chips)
-        *** FIRST FLOP *** [As Kd 2c]
-        *** SECOND FLOP *** [7h 7d 7s]
-        *** SUMMARY ***
-        Total pot $400 | Rake $0
-        TXT;
+        $hand = "CoinPoker Hand #7: NLH (₮1/₮2) 2026/01/02 03:04:05 CET\n"
+            ."Table 'x' 6-max Seat #1 is the button\n"
+            ."Seat 1: a (₮200 in chips)\n"
+            ."*** SUMMARY ***\n"
+            ."Total pot ₮400 | Rake ₮0\n"
+            ."Hand was run twice\n"
+            .'Board [As Kd 2c 7h 9s]';
 
         $result = (new CoinPokerConverter)->convert($hand);
 
         $this->assertTrue($result->hasWarnings());
         $this->assertStringContainsString('Run-it-twice', $result->warnings[0]['message']);
+        $this->assertStringNotContainsString('Hand was run twice', $result->output);
     }
 
     #[Test]
     public function it_skips_non_hand_blocks_with_a_warning(): void
     {
-        $input = "Some export header line\n\n".$this->tournament();
+        $input = "Session export 2026\n\n".$this->fixture('coinpoker-cash.txt');
 
         $result = (new CoinPokerConverter)->convert($input);
 

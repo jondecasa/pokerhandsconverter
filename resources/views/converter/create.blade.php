@@ -31,9 +31,9 @@
                         <label for="timezone_mode" class="block text-sm font-medium text-gray-700">Timezone handling</label>
                         <select id="timezone_mode" name="timezone_mode"
                                 class="mt-1 block w-full border-gray-300 rounded-md shadow-sm text-sm">
-                            <option value="relabel">Keep the printed time, relabel to ET (default)</option>
-                            <option value="keep">Leave the timezone exactly as CoinPoker wrote it</option>
-                            <option value="convert">Shift UTC &rarr; ET (subtract 5h) and relabel</option>
+                            <option value="dual">PokerStars EU style: local time + "[… ET]" (default)</option>
+                            <option value="et">US style: a single Eastern-time stamp</option>
+                            <option value="keep">Leave the time and label exactly as CoinPoker wrote it</option>
                         </select>
                         <x-input-error :messages="$errors->get('timezone_mode')" class="mt-2" />
                     </div>

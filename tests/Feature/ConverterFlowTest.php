@@ -81,20 +81,21 @@ class ConverterFlowTest extends TestCase
 
         $response = $this->actingAs($user)->post('/convert', [
             'file' => $this->fixtureUpload(),
-            'timezone_mode' => 'relabel',
+            'timezone_mode' => 'dual',
         ]);
 
         $conversion = $user->conversions()->firstOrFail();
         $response->assertRedirect(route('conversions.show', $conversion));
 
-        $this->assertSame(2, $conversion->hand_count);
+        $this->assertSame(1, $conversion->hand_count);
         Storage::disk('local')->assertExists($conversion->output_path);
 
         $download = $this->actingAs($user)->get(route('conversions.download', $conversion));
         $download->assertOk();
         $download->assertDownload('coinpoker-cash-pokerstars.txt');
-        $this->assertStringContainsString('PokerStars Hand #2100000001', $download->streamedContent());
+        $this->assertStringContainsString('PokerStars Hand #130114200045', $download->streamedContent());
         $this->assertStringNotContainsString('CoinPoker Hand #', $download->streamedContent());
+        $this->assertStringNotContainsString('₮', $download->streamedContent());
     }
 
     #[Test]

@@ -5,9 +5,9 @@ namespace App\Poker;
 /**
  * Tunable settings for the CoinPoker -> PokerStars conversion.
  *
- * The defaults match what Hold'em Manager 3 / PokerTracker 4 expect from a
- * PokerStars hand history. Adjust them from config/pokercoinverter.php or per
- * request if your real CoinPoker exports differ.
+ * Defaults reproduce the layout that Hold'em Manager 3 / PokerTracker 4 expect
+ * from a PokerStars hand history, including the European dual-timezone stamp
+ * ("... 12:01:21 CET [2026/09/09 6:01:21 ET]").
  */
 class ConverterOptions
 {
@@ -15,27 +15,30 @@ class ConverterOptions
         /** Room name written into the "<Room> Hand #..." header line. */
         public string $roomName = 'PokerStars',
 
-        /** Currency symbol prefixed to bare cash amounts ($, €, £...). */
+        /** Currency symbol that replaces CoinPoker's tether sign (₮) and any bare amounts. */
         public string $currencySymbol = '$',
 
-        /** Currency code written into the header, replacing USDT/USD/EUR... */
+        /** Currency code appended inside the stakes / buy-in parenthesis. */
         public string $currencyCode = 'USD',
 
         /**
-         * How to handle the trailing timezone token on the date.
-         *  - 'relabel': keep the printed time, swap the label (UTC -> ET)
-         *  - 'keep'   : leave the timezone token untouched
-         *  - 'convert': shift the printed time by offsetHours and relabel
+         * Timezone rendering:
+         *  - 'dual': "<time> <STD label> [<ET time> ET]"  (real PokerStars EU format)
+         *  - 'et'  : "<ET time> ET"                        (US single-label format)
+         *  - 'keep': leave the CoinPoker time and label untouched
          */
-        public string $timezoneMode = 'relabel',
+        public string $timezoneMode = 'dual',
 
-        /** Target timezone label used by 'relabel' and 'convert'. */
-        public string $timezoneLabel = 'ET',
+        /** Label used for the Eastern-Time part. */
+        public string $etLabel = 'ET',
 
-        /** Hours to add to the source time when timezoneMode = 'convert'. */
-        public int $offsetHours = -5,
+        /**
+         * Hours to subtract from the source time to get Eastern time when the
+         * source timezone abbreviation is not in the built-in table.
+         */
+        public int $fallbackEtOffsetHours = 6,
 
-        /** Replace the USDT tether sign (₮) with currencySymbol. */
+        /** Replace CoinPoker's USDT tether sign (₮) with currencySymbol. */
         public bool $normalizeTetherSign = true,
     ) {}
 
@@ -47,9 +50,9 @@ class ConverterOptions
             roomName: $overrides['room_name'] ?? $c['room_name'] ?? 'PokerStars',
             currencySymbol: $overrides['currency_symbol'] ?? $c['currency_symbol'] ?? '$',
             currencyCode: $overrides['currency_code'] ?? $c['currency_code'] ?? 'USD',
-            timezoneMode: $overrides['timezone_mode'] ?? $c['timezone_mode'] ?? 'relabel',
-            timezoneLabel: $overrides['timezone_label'] ?? $c['timezone_label'] ?? 'ET',
-            offsetHours: (int) ($overrides['offset_hours'] ?? $c['offset_hours'] ?? -5),
+            timezoneMode: $overrides['timezone_mode'] ?? $c['timezone_mode'] ?? 'dual',
+            etLabel: $overrides['et_label'] ?? $c['et_label'] ?? 'ET',
+            fallbackEtOffsetHours: (int) ($overrides['fallback_et_offset_hours'] ?? $c['fallback_et_offset_hours'] ?? 6),
             normalizeTetherSign: (bool) ($overrides['normalize_tether_sign'] ?? $c['normalize_tether_sign'] ?? true),
         );
     }
