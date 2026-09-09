@@ -163,21 +163,27 @@ class CoinPokerConverterTest extends TestCase
     }
 
     #[Test]
-    public function it_warns_about_run_it_twice(): void
+    public function it_warns_about_run_it_twice_but_keeps_the_native_markers(): void
     {
         $hand = "CoinPoker Hand #7: NLH (₮1/₮2) 2026/01/02 03:04:05 CET\n"
             ."Table 'x' 6-max Seat #1 is the button\n"
             ."Seat 1: a (₮200 in chips)\n"
             ."*** SUMMARY ***\n"
             ."Total pot ₮400 | Rake ₮0\n"
-            ."Hand was run twice\n"
-            .'Board [As Kd 2c 7h 9s]';
+            ."Hand was run with two boards\n"
+            ."FIRST Board [ As Kd 2c 7h 9s ]\n"
+            .'SECOND Board [ Ts 8d 4c Qh 3s ]';
 
         $result = (new CoinPokerConverter)->convert($hand);
 
         $this->assertTrue($result->hasWarnings());
         $this->assertStringContainsString('Run-it-twice', $result->warnings[0]['message']);
-        $this->assertStringNotContainsString('Hand was run twice', $result->output);
+        // kept, but normalised: real total pot, standard phrasing, both boards
+        $this->assertStringContainsString('Total pot $400 | Rake $0', $result->output);
+        $this->assertStringContainsString('Hand was run twice', $result->output);
+        $this->assertStringContainsString('Board [As Kd 2c 7h 9s]', $result->output);
+        $this->assertStringContainsString('Board [Ts 8d 4c Qh 3s]', $result->output);
+        $this->assertStringNotContainsString('FIRST Board', $result->output);
     }
 
     #[Test]

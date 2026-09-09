@@ -48,11 +48,12 @@ class ConverterOptions
 
         /**
          * Run-it-twice handling:
+         *  - 'keep' (default): one hand, run-it-twice markers normalised to the
+         *    format PT4 / HM3 import natively (they split the pot themselves)
          *  - 'split': emit one hand per board (ids <id>-1, <id>-2, ...), each
-         *             carrying its share of the pot
-         *  - 'keep' : leave it as a single hand with every board + a warning
+         *    with its own pot — note the tracker's own pot check may not agree
          */
-        public string $runItTwiceMode = 'split',
+        public string $runItTwiceMode = 'keep',
 
         /**
          * Screen name to substitute for CoinPoker's anonymised "Hero". Leave as
@@ -79,7 +80,7 @@ class ConverterOptions
             etLabel: $overrides['et_label'] ?? $c['et_label'] ?? 'ET',
             fallbackEtOffsetHours: (int) ($overrides['fallback_et_offset_hours'] ?? $c['fallback_et_offset_hours'] ?? 6),
             normalizeTetherSign: (bool) ($overrides['normalize_tether_sign'] ?? $c['normalize_tether_sign'] ?? true),
-            runItTwiceMode: $overrides['run_it_twice_mode'] ?? $c['run_it_twice_mode'] ?? 'split',
+            runItTwiceMode: $overrides['run_it_twice_mode'] ?? $c['run_it_twice_mode'] ?? 'keep',
             heroName: $overrides['hero_name'] ?? $c['hero_name'] ?? 'Hero',
             includeBombPots: (bool) ($overrides['include_bomb_pots'] ?? true),
             includeSplashPots: (bool) ($overrides['include_splash_pots'] ?? true),

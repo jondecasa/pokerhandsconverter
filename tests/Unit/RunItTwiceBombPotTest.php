@@ -3,19 +3,44 @@
 namespace Tests\Unit;
 
 use App\Poker\CoinPokerConverter;
+use App\Poker\ConverterOptions;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 /** Real CoinPoker run-it-twice bomb pot (action between boards, two showdowns). */
 class RunItTwiceBombPotTest extends TestCase
 {
+    private function fixture(): string
+    {
+        return file_get_contents(__DIR__.'/../Fixtures/coinpoker-rit-bombpot.txt');
+    }
+
     private function runs(): array
     {
-        $out = (new CoinPokerConverter)->convert(
-            file_get_contents(__DIR__.'/../Fixtures/coinpoker-rit-bombpot.txt')
-        )->output;
+        $out = (new CoinPokerConverter(new ConverterOptions(runItTwiceMode: 'split')))
+            ->convert($this->fixture())->output;
 
         return preg_split('/\n{2,}/', trim($out));
+    }
+
+    #[Test]
+    public function keep_mode_normalises_it_to_one_native_run_it_twice_hand(): void
+    {
+        $out = (new CoinPokerConverter)->convert($this->fixture())->output;
+
+        $this->assertStringNotContainsString('-1:', $out);
+        $this->assertStringContainsString("Hold'em No Limit (\$0.01/\$0.02/\$0.04 USD)", $out);
+        $this->assertStringContainsString('*** FIRST FLOP *** [8h 4d 9c]', $out);
+        $this->assertStringContainsString('*** SECOND FLOP *** [Jc As 2d]', $out);
+        $this->assertStringContainsString('*** FIRST SHOW DOWN ***', $out);
+        $this->assertStringContainsString('*** SECOND SHOW DOWN ***', $out);
+        $this->assertStringContainsString('Total pot $0.79 | Rake $0.04', $out);   // real total kept
+        $this->assertStringContainsString('Hand was run twice', $out);
+        $this->assertStringContainsString('Board [8h 4d 9c 6c Ks]', $out);
+        $this->assertStringContainsString('Board [Jc As 2d 8c 2c]', $out);
+        $this->assertStringNotContainsString('FIRST Board', $out);
+        $this->assertStringNotContainsString('SHOWDOWN', $out); // all spaced now
+        $this->assertStringNotContainsString('BombPot', $out);
     }
 
     #[Test]

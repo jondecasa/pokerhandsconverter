@@ -47,16 +47,17 @@ becomes `CoinPoker Hand #130114200045:  Hold'em No Limit ($0.01/$0.02 USD) - 202
 
 **Run it twice** (`run_it_twice_mode`)
 
-11. `split` (default) — a hand run twice/thrice becomes **one hand per board**:
-    ids `<id>-1`, `<id>-2`, …. Each keeps the shared preflop/flop action, its own
-    `*** FLOP/TURN/RIVER ***` with the right board, its own `Board [...]`, and its
-    own `*** SHOW DOWN ***` (from `*** FIRST/SECOND SHOWDOWN ***`). Handles both
-    the all-in case (no action between boards, one showdown) and the bomb-pot case
-    (a betting round played once across both boards, two showdowns). Pot per run =
-    that run's `collected` total + `rake ÷ N`; CoinPoker's combined seat line
-    ("… lost with X, and won (₮..) with Y") is split into a clean per-run line.
-    A warning is emitted so you can sanity-check the amounts.
-12. `keep` — left as a single hand with every board and a warning.
+11. `keep` (default) — **one hand**, run-it-twice markers normalised to the
+    format PT4 / HM3 import natively (they split the pot themselves for EV):
+    `*** FIRST/SECOND SHOWDOWN ***` → `*** FIRST/SECOND SHOW DOWN ***`,
+    `Hand was run with two boards` → `Hand was run twice`,
+    `FIRST Board [ … ]` → `Board [ … ]` (ordinal dropped, padding trimmed), the
+    real `Total pot` kept. A warning is emitted.
+12. `split` (opt-in) — a hand run twice becomes **one hand per board** (ids
+    `<id>-1`, `<id>-2`, …), each with the shared action duplicated, its own
+    board/showdown and pot (`that run's collected + rake ÷ N`). Handy for
+    separate review, but the tracker's own pot check may not agree with the
+    duplicated action.
 
 **Per-file stats** — the result screen (and the `conversions` row) report the
 hand count plus **splash pots** (a `SPLASH dropped ₮…` / `MEGA SPLASH dropped ₮…`
@@ -254,10 +255,8 @@ php artisan test
   to keep them forever.
 - The converter does **not** currently re-order or recompute pots; it trusts
   CoinPoker's math and only reformats.
-- Run-it-twice hands are split into one hand per board by default
-  (`CONVERTER_RUN_IT_TWICE_MODE=keep` to keep a single multi-board hand). The
-  splitter is built from the documented layout — verify the per-run pot amounts
-  against your own real CoinPoker RIT exports.
+- Run-it-twice hands are kept as one native multi-board hand by default
+  (`CONVERTER_RUN_IT_TWICE_MODE=split` to emit one hand per board instead).
 - Not affiliated with CoinPoker, PokerTracker or Hold'em Manager. Product names
   describe compatibility only. The `CoinPoker Hand #` header prefix is preserved
   so trackers import the file with their native CoinPoker profile

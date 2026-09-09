@@ -14,24 +14,47 @@ class RunItTwiceTest extends TestCase
         return file_get_contents(__DIR__.'/../Fixtures/coinpoker-run-it-twice.txt');
     }
 
+    private function split(): CoinPokerConverter
+    {
+        return new CoinPokerConverter(new ConverterOptions(runItTwiceMode: 'split'));
+    }
+
+    // ------------------------------------------------------------------ keep (default)
+
     #[Test]
-    public function it_splits_a_run_it_twice_hand_into_one_hand_per_board(): void
+    public function keep_mode_normalises_a_run_it_twice_hand_to_one_native_hand(): void
     {
         $result = (new CoinPokerConverter)->convert($this->fixture());
+
+        $this->assertSame(1, $result->handCount);
+        $this->assertStringNotContainsString('-1:', $result->output);
+        // both boards, ordinal prefix dropped, padding trimmed
+        $this->assertStringContainsString('Board [7c 2d 9s Kh 4c]', $result->output);
+        $this->assertStringContainsString('Board [7c 2d 9s Jd Qs]', $result->output);
+        // the real total pot is kept (no per-run maths)
+        $this->assertStringContainsString('Total pot $19.20 | Rake $0', $result->output);
+        $this->assertStringContainsString('Hand was run twice', $result->output);
+        $this->assertTrue($result->hasWarnings());
+    }
+
+    // ------------------------------------------------------------------ split (opt-in)
+
+    #[Test]
+    public function split_mode_makes_one_hand_per_board(): void
+    {
+        $result = $this->split()->convert($this->fixture());
 
         $this->assertSame(2, $result->handCount);
         $this->assertStringContainsString('CoinPoker Hand #130114299001-1:', $result->output);
         $this->assertStringContainsString('CoinPoker Hand #130114299001-2:', $result->output);
-        $this->assertTrue($result->hasWarnings());
     }
 
     #[Test]
-    public function each_split_hand_carries_one_board_and_half_the_pot(): void
+    public function each_split_hand_carries_one_board_and_its_pot(): void
     {
-        $out = (new CoinPokerConverter)->convert($this->fixture())->output;
+        $out = $this->split()->convert($this->fixture())->output;
         [$one, $two] = preg_split('/\n{2,}/', trim($out));
 
-        // First run: the Kh/4c board, bravo wins the 9.60 half.
         $this->assertStringContainsString('*** TURN *** [7c 2d 9s] [Kh]', $one);
         $this->assertStringContainsString('Board [7c 2d 9s Kh 4c]', $one);
         $this->assertStringContainsString('Total pot $9.60 | Rake $0', $one);
@@ -41,7 +64,6 @@ class RunItTwiceTest extends TestCase
         $this->assertStringNotContainsString('FIRST', $one);
         $this->assertStringNotContainsString('Jd Qs', $one);
 
-        // Second run: the Jd/Qs board, alpha wins the other half.
         $this->assertStringContainsString('*** TURN *** [7c 2d 9s] [Jd]', $two);
         $this->assertStringContainsString('Board [7c 2d 9s Jd Qs]', $two);
         $this->assertStringContainsString('alpha collected $9.60 from pot', $two);
@@ -51,26 +73,14 @@ class RunItTwiceTest extends TestCase
     #[Test]
     public function split_hands_still_get_the_normal_cleanups(): void
     {
-        $out = (new CoinPokerConverter)->convert($this->fixture())->output;
+        $out = $this->split()->convert($this->fixture())->output;
 
         $this->assertStringContainsString("Hold'em No Limit ($0.05/$0.10 USD)", $out);
         $this->assertStringNotContainsString('₮', $out);
         $this->assertStringNotContainsString('NLH', $out);
         $this->assertStringNotContainsString('Hand was run twice', $out);
-        $this->assertStringNotContainsString('Dealt to alpha', $out); // per-player noise gone
+        $this->assertStringNotContainsString('Dealt to alpha', $out);
         $this->assertStringContainsString('Dealt to bravo [As Ah]', $out);
         $this->assertSame(2, substr_count($out, '*** SHOW DOWN ***'));
-    }
-
-    #[Test]
-    public function keep_mode_leaves_a_single_hand_with_a_warning(): void
-    {
-        $result = (new CoinPokerConverter(new ConverterOptions(runItTwiceMode: 'keep')))
-            ->convert($this->fixture());
-
-        $this->assertSame(1, $result->handCount);
-        $this->assertStringContainsString('Board [7c 2d 9s Kh 4c]', $result->output);
-        $this->assertStringContainsString('Board [7c 2d 9s Jd Qs]', $result->output);
-        $this->assertTrue($result->hasWarnings());
     }
 }

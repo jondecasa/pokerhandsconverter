@@ -500,6 +500,14 @@ class CoinPokerConverter
                 $line = 'Uncalled bet ('.$amt.') returned to '.$m[1];
             }
 
+            // Run-it-twice showdown markers stay (one per board), just spaced
+            // like the trackers expect: "*** FIRST SHOW DOWN ***".
+            if (preg_match('/^\*\*\*\s+(FIRST|SECOND|THIRD|FOURTH)\s+SHOW\s?DOWN\s+\*\*\*\s*$/i', $line, $m)) {
+                $out[] = '*** '.strtoupper($m[1]).' SHOW DOWN ***';
+
+                continue;
+            }
+
             // Showdown handling (buffer until we know whether anyone showed).
             if (rtrim($line) === '*** SHOWDOWN ***' || rtrim($line) === '*** SHOW DOWN ***') {
                 $inShowdown = true;
@@ -523,13 +531,18 @@ class CoinPokerConverter
                 }
             }
 
-            // Summary-only CoinPoker noise.
-            if (preg_match('/^Hand was run (once|twice|\d+ times)\s*$/', $line)) {
-                if (! str_contains($line, 'once')) {
-                    // Only reached when splitting is off or the split could not
-                    // be parsed — one hand with both boards is left in place.
-                    $warnings[] = 'Run-it-twice hand left as a single hand with multiple boards — check how your tracker imports it.';
-                }
+            // "Hand was run once" is noise; the run-twice/thrice line is kept but
+            // normalised so the tracker imports it as a native run-it-twice hand.
+            if (preg_match('/^Hand was run once\s*$/', $line)) {
+                continue;
+            }
+            if (preg_match('/^Hand was run (?:(twice)|(\d+) times|with (two|three|four|\d+) boards)\s*$/i', $line, $m)) {
+                $n = $m[1] !== '' ? 2
+                    : ($m[2] !== '' ? (int) $m[2]
+                    : ['two' => 2, 'three' => 3, 'four' => 4][strtolower($m[3])] ?? (int) $m[3]);
+                $line = $n === 2 ? 'Hand was run twice' : "Hand was run {$n} times";
+                $warnings[] = 'Run-it-twice hand kept as one hand with '.$n.' boards — the tracker splits the pot itself on import.';
+                $out[] = $line;
 
                 continue;
             }
@@ -538,9 +551,9 @@ class CoinPokerConverter
             if (preg_match('/\bSPLASH\s+dropped\b/i', $line)) {
                 continue;
             }
-            // Board line: drop it when empty, otherwise trim CoinPoker's
-            // "[ Qh Ks Jh ]" padding to "[Qh Ks Jh]".
-            if (preg_match('/^Board\s+\[(.*)\]\s*$/', $line, $m)) {
+            // Board line (incl. run-it-twice "FIRST Board [ .. ]"): drop the
+            // ordinal prefix, drop it entirely when empty, trim "[ .. ]" padding.
+            if (preg_match('/^(?:(?:FIRST|SECOND|THIRD|FOURTH)\s+)?Board\s+\[(.*)\]\s*$/i', $line, $m)) {
                 $inner = trim($m[1]);
                 if ($inner === '') {
                     continue;
