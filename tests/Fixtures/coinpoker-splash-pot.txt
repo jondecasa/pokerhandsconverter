@@ -1,0 +1,52 @@
+CoinPoker Hand #129794100893: NLH (₮0.01/₮0.02) 2026/09/09 12:20:36 CEST
+Table '200588' 6-max Seat #3 is the button
+Seat 1: Hero (₮2 in chips)
+Seat 2: 070fbf52 (₮3.34 in chips)
+Seat 3: 82db18cb (₮4.49 in chips)
+Seat 4: 2e9886c6 (₮4.03 in chips)
+Seat 5: 4f1fcfb2 (₮1.07 in chips)
+Seat 6: 82969875 (₮2.33 in chips)
+SPLASH dropped ₮0.04
+2e9886c6: posts small blind ₮0.01
+4f1fcfb2: posts big blind ₮0.02
+*** HOLE CARDS ***
+Dealt to Hero [Ad 3h]
+Dealt to 070fbf52
+Dealt to 82db18cb
+Dealt to 2e9886c6
+Dealt to 4f1fcfb2
+Dealt to 82969875
+82969875: raises ₮0.02 to ₮0.04
+Hero: folds
+070fbf52: raises ₮0.04 to ₮0.08
+82db18cb: folds
+2e9886c6: folds
+4f1fcfb2: calls ₮0.06
+82969875: calls ₮0.04
+*** FLOP *** [Qh Ks Jh]
+4f1fcfb2: checks
+82969875: checks
+070fbf52: bets ₮0.12
+4f1fcfb2: folds
+82969875: calls ₮0.12
+*** TURN *** [Qh Ks Jh] [7d]
+82969875: checks
+070fbf52: checks
+*** RIVER *** [Qh Ks Jh 7d] [Kh]
+82969875: bets ₮0.20
+070fbf52: calls ₮0.20
+*** SHOWDOWN ***
+82969875: shows [9s Ts] (Straight)
+82969875 collected ₮0.85 from pot
+070fbf52: mucks hand
+*** SUMMARY ***
+Total pot ₮0.93 | Rake ₮0.04
+Hand was run once
+Board [ Qh Ks Jh 7d Kh ]
+Game ended: 2026/09/09 12:22:04 CEST
+Seat 1: Hero folded before Flop (didn't bet)
+Seat 2: 070fbf52 didn't show
+Seat 3: 82db18cb folded before Flop (didn't bet)
+Seat 4: 2e9886c6 folded before Flop (didn't bet)
+Seat 5: 4f1fcfb2 folded on the Flop
+Seat 6: 82969875 showed [9s Ts] and won (₮0.85) with Straight

@@ -413,8 +413,19 @@ class CoinPokerConverter
 
                 continue;
             }
-            if (preg_match('/^Board \[\s*\]\s*$/', $line)) {
+            // "SPLASH dropped ₮0.04" — CoinPoker's splash-pot marker (dropped,
+            // counted for stats, so the tracker does not trip on it).
+            if (preg_match('/^SPLASH\s+dropped\b/i', $line)) {
                 continue;
+            }
+            // Board line: drop it when empty, otherwise trim CoinPoker's
+            // "[ Qh Ks Jh ]" padding to "[Qh Ks Jh]".
+            if (preg_match('/^Board\s+\[(.*)\]\s*$/', $line, $m)) {
+                $inner = trim($m[1]);
+                if ($inner === '') {
+                    continue;
+                }
+                $line = 'Board ['.$inner.']';
             }
             if (preg_match('/^Game (started|ended):/', $line)) {
                 continue;
@@ -444,7 +455,9 @@ class CoinPokerConverter
 
     private function isSplashPot(string $hand): bool
     {
-        return (bool) preg_match('/\bsplash[ _-]?pot\b/i', $hand);
+        // Real CoinPoker marker: a "SPLASH dropped ₮0.04" line before the blinds.
+        return (bool) preg_match('/^SPLASH\s+dropped\b/im', $hand)
+            || (bool) preg_match('/\bsplash[ _-]?pot\b/i', $hand);
     }
 
     private function isBombPot(string $hand): bool

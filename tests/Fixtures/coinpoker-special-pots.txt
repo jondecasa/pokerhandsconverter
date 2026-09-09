@@ -30,7 +30,7 @@ CoinPoker Hand #130114500001: NLH (₮0.05/₮0.10) 2026/09/09 15:00:00 CEST
 Table 'Venus' 6-max Seat #2 is the button
 Seat 1: alpha (₮10 in chips)
 Seat 3: bravo (₮10 in chips)
-Splash pot: ₮5.00 added to the pot
+SPLASH dropped ₮5.00
 alpha: posts small blind ₮0.05
 bravo: posts big blind ₮0.10
 *** HOLE CARDS ***
