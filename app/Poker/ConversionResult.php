@@ -15,6 +15,8 @@ class ConversionResult
         public int $handCount,
         public array $hands = [],
         public array $warnings = [],
+        public int $excludedBombPots = 0,
+        public int $excludedSplashPots = 0,
     ) {}
 
     public function hasWarnings(): bool

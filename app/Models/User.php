@@ -25,6 +25,7 @@ class User extends Authenticatable
         'name',
         'email',
         'coinpoker_id',
+        'preferences',
         'password',
     ];
 
@@ -49,12 +50,19 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
             'is_admin' => 'boolean',
+            'preferences' => 'array',
         ];
     }
 
     public function isAdmin(): bool
     {
         return (bool) $this->is_admin;
+    }
+
+    /** Read a stored preference, defaulting when it has never been set. */
+    public function pref(string $key, mixed $default = null): mixed
+    {
+        return data_get($this->preferences, $key, $default);
     }
 
     /** Store an empty CoinPoker ID as null. */

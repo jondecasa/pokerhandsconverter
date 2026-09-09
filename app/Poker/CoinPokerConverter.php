@@ -88,6 +88,8 @@ class CoinPokerConverter
         $summaries = [];
         $warnings = [];
         $index = 0;
+        $excludedBombPots = 0;
+        $excludedSplashPots = 0;
 
         foreach ($blocks as $block) {
             $block = trim($block, "\n");
@@ -97,6 +99,18 @@ class CoinPokerConverter
 
             if (! preg_match('/^(?:CoinPoker|PokerStars)\s+Hand\s+#/i', $block)) {
                 $warnings[] = ['hand' => null, 'message' => 'Skipped a block that is not a hand: "'.$this->snippet($block).'"'];
+
+                continue;
+            }
+
+            // Honour the "include bomb / splash pots" preferences.
+            if (! $this->options->includeBombPots && $this->isBombPot($block)) {
+                $excludedBombPots++;
+
+                continue;
+            }
+            if (! $this->options->includeSplashPots && $this->isSplashPot($block)) {
+                $excludedSplashPots++;
 
                 continue;
             }
@@ -125,7 +139,10 @@ class CoinPokerConverter
 
         $output = $outHands === [] ? '' : implode("\n\n\n", $outHands)."\n\n\n";
 
-        return new ConversionResult($output, $index, $summaries, $warnings);
+        return new ConversionResult(
+            $output, $index, $summaries, $warnings,
+            $excludedBombPots, $excludedSplashPots,
+        );
     }
 
     /** Ordinal words CoinPoker uses for run-it-twice street markers. */

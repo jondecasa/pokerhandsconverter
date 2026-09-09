@@ -59,6 +59,12 @@ class ConverterOptions
          * "Hero" to make no change.
          */
         public string $heroName = 'Hero',
+
+        /** Keep bomb-pot hands in the output. */
+        public bool $includeBombPots = true,
+
+        /** Keep splash-pot hands in the output. */
+        public bool $includeSplashPots = true,
     ) {}
 
     public static function fromConfig(array $overrides = []): self
@@ -75,6 +81,8 @@ class ConverterOptions
             normalizeTetherSign: (bool) ($overrides['normalize_tether_sign'] ?? $c['normalize_tether_sign'] ?? true),
             runItTwiceMode: $overrides['run_it_twice_mode'] ?? $c['run_it_twice_mode'] ?? 'split',
             heroName: $overrides['hero_name'] ?? $c['hero_name'] ?? 'Hero',
+            includeBombPots: (bool) ($overrides['include_bomb_pots'] ?? true),
+            includeSplashPots: (bool) ($overrides['include_splash_pots'] ?? true),
         );
     }
 }

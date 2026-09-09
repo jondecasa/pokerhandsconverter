@@ -52,6 +52,23 @@
                         <x-input-error :messages="$errors->get('timezone_mode')" class="mt-2" />
                     </div>
 
+                    <fieldset class="space-y-2">
+                        <legend class="text-sm font-medium text-gray-700">Include in the output</legend>
+                        <label class="flex items-center gap-2 text-sm text-gray-700">
+                            <input type="hidden" name="include_bomb_pots" value="0">
+                            <input type="checkbox" name="include_bomb_pots" value="1" @checked($includeBombPots)
+                                   class="rounded border-gray-300 text-indigo-600 focus:ring-indigo-500">
+                            Bomb pots
+                        </label>
+                        <label class="flex items-center gap-2 text-sm text-gray-700">
+                            <input type="hidden" name="include_splash_pots" value="0">
+                            <input type="checkbox" name="include_splash_pots" value="1" @checked($includeSplashPots)
+                                   class="rounded border-gray-300 text-indigo-600 focus:ring-indigo-500">
+                            Splash pots
+                        </label>
+                        <p class="text-xs text-gray-400">Your choice is saved for next time.</p>
+                    </fieldset>
+
                     <button type="submit"
                             class="inline-flex items-center px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-md hover:bg-indigo-500">
                         Convert

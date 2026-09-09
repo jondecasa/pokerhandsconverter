@@ -23,6 +23,8 @@ class ConverterController extends Controller
             'maxUploadKb' => config('pokercoinverter.max_upload_kb'),
             'stakesCap' => $user->currentPlan()?->stakes_cap,
             'heroName' => $user->heroName(),
+            'includeBombPots' => (bool) $user->pref('include_bomb_pots', true),
+            'includeSplashPots' => (bool) $user->pref('include_splash_pots', true),
         ]);
     }
 
@@ -36,7 +38,12 @@ class ConverterController extends Controller
             // because browsers/OSes report inconsistent MIME types for .txt.
             'file' => ['required', 'file', 'max:'.$maxKb],
             'timezone_mode' => ['nullable', 'in:dual,et,keep'],
+            'include_bomb_pots' => ['nullable', 'boolean'],
+            'include_splash_pots' => ['nullable', 'boolean'],
         ]);
+
+        $includeBombPots = $request->boolean('include_bomb_pots');
+        $includeSplashPots = $request->boolean('include_splash_pots');
 
         $uploaded = $validated['file'];
         $raw = file_get_contents($uploaded->getRealPath()) ?: '';
@@ -55,15 +62,30 @@ class ConverterController extends Controller
 
         $user = $request->user();
 
+        // Persist the include-bomb / include-splash choices as preferences.
+        $user->update([
+            'preferences' => array_merge($user->preferences ?? [], [
+                'include_bomb_pots' => $includeBombPots,
+                'include_splash_pots' => $includeSplashPots,
+            ]),
+        ]);
+
         $options = ConverterOptions::fromConfig(array_filter([
             'timezone_mode' => $validated['timezone_mode'] ?? null,
             'hero_name' => $user->heroName() !== 'Hero' ? $user->heroName() : null,
-        ]));
+        ]) + [
+            'include_bomb_pots' => $includeBombPots,
+            'include_splash_pots' => $includeSplashPots,
+        ]);
 
         $result = (new CoinPokerConverter($options))->convert($raw);
 
         if ($result->handCount === 0) {
-            return back()->withErrors(['file' => 'No hands could be parsed from that file.']);
+            $excluded = $result->excludedBombPots + $result->excludedSplashPots;
+
+            return back()->withErrors(['file' => $excluded > 0
+                ? 'Every hand in that file was a bomb pot or splash pot and you chose to exclude those.'
+                : 'No hands could be parsed from that file.']);
         }
 
         // Stakes gate: the file may not exceed the package's stake cap.
@@ -93,9 +115,19 @@ class ConverterController extends Controller
             'warnings' => array_slice($result->warnings, 0, 50),
         ]);
 
-        return redirect()
-            ->route('conversions.show', $conversion)
-            ->with('status', "Converted {$result->handCount} hand(s).");
+        $status = "Converted {$result->handCount} hand(s).";
+        $skipped = [];
+        if ($result->excludedBombPots > 0) {
+            $skipped[] = "{$result->excludedBombPots} bomb pot(s)";
+        }
+        if ($result->excludedSplashPots > 0) {
+            $skipped[] = "{$result->excludedSplashPots} splash pot(s)";
+        }
+        if ($skipped) {
+            $status .= ' Excluded '.implode(' and ', $skipped).'.';
+        }
+
+        return redirect()->route('conversions.show', $conversion)->with('status', $status);
     }
 
     public function show(Request $request, Conversion $conversion): View
