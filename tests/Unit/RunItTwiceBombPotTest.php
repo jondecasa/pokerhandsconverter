@@ -34,7 +34,7 @@ class RunItTwiceBombPotTest extends TestCase
         $this->assertStringContainsString('*** SECOND FLOP *** [Jc As 2d]', $out);
         $this->assertStringContainsString('*** FIRST SHOW DOWN ***', $out);
         $this->assertStringContainsString('*** SECOND SHOW DOWN ***', $out);
-        $this->assertStringContainsString('Total pot $0.40 | Rake $0.02', $out);   // 0.79/2, per board
+        $this->assertStringContainsString('Total pot $0.79 | Rake $0.04', $out);   // real total kept
         $this->assertStringContainsString('Hand was run twice', $out);
         $this->assertStringContainsString('Board [8h 4d 9c 6c Ks]', $out);
         $this->assertStringContainsString('Board [Jc As 2d 8c 2c]', $out);

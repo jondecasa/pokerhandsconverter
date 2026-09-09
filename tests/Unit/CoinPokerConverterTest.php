@@ -178,8 +178,8 @@ class CoinPokerConverterTest extends TestCase
 
         $this->assertTrue($result->hasWarnings());
         $this->assertStringContainsString('Run-it-twice', $result->warnings[0]['message']);
-        // kept, but normalised: pot stated per board, standard phrasing, both boards
-        $this->assertStringContainsString('Total pot $200 | Rake $0', $result->output);
+        // kept, but normalised: real total pot, standard phrasing, both boards
+        $this->assertStringContainsString('Total pot $400 | Rake $0', $result->output);
         $this->assertStringContainsString('Hand was run twice', $result->output);
         $this->assertStringContainsString('Board [As Kd 2c 7h 9s]', $result->output);
         $this->assertStringContainsString('Board [Ts 8d 4c Qh 3s]', $result->output);

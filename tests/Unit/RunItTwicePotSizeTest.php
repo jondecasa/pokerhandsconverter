@@ -7,9 +7,9 @@ use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 /**
- * A run-it-twice bomb pot where one player wins both boards. CoinPoker's
- * "Total pot" is the grand total of both payouts + rake; PT4 checks the pot per
- * board, so the converter divides it by the board count.
+ * A run-it-twice bomb pot where one player wins both boards. In keep mode the
+ * markers are normalised and the real total pot is left for the tracker to
+ * split; the merged no-showdown seat line becomes clean "collected" clauses.
  */
 class RunItTwicePotSizeTest extends TestCase
 {
@@ -21,13 +21,11 @@ class RunItTwicePotSizeTest extends TestCase
     }
 
     #[Test]
-    public function the_total_pot_line_is_stated_per_board(): void
+    public function the_real_total_pot_line_is_kept(): void
     {
         $out = $this->converted();
 
-        // CoinPoker said "Total pot ₮0.84 | Rake ₮0.04"; per board -> 0.42 / 0.02
-        $this->assertStringContainsString('Total pot $0.42 | Rake $0.02', $out);
-        $this->assertStringNotContainsString('Total pot $0.84', $out);
+        $this->assertStringContainsString('Total pot $0.84 | Rake $0.04', $out);
     }
 
     #[Test]
