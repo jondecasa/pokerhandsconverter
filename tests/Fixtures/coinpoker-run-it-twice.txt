@@ -1,0 +1,33 @@
+CoinPoker Hand #130114299001: NLH (₮0.05/₮0.10) 2026/09/09 13:00:00 CEST
+Table 'Neptune' 6-max Seat #2 is the button
+Seat 1: alpha (₮10 in chips)
+Seat 3: bravo (₮12 in chips)
+alpha: posts small blind ₮0.05
+bravo: posts big blind ₮0.10
+*** HOLE CARDS ***
+Dealt to alpha
+Dealt to bravo [As Ah]
+alpha: raises ₮0.30 to ₮0.40
+bravo: raises ₮1.00 to ₮1.40
+alpha: calls ₮1.00
+*** FLOP *** [7c 2d 9s]
+alpha: bets ₮2.00
+bravo: raises ₮6.60 to ₮8.60 and is all-in
+alpha: calls ₮6.60 and is all-in
+Uncalled bet (₮0) returned to bravo
+*** FIRST TURN *** [7c 2d 9s] [Kh]
+*** FIRST RIVER *** [7c 2d 9s Kh] [4c]
+*** SECOND TURN *** [7c 2d 9s] [Jd]
+*** SECOND RIVER *** [7c 2d 9s Jd] [Qs]
+*** SHOWDOWN ***
+bravo: shows [As Ah] (a pair of Aces)
+alpha: shows [Ks Kd] (a pair of Kings)
+bravo collected ₮9.60 from pot
+alpha collected ₮9.60 from pot
+*** SUMMARY ***
+Total pot ₮19.20 | Rake ₮0
+Hand was run twice
+Board [7c 2d 9s Kh 4c]
+Board [7c 2d 9s Jd Qs]
+Seat 1: alpha showed [Ks Kd] and won (₮9.60) with a pair of Kings
+Seat 3: bravo showed [As Ah] and won (₮9.60) with a pair of Aces

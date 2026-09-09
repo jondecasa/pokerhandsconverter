@@ -45,6 +45,14 @@ class ConverterOptions
 
         /** Replace CoinPoker's USDT tether sign (₮) with currencySymbol. */
         public bool $normalizeTetherSign = true,
+
+        /**
+         * Run-it-twice handling:
+         *  - 'split': emit one hand per board (ids <id>-1, <id>-2, ...), each
+         *             carrying its share of the pot
+         *  - 'keep' : leave it as a single hand with every board + a warning
+         */
+        public string $runItTwiceMode = 'split',
     ) {}
 
     public static function fromConfig(array $overrides = []): self
@@ -59,6 +67,7 @@ class ConverterOptions
             etLabel: $overrides['et_label'] ?? $c['et_label'] ?? 'ET',
             fallbackEtOffsetHours: (int) ($overrides['fallback_et_offset_hours'] ?? $c['fallback_et_offset_hours'] ?? 6),
             normalizeTetherSign: (bool) ($overrides['normalize_tether_sign'] ?? $c['normalize_tether_sign'] ?? true),
+            runItTwiceMode: $overrides['run_it_twice_mode'] ?? $c['run_it_twice_mode'] ?? 'split',
         );
     }
 }

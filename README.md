@@ -40,8 +40,18 @@ becomes `CoinPoker Hand #130114200045:  Hold'em No Limit ($0.01/$0.02 USD) - 202
 10. `Seat N: NAME won (amt)` → `Seat N: NAME (position) collected ($amt)`;
     `(button)` / `(small blind)` / `(big blind)` tags inserted; the misleading
     `(didn't bet)` stripped from blind posters.
-11. Warnings (never exceptions) for run-it-twice, unknown game codes, unknown
-    timezones and blocks that are not hands.
+
+**Run it twice** (`run_it_twice_mode`)
+
+11. `split` (default) — a hand run twice/thrice becomes **one hand per board**:
+    ids `<id>-1`, `<id>-2`, …; each keeps the shared action, its own
+    `*** TURN/RIVER ***`, its own `Board [...]`, its share of the pot
+    (`Total pot ÷ N`, remainder on run 1) and the `collected` line for that run.
+    A warning is emitted so you can sanity-check the amounts.
+12. `keep` — left as a single hand with every board and a warning.
+
+Warnings (never exceptions) also cover unknown game codes, unknown timezones and
+blocks that are not hands.
 
 The logic lives in [`app/Poker/`](app/Poker) and is locked down by a full
 input→output fixture in [`tests/Fixtures/`](tests/Fixtures) (`coinpoker-cash.txt`
@@ -222,8 +232,10 @@ php artisan test
   to keep them forever.
 - The converter does **not** currently re-order or recompute pots; it trusts
   CoinPoker's math and only reformats.
-- Run-it-twice hands are passed through with a warning — verify how your tracker
-  handles them.
+- Run-it-twice hands are split into one hand per board by default
+  (`CONVERTER_RUN_IT_TWICE_MODE=keep` to keep a single multi-board hand). The
+  splitter is built from the documented layout — verify the per-run pot amounts
+  against your own real CoinPoker RIT exports.
 - Not affiliated with CoinPoker, PokerTracker or Hold'em Manager. Product names
   describe compatibility only. The `CoinPoker Hand #` header prefix is preserved
   so trackers import the file with their native CoinPoker profile

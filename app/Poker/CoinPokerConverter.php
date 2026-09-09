@@ -101,20 +101,195 @@ class CoinPokerConverter
                 continue;
             }
 
-            $index++;
-            [$text, $summary, $handWarnings] = $this->convertHand($block, $index);
-            $outHands[] = $text;
-            if ($summary !== null) {
-                $summaries[] = $summary;
+            // A run-it-twice hand becomes one hand per board when enabled.
+            $runs = $this->options->runItTwiceMode === 'split'
+                ? $this->splitRunItTwice($block)
+                : null;
+
+            if ($runs !== null) {
+                $warnings[] = ['hand' => $index + 1, 'message' => 'Run-it-twice hand split into '.count($runs).' hands (ids -1..-'.count($runs).'); each carries total pot ÷ '.count($runs).'. Verify the amounts against your tracker.'];
             }
-            foreach ($handWarnings as $w) {
-                $warnings[] = ['hand' => $index, 'message' => $w];
+
+            foreach ($runs ?? [$block] as $subBlock) {
+                $index++;
+                [$text, $summary, $handWarnings] = $this->convertHand($subBlock, $index);
+                $outHands[] = $text;
+                if ($summary !== null) {
+                    $summaries[] = $summary;
+                }
+                foreach ($handWarnings as $w) {
+                    $warnings[] = ['hand' => $index, 'message' => $w];
+                }
             }
         }
 
         $output = $outHands === [] ? '' : implode("\n\n\n", $outHands)."\n\n\n";
 
         return new ConversionResult($output, $index, $summaries, $warnings);
+    }
+
+    /** Ordinal words CoinPoker uses for run-it-twice street markers. */
+    private const ORDINALS = ['FIRST' => 1, 'SECOND' => 2, 'THIRD' => 3, 'FOURTH' => 4];
+
+    /**
+     * Turn a run-it-twice hand into one raw (still CoinPoker-format) hand per
+     * board, each carrying its share of the pot. Returns null when the hand is
+     * not run-it-twice or its structure cannot be split confidently — the caller
+     * then keeps it as a single hand.
+     *
+     * @return array<int, string>|null
+     */
+    private function splitRunItTwice(string $hand): ?array
+    {
+        if (! preg_match('/\*\*\*\s+(?:FIRST|SECOND|THIRD|FOURTH)\s+(?:FLOP|TURN|RIVER)\s+\*\*\*/', $hand)) {
+            return null;
+        }
+
+        $lines = explode("\n", $hand);
+
+        $firstMarker = null;
+        $showdown = null;
+        $summary = null;
+        $runs = 0;
+
+        foreach ($lines as $i => $line) {
+            if (preg_match('/^\*\*\*\s+(FIRST|SECOND|THIRD|FOURTH)\s+(FLOP|TURN|RIVER)\s+\*\*\*/', $line, $m)) {
+                $firstMarker ??= $i;
+                $runs = max($runs, self::ORDINALS[$m[1]]);
+            } elseif ($showdown === null && preg_match('/^\*\*\*\s+SHOW\s?DOWN\s+\*\*\*/', $line)) {
+                $showdown = $i;
+            } elseif ($summary === null && rtrim($line) === '*** SUMMARY ***') {
+                $summary = $i;
+            }
+        }
+
+        if ($firstMarker === null || $summary === null || $runs < 2) {
+            return null;
+        }
+
+        $bodyEnd = $showdown ?? $summary;
+
+        // Per-run street lines (ordinal stripped), e.g. "*** TURN *** [...] [x]".
+        $streets = array_fill(1, $runs, []);
+        $currentRun = null;
+        for ($i = $firstMarker; $i < $bodyEnd; $i++) {
+            if (preg_match('/^\*\*\*\s+(FIRST|SECOND|THIRD|FOURTH)\s+(FLOP|TURN|RIVER)\s+\*\*\*(.*)$/', $lines[$i], $m)) {
+                $currentRun = self::ORDINALS[$m[1]];
+                $streets[$currentRun][] = '*** '.$m[2].' ***'.rtrim($m[3]);
+            } elseif ($currentRun !== null && trim($lines[$i]) !== '') {
+                $streets[$currentRun][] = $lines[$i]; // stray action under a run street
+            }
+        }
+
+        // Showdown narrative (shared) + the per-run "collected" lines (in order).
+        $showLines = [];
+        $collected = []; // [ ['name' => ..., 'amount' => float, 'raw' => '...'] , ... ]
+        if ($showdown !== null) {
+            for ($i = $showdown + 1; $i < $summary; $i++) {
+                $line = $lines[$i];
+                if (preg_match('/^(\S+)\s+collected\s+\D*?([\d,.]+)\s+from\s+(?:the\s+)?(?:main\s+|side\s+)?pot/iu', $line, $m)) {
+                    $collected[] = ['name' => $m[1], 'amount' => $this->money($m[2])];
+                } elseif (trim($line) !== '') {
+                    $showLines[] = $line;
+                }
+            }
+        }
+
+        // Summary: total pot, rake, the per-run Board lines, seat lines.
+        $totalPot = 0.0;
+        $totalRake = 0.0;
+        $boards = [];
+        $seatLines = [];
+        for ($i = $summary + 1; $i < count($lines); $i++) {
+            $line = $lines[$i];
+            if (preg_match('/^Total pot\s+\D*?([\d,.]+)(?:.*?\|\s*Rake\s+\D*?([\d,.]+))?/iu', $line, $m)) {
+                $totalPot = $this->money($m[1]);
+                $totalRake = isset($m[2]) && $m[2] !== '' ? $this->money($m[2]) : 0.0;
+            } elseif (preg_match('/^Board\s+\[([^\]]*)\]/', $line, $m) && trim($m[1]) !== '') {
+                $boards[] = trim($m[1]);
+            } elseif (preg_match('/^Seat\s+\d+:/', $line)) {
+                $seatLines[] = $line;
+            }
+        }
+
+        if (count($boards) < $runs) {
+            return null; // not the structure we know how to split
+        }
+
+        // Assign each "collected" line to a run, in order (run 1, 2, ..., wrap).
+        $runCollected = array_fill(1, $runs, []); // run => [name => amount]
+        foreach ($collected as $k => $c) {
+            $run = ($k % $runs) + 1;
+            $runCollected[$run][$c['name']] = ($runCollected[$run][$c['name']] ?? 0) + $c['amount'];
+        }
+
+        $potPerRun = $this->splitMoney($totalPot, $runs);
+        $rakePerRun = $this->splitMoney($totalRake, $runs);
+
+        // Everything before the first run marker, minus the summary/RIT noise.
+        $prefix = array_slice($lines, 0, $firstMarker);
+        $prefix[0] = preg_replace('/(Hand\s+#)(\S+?)(:)/', '${1}${2}-%RUN%$3', $prefix[0], 1) ?? $prefix[0];
+
+        $out = [];
+        for ($run = 1; $run <= $runs; $run++) {
+            $block = array_map(fn ($l) => str_replace('%RUN%', (string) $run, $l), $prefix);
+
+            foreach ($streets[$run] as $l) {
+                $block[] = $l;
+            }
+
+            if ($showdown !== null) {
+                $block[] = '*** SHOWDOWN ***';
+                foreach ($showLines as $l) {
+                    $block[] = $l;
+                }
+                foreach (($runCollected[$run] ?? []) as $name => $amount) {
+                    $block[] = $name.' collected ₮'.$this->fmtMoney($amount).' from pot';
+                }
+            }
+
+            $block[] = '*** SUMMARY ***';
+            $block[] = 'Total pot ₮'.$this->fmtMoney($potPerRun[$run]).' | Rake ₮'.$this->fmtMoney($rakePerRun[$run]);
+            $block[] = 'Board ['.$boards[$run - 1].']';
+
+            foreach ($seatLines as $seatLine) {
+                $name = preg_match('/^Seat\s+\d+:\s+(\S+)/', $seatLine, $m) ? $m[1] : null;
+                $won = $name !== null ? ($runCollected[$run][$name] ?? 0.0) : 0.0;
+                $block[] = preg_replace_callback(
+                    '/\b(won|collected)\s+\(\D*?[\d,.]+\)/iu',
+                    fn ($mm) => $mm[1].' (₮'.$this->fmtMoney($won).')',
+                    $seatLine
+                );
+            }
+
+            $out[] = implode("\n", $block);
+        }
+
+        return $out;
+    }
+
+    private function money(string $raw): float
+    {
+        return (float) str_replace([',', ' '], '', $raw);
+    }
+
+    private function fmtMoney(float $v): string
+    {
+        return $v === floor($v) ? (string) (int) $v : number_format($v, 2, '.', '');
+    }
+
+    /**
+     * Split an amount into $n parts of 2 decimals; the remainder goes to run 1.
+     *
+     * @return array<int, float>
+     */
+    private function splitMoney(float $total, int $n): array
+    {
+        $each = floor(($total / $n) * 100) / 100;
+        $parts = array_fill(1, $n, $each);
+        $parts[1] = round($total - $each * ($n - 1), 2);
+
+        return $parts;
     }
 
     /**
@@ -226,11 +401,12 @@ class CoinPokerConverter
             }
 
             // Summary-only CoinPoker noise.
-            if (preg_match('/^Hand was run once\s*$/', $line)) {
-                continue;
-            }
-            if (preg_match('/^Hand was run (twice|\d+ times)\s*$/', $line)) {
-                $warnings[] = 'Run-it-twice hand — most trackers only import the first board. Review hand #'.$index.'.';
+            if (preg_match('/^Hand was run (once|twice|\d+ times)\s*$/', $line)) {
+                if (! str_contains($line, 'once')) {
+                    // Only reached when splitting is off or the split could not
+                    // be parsed — one hand with both boards is left in place.
+                    $warnings[] = 'Run-it-twice hand left as a single hand with multiple boards — check how your tracker imports it.';
+                }
 
                 continue;
             }
@@ -239,9 +415,6 @@ class CoinPokerConverter
             }
             if (preg_match('/^Game (started|ended):/', $line)) {
                 continue;
-            }
-            if (str_contains($line, '*** FIRST FLOP ***') || str_contains($line, '*** SECOND ')) {
-                $warnings[] = 'Run-it-twice board markers found in hand #'.$index.'.';
             }
             if (rtrim($line) === '*** SUMMARY ***') {
                 $inSummary = true;

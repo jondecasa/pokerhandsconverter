@@ -53,6 +53,9 @@ return [
         'fallback_et_offset_hours' => (int) env('CONVERTER_FALLBACK_ET_OFFSET_HOURS', 6),
 
         'normalize_tether_sign' => (bool) env('CONVERTER_NORMALIZE_TETHER', true),
+
+        // split = one hand per board for run-it-twice pots; keep = single hand
+        'run_it_twice_mode' => env('CONVERTER_RUN_IT_TWICE_MODE', 'split'),
     ],
 
     // Hard limit for uploaded files (kilobytes).
