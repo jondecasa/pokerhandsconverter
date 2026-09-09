@@ -41,6 +41,8 @@ CoinPoker's layout already mirrors PokerStars.
 - PHP 8.2+
 - Composer 2
 - Node 18+ (for the Vite asset build)
+- MySQL / MariaDB (app DB). The test suite runs on in-memory SQLite, so
+  `pdo_sqlite` must also be enabled.
 - A Stripe account (test mode is fine to start)
 
 ## Setup
@@ -51,12 +53,31 @@ npm install && npm run build      # or: npm run dev
 
 cp .env.example .env              # if you don't already have .env
 php artisan key:generate
+```
 
-# SQLite is the default. Create the DB file and migrate:
+Create the MySQL database and point `.env` at it (defaults assume local
+XAMPP/MariaDB — `root`, no password):
+
+```sql
+CREATE DATABASE pokercoinverter CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+```
+
+```dotenv
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=pokercoinverter
+DB_USERNAME=root
+DB_PASSWORD=
+```
+
+```bash
 php artisan migrate
-
 php artisan serve
 ```
+
+> Tests do not touch MySQL — `phpunit.xml` forces `DB_CONNECTION=sqlite` /
+> `DB_DATABASE=:memory:`.
 
 ### Stripe / Cashier configuration
 
