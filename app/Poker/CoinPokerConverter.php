@@ -450,6 +450,18 @@ class CoinPokerConverter
             $positions[$buttonSeat] = 'button'; // button wins ties (e.g. heads-up)
         }
 
+        // Run-it-twice board count (0 = normal hand). Used to state the pot
+        // per board on the single summary line, which is what trackers verify.
+        $ritBoards = 0;
+        if (preg_match_all('/^\*\*\*\s+(FIRST|SECOND|THIRD|FOURTH)\s+(?:FLOP|TURN|RIVER)\s+\*\*\*/im', $hand, $mm)) {
+            $ritBoards = max(array_map(fn ($o) => self::ORDINALS[strtoupper($o)], $mm[1]));
+        }
+        if ($ritBoards < 2 && preg_match('/^Hand was run (?:(twice)|(\d+) times|with (two|three|four|\d+) boards)/im', $hand, $rm)) {
+            $ritBoards = $rm[1] !== '' ? 2
+                : ($rm[2] !== '' ? (int) $rm[2]
+                : ['two' => 2, 'three' => 3, 'four' => 4][strtolower($rm[3])] ?? (int) $rm[3]);
+        }
+
         // --- header ---
         $lines[0] = $isTournament
             ? $this->convertTournamentHeader($lines[0], $warnings)
@@ -565,6 +577,16 @@ class CoinPokerConverter
             }
             if (rtrim($line) === '*** SUMMARY ***') {
                 $inSummary = true;
+            }
+
+            // On a run-it-twice hand the single "Total pot" line is stated per
+            // board — that is what the tracker cross-checks against the action.
+            if ($ritBoards >= 2 && preg_match('/^Total pot\s+([£€$]?)([\d,.]+)((?:\s*\|\s*(?:JP )?Rake\s+[£€$]?[\d,.]+)*)\s*$/i', $line, $m)) {
+                $pot = $this->fmtMoney(round($this->money($m[2]) / $ritBoards, 2));
+                $rest = preg_replace_callback('/Rake\s+([£€$]?)([\d,.]+)/i', function ($rm) use ($ritBoards) {
+                    return 'Rake '.$rm[1].$this->fmtMoney(round($this->money($rm[2]) / $ritBoards, 2));
+                }, $m[3]);
+                $line = 'Total pot '.$m[1].$pot.$rest;
             }
 
             // Seat summary line: add position tag, fix "won" -> "collected".
@@ -754,7 +776,13 @@ class CoinPokerConverter
             $tail = ltrim(substr($rest, strlen($name)));
         }
 
-        $tail = preg_replace('/^won \(/', 'collected (', $tail) ?? $tail;
+        // "won (X)" -> "collected (X)" for a non-showdown win. A showdown line
+        // ("showed [..] and won (X) with ...") keeps "won"; a run-it-twice
+        // no-showdown line ("won (X), and won (Y)") gets every one replaced.
+        $tail = str_contains($tail, 'showed')
+            ? preg_replace('/^won \(/', 'collected (', $tail)
+            : preg_replace('/\bwon \(/', 'collected (', $tail);
+        $tail ??= '';
 
         $pos = $positions[$seat] ?? null;
         if ($pos === 'small blind' || $pos === 'big blind') {

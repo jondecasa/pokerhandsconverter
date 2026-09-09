@@ -51,8 +51,11 @@ becomes `CoinPoker Hand #130114200045:  Hold'em No Limit ($0.01/$0.02 USD) - 202
     format PT4 / HM3 import natively (they split the pot themselves for EV):
     `*** FIRST/SECOND SHOWDOWN ***` → `*** FIRST/SECOND SHOW DOWN ***`,
     `Hand was run with two boards` → `Hand was run twice`,
-    `FIRST Board [ … ]` → `Board [ … ]` (ordinal dropped, padding trimmed), the
-    real `Total pot` kept. A warning is emitted.
+    `FIRST Board [ … ]` → `Board [ … ]` (ordinal dropped, padding trimmed).
+    CoinPoker's `Total pot` is the grand total of every board's payout, so the
+    single summary line is **divided by the board count** to state the pot per
+    board (what the tracker cross-checks against the action). A warning is
+    emitted.
 12. `split` (opt-in) — a hand run twice becomes **one hand per board** (ids
     `<id>-1`, `<id>-2`, …), each with the shared action duplicated, its own
     board/showdown and pot (`that run's collected + rake ÷ N`). Handy for

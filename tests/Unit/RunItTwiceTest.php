@@ -31,8 +31,8 @@ class RunItTwiceTest extends TestCase
         // both boards, ordinal prefix dropped, padding trimmed
         $this->assertStringContainsString('Board [7c 2d 9s Kh 4c]', $result->output);
         $this->assertStringContainsString('Board [7c 2d 9s Jd Qs]', $result->output);
-        // the real total pot is kept (no per-run maths)
-        $this->assertStringContainsString('Total pot $19.20 | Rake $0', $result->output);
+        // the pot is stated per board on the single summary line (19.20 / 2)
+        $this->assertStringContainsString('Total pot $9.60 | Rake $0', $result->output);
         $this->assertStringContainsString('Hand was run twice', $result->output);
         $this->assertTrue($result->hasWarnings());
     }

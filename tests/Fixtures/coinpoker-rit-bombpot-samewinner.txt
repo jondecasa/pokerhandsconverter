@@ -1,0 +1,52 @@
+CoinPoker Hand #130049700252: NLH BombPot (₮0.01/₮0.02/₮0.08) 2026/09/09 13:27:17 CEST
+Table '201367' 6-max Seat #1 is the button
+Seat 1: c5995d16 (₮1.65 in chips)
+Seat 2: 828a22a5 (₮4.82 in chips)
+Seat 3: 63a59ceb (₮3.06 in chips)
+Seat 4: 45db0d81 (₮9.50 in chips)
+Seat 5: 5a66355d (₮2.48 in chips)
+Seat 6: Hero (₮8.07 in chips)
+c5995d16: posts ante ₮0.08
+828a22a5: posts ante ₮0.08
+63a59ceb: posts ante ₮0.08
+45db0d81: posts ante ₮0.08
+5a66355d: posts ante ₮0.08
+Hero: posts ante ₮0.08
+*** HOLE CARDS ***
+Dealt to c5995d16
+Dealt to 828a22a5
+Dealt to 63a59ceb
+Dealt to 45db0d81
+Dealt to 5a66355d
+Dealt to Hero [Ad 5d]
+*** FIRST FLOP *** [Qh Qs 9h]
+*** SECOND FLOP *** [6d 6c 5c]
+828a22a5: checks
+63a59ceb: bets ₮0.18
+45db0d81: folds
+5a66355d: folds
+Hero: folds
+c5995d16: folds
+828a22a5: calls ₮0.18
+*** FIRST TURN *** [Qh Qs 9h] [7c]
+*** SECOND TURN *** [6d 6c 5c] [3c]
+828a22a5: checks
+63a59ceb: bets ₮0.44
+828a22a5: folds
+63a59ceb: RETURN ₮0.44
+*** FIRST SHOWDOWN ***
+63a59ceb collected ₮0.40 from pot
+*** SECOND SHOWDOWN ***
+63a59ceb collected ₮0.40 from pot
+*** SUMMARY ***
+Total pot ₮0.84 | Rake ₮0.04
+Hand was run with two boards
+FIRST Board [ Qh Qs 9h 7c ]
+SECOND Board [ 6d 6c 5c 3c ]
+Game ended: 2026/09/09 13:28:00 CEST
+Seat 1: c5995d16 folded on the Flop
+Seat 2: 828a22a5 folded on the Turn
+Seat 3: 63a59ceb won (₮0.40), and won (₮0.40)
+Seat 4: 45db0d81 folded on the Flop
+Seat 5: 5a66355d folded on the Flop
+Seat 6: Hero folded on the Flop
