@@ -48,9 +48,13 @@ becomes `CoinPoker Hand #130114200045:  Hold'em No Limit ($0.01/$0.02 USD) - 202
 **Run it twice** (`run_it_twice_mode`)
 
 11. `split` (default) — a hand run twice/thrice becomes **one hand per board**:
-    ids `<id>-1`, `<id>-2`, …; each keeps the shared action, its own
-    `*** TURN/RIVER ***`, its own `Board [...]`, its share of the pot
-    (`Total pot ÷ N`, remainder on run 1) and the `collected` line for that run.
+    ids `<id>-1`, `<id>-2`, …. Each keeps the shared preflop/flop action, its own
+    `*** FLOP/TURN/RIVER ***` with the right board, its own `Board [...]`, and its
+    own `*** SHOW DOWN ***` (from `*** FIRST/SECOND SHOWDOWN ***`). Handles both
+    the all-in case (no action between boards, one showdown) and the bomb-pot case
+    (a betting round played once across both boards, two showdowns). Pot per run =
+    that run's `collected` total + `rake ÷ N`; CoinPoker's combined seat line
+    ("… lost with X, and won (₮..) with Y") is split into a clean per-run line.
     A warning is emitted so you can sanity-check the amounts.
 12. `keep` — left as a single hand with every board and a warning.
 

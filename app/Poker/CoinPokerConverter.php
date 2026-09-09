@@ -121,7 +121,7 @@ class CoinPokerConverter
                 : null;
 
             if ($runs !== null) {
-                $warnings[] = ['hand' => $index + 1, 'message' => 'Run-it-twice hand split into '.count($runs).' hands (ids -1..-'.count($runs).'); each carries total pot ÷ '.count($runs).'. Verify the amounts against your tracker.'];
+                $warnings[] = ['hand' => $index + 1, 'message' => 'Run-it-twice hand split into '.count($runs).' hands (ids -1..-'.count($runs).'), one per board, each with its own pot. Verify the amounts against your tracker.'];
             }
 
             foreach ($runs ?? [$block] as $subBlock) {
@@ -165,124 +165,227 @@ class CoinPokerConverter
         $lines = explode("\n", $hand);
 
         $firstMarker = null;
-        $showdown = null;
         $summary = null;
         $runs = 0;
-
         foreach ($lines as $i => $line) {
-            if (preg_match('/^\*\*\*\s+(FIRST|SECOND|THIRD|FOURTH)\s+(FLOP|TURN|RIVER)\s+\*\*\*/', $line, $m)) {
+            if (preg_match('/^\*\*\*\s+(FIRST|SECOND|THIRD|FOURTH)\s+(?:FLOP|TURN|RIVER)\s+\*\*\*/', $line, $m)) {
                 $firstMarker ??= $i;
                 $runs = max($runs, self::ORDINALS[$m[1]]);
-            } elseif ($showdown === null && preg_match('/^\*\*\*\s+SHOW\s?DOWN\s+\*\*\*/', $line)) {
-                $showdown = $i;
             } elseif ($summary === null && rtrim($line) === '*** SUMMARY ***') {
                 $summary = $i;
             }
         }
-
         if ($firstMarker === null || $summary === null || $runs < 2) {
             return null;
         }
 
-        $bodyEnd = $showdown ?? $summary;
+        // --- walk the body: street markers, shared betting, per-run showdowns ---
+        $streetOrder = [];                         // FLOP, TURN, RIVER as they appear
+        $boardMarker = [];                         // street => [run => "*** TURN *** [...] [x]"]
+        $actionByStreet = [];                      // street => [shared betting lines]
+        $showdownByRun = array_fill(1, $runs, []); // run => [shows + collected lines]
+        $sharedShowdown = [];                      // single "*** SHOW DOWN ***" case
+        $mode = 'street';
+        $curStreet = null;
+        $curRun = null;
 
-        // Per-run street lines (ordinal stripped), e.g. "*** TURN *** [...] [x]".
-        $streets = array_fill(1, $runs, []);
-        $currentRun = null;
-        for ($i = $firstMarker; $i < $bodyEnd; $i++) {
-            if (preg_match('/^\*\*\*\s+(FIRST|SECOND|THIRD|FOURTH)\s+(FLOP|TURN|RIVER)\s+\*\*\*(.*)$/', $lines[$i], $m)) {
-                $currentRun = self::ORDINALS[$m[1]];
-                $streets[$currentRun][] = '*** '.$m[2].' ***'.rtrim($m[3]);
-            } elseif ($currentRun !== null && trim($lines[$i]) !== '') {
-                $streets[$currentRun][] = $lines[$i]; // stray action under a run street
+        for ($i = $firstMarker; $i < $summary; $i++) {
+            $line = rtrim($lines[$i]);
+            if ($line === '') {
+                continue;
             }
-        }
 
-        // Showdown narrative (shared) + the per-run "collected" lines (in order).
-        $showLines = [];
-        $collected = []; // [ ['name' => ..., 'amount' => float, 'raw' => '...'] , ... ]
-        if ($showdown !== null) {
-            for ($i = $showdown + 1; $i < $summary; $i++) {
-                $line = $lines[$i];
-                if (preg_match('/^(\S+)\s+collected\s+\D*?([\d,.]+)\s+from\s+(?:the\s+)?(?:main\s+|side\s+)?pot/iu', $line, $m)) {
-                    $collected[] = ['name' => $m[1], 'amount' => $this->money($m[2])];
-                } elseif (trim($line) !== '') {
-                    $showLines[] = $line;
+            if (preg_match('/^\*\*\*\s+(FIRST|SECOND|THIRD|FOURTH)\s+(FLOP|TURN|RIVER)\s+\*\*\*(.*)$/', $line, $m)) {
+                $mode = 'street';
+                $curStreet = $m[2];
+                if (! in_array($curStreet, $streetOrder, true)) {
+                    $streetOrder[] = $curStreet;
                 }
+                $boardMarker[$curStreet][self::ORDINALS[$m[1]]] = '*** '.$m[2].' ***'.rtrim($m[3]);
+
+                continue;
+            }
+            if (preg_match('/^\*\*\*\s+(FIRST|SECOND|THIRD|FOURTH)\s+SHOW\s?DOWN\s+\*\*\*/', $line, $m)) {
+                $mode = 'showdown';
+                $curRun = self::ORDINALS[$m[1]];
+
+                continue;
+            }
+            if (preg_match('/^\*\*\*\s+SHOW\s?DOWN\s+\*\*\*/', $line)) {
+                $mode = 'showdown';
+                $curRun = null;
+
+                continue;
+            }
+            if (str_starts_with($line, '*** ')) {
+                continue; // any other marker
+            }
+
+            if ($mode === 'showdown') {
+                if ($curRun !== null) {
+                    $showdownByRun[$curRun][] = $line;
+                } else {
+                    $sharedShowdown[] = $line;
+                }
+            } elseif ($curStreet !== null) {
+                $actionByStreet[$curStreet][] = $line;
             }
         }
 
-        // Summary: total pot, rake, the per-run Board lines, seat lines.
-        $totalPot = 0.0;
-        $totalRake = 0.0;
-        $boards = [];
+        // --- summary: pot, rake, per-run boards, seat lines ---
+        $totalPot = $totalRake = 0.0;
+        $boardsByRun = [];
+        $plainBoards = [];
         $seatLines = [];
         for ($i = $summary + 1; $i < count($lines); $i++) {
-            $line = $lines[$i];
+            $line = rtrim($lines[$i]);
             if (preg_match('/^Total pot\s+\D*?([\d,.]+)(?:.*?\|\s*Rake\s+\D*?([\d,.]+))?/iu', $line, $m)) {
                 $totalPot = $this->money($m[1]);
                 $totalRake = isset($m[2]) && $m[2] !== '' ? $this->money($m[2]) : 0.0;
-            } elseif (preg_match('/^Board\s+\[([^\]]*)\]/', $line, $m) && trim($m[1]) !== '') {
-                $boards[] = trim($m[1]);
+            } elseif (preg_match('/^(?:(FIRST|SECOND|THIRD|FOURTH)\s+)?Board\s+\[(.*)\]\s*$/', $line, $m)) {
+                $cards = trim($m[2]);
+                if ($cards === '') {
+                    continue;
+                }
+                if ($m[1] !== '') {
+                    $boardsByRun[self::ORDINALS[$m[1]]] = $cards;
+                } else {
+                    $plainBoards[] = $cards;
+                }
             } elseif (preg_match('/^Seat\s+\d+:/', $line)) {
                 $seatLines[] = $line;
             }
         }
 
-        if (count($boards) < $runs) {
-            return null; // not the structure we know how to split
+        if ($boardsByRun === []) {
+            foreach ($plainBoards as $k => $b) {
+                $boardsByRun[$k + 1] = $b;
+            }
+        }
+        for ($r = 1; $r <= $runs; $r++) {
+            if (! isset($boardsByRun[$r])) {
+                return null; // structure we do not recognise
+            }
         }
 
-        // Assign each "collected" line to a run, in order (run 1, 2, ..., wrap).
+        // --- collected amounts per run ---
         $runCollected = array_fill(1, $runs, []); // run => [name => amount]
-        foreach ($collected as $k => $c) {
-            $run = ($k % $runs) + 1;
-            $runCollected[$run][$c['name']] = ($runCollected[$run][$c['name']] ?? 0) + $c['amount'];
+        foreach ($showdownByRun as $run => $sdLines) {
+            foreach ($sdLines as $l) {
+                if (preg_match('/^(\S+)\s+collected\s+\D*?([\d,.]+)\s+from\s+/iu', $l, $m)) {
+                    $runCollected[$run][$m[1]] = ($runCollected[$run][$m[1]] ?? 0) + $this->money($m[2]);
+                }
+            }
+        }
+        $sharedShows = [];
+        if ($runCollected === array_fill(1, $runs, []) && $sharedShowdown !== []) {
+            // Single "*** SHOW DOWN ***": distribute collected lines across runs,
+            // keep the shows/mucks in every run.
+            $k = 0;
+            foreach ($sharedShowdown as $l) {
+                if (preg_match('/^(\S+)\s+collected\s+\D*?([\d,.]+)\s+from\s+/iu', $l, $m)) {
+                    $run = ($k % $runs) + 1;
+                    $runCollected[$run][$m[1]] = ($runCollected[$run][$m[1]] ?? 0) + $this->money($m[2]);
+                    $k++;
+                } else {
+                    $sharedShows[] = $l;
+                }
+            }
         }
 
-        $potPerRun = $this->splitMoney($totalPot, $runs);
         $rakePerRun = $this->splitMoney($totalRake, $runs);
+        $potFallback = $this->splitMoney($totalPot, $runs);
 
-        // Everything before the first run marker, minus the summary/RIT noise.
         $prefix = array_slice($lines, 0, $firstMarker);
         $prefix[0] = preg_replace('/(Hand\s+#)(\S+?)(:)/', '${1}${2}-%RUN%$3', $prefix[0], 1) ?? $prefix[0];
 
         $out = [];
         for ($run = 1; $run <= $runs; $run++) {
-            $block = array_map(fn ($l) => str_replace('%RUN%', (string) $run, $l), $prefix);
+            $block = array_map(fn ($l) => str_replace('%RUN%', (string) $run, rtrim($l)), $prefix);
 
-            foreach ($streets[$run] as $l) {
-                $block[] = $l;
-            }
-
-            if ($showdown !== null) {
-                $block[] = '*** SHOWDOWN ***';
-                foreach ($showLines as $l) {
+            foreach ($streetOrder as $street) {
+                if (! isset($boardMarker[$street][$run])) {
+                    continue;
+                }
+                $block[] = $boardMarker[$street][$run];
+                foreach ($actionByStreet[$street] ?? [] as $l) {
                     $block[] = $l;
                 }
-                foreach (($runCollected[$run] ?? []) as $name => $amount) {
-                    $block[] = $name.' collected ₮'.$this->fmtMoney($amount).' from pot';
+            }
+
+            $runShows = $showdownByRun[$run] ?: $sharedShows;
+            if ($runShows !== [] || array_sum($runCollected[$run] ?: []) > 0) {
+                $block[] = '*** SHOWDOWN ***';
+                foreach ($runShows as $l) {
+                    if (! preg_match('/\bcollected\s+\D*?[\d,.]+\s+from\s+/iu', $l)) {
+                        $block[] = $l;
+                    }
+                }
+                foreach ($runCollected[$run] as $name => $amount) {
+                    $block[] = $name.' collected ₮'.$this->fmtMoney((float) $amount).' from pot';
                 }
             }
 
+            $collectedSum = array_sum($runCollected[$run] ?: []);
+            $potK = $collectedSum > 0 ? $collectedSum + $rakePerRun[$run] : $potFallback[$run];
+
             $block[] = '*** SUMMARY ***';
-            $block[] = 'Total pot ₮'.$this->fmtMoney($potPerRun[$run]).' | Rake ₮'.$this->fmtMoney($rakePerRun[$run]);
-            $block[] = 'Board ['.$boards[$run - 1].']';
+            $block[] = 'Total pot ₮'.$this->fmtMoney($potK).' | Rake ₮'.$this->fmtMoney($rakePerRun[$run]);
+            $block[] = 'Board ['.$boardsByRun[$run].']';
 
             foreach ($seatLines as $seatLine) {
-                $name = preg_match('/^Seat\s+\d+:\s+(\S+)/', $seatLine, $m) ? $m[1] : null;
-                $won = $name !== null ? ($runCollected[$run][$name] ?? 0.0) : 0.0;
-                $block[] = preg_replace_callback(
-                    '/\b(won|collected)\s+\(\D*?[\d,.]+\)/iu',
-                    fn ($mm) => $mm[1].' (₮'.$this->fmtMoney($won).')',
-                    $seatLine
-                );
+                $block[] = $this->rebuildRitSeatLine($seatLine, $run, $runCollected, $showdownByRun, $sharedShows);
             }
 
             $out[] = implode("\n", $block);
         }
 
         return $out;
+    }
+
+    /**
+     * Rebuild a summary seat line for one run of a run-it-twice hand. CoinPoker
+     * merges both runs onto one line ("... and lost with X, and won (₮..) with Y");
+     * this derives a clean per-run line from that run's showdown data.
+     *
+     * @param  array<int, array<string, float>>  $runCollected
+     * @param  array<int, array<int, string>>  $showdownByRun
+     * @param  array<int, string>  $sharedShows
+     */
+    private function rebuildRitSeatLine(string $seatLine, int $run, array $runCollected, array $showdownByRun, array $sharedShows): string
+    {
+        if (! preg_match('/^(Seat\s+\d+):\s+(\S+)\s*(.*)$/', $seatLine, $m)) {
+            return $seatLine;
+        }
+        [$seat, $name, $rest] = [$m[1], $m[2], $m[3]];
+
+        $showLines = $showdownByRun[$run] ?: $sharedShows;
+        $shown = null;
+        foreach ($showLines as $l) {
+            if (preg_match('/^'.preg_quote($name, '/').':\s+shows\s+\[([^\]]+)\]\s*(?:\(([^)]*)\))?/i', $l, $sm)) {
+                $shown = ['cards' => trim($sm[1]), 'desc' => trim($sm[2] ?? '')];
+                break;
+            }
+        }
+
+        $amount = (float) ($runCollected[$run][$name] ?? 0);
+
+        if ($shown !== null) {
+            $tail = 'showed ['.$shown['cards'].'] and '
+                .($amount > 0 ? 'won (₮'.$this->fmtMoney($amount).')' : 'lost')
+                .($shown['desc'] !== '' ? ' with '.$shown['desc'] : '');
+
+            return $seat.': '.$name.' '.$tail;
+        }
+
+        if (preg_match('/(folded\s+(?:on the|before)\s+\w+(?:\s+\w+)?)/i', $rest, $fm)) {
+            return $seat.': '.$name.' '.$fm[1];
+        }
+        if ($amount > 0) {
+            return $seat.': '.$name.' collected (₮'.$this->fmtMoney($amount).')';
+        }
+
+        return $seat.": {$name} mucked";
     }
 
     private function money(string $raw): float

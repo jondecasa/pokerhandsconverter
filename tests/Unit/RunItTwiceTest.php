@@ -37,7 +37,7 @@ class RunItTwiceTest extends TestCase
         $this->assertStringContainsString('Total pot $9.60 | Rake $0', $one);
         $this->assertStringContainsString('bravo collected $9.60 from pot', $one);
         $this->assertStringContainsString('Seat 3: bravo (big blind) showed [As Ah] and won ($9.60)', $one);
-        $this->assertStringContainsString('Seat 1: alpha (small blind) showed [Ks Kd] and won ($0)', $one);
+        $this->assertStringContainsString('Seat 1: alpha (small blind) showed [Ks Kd] and lost with a pair of Kings', $one);
         $this->assertStringNotContainsString('FIRST', $one);
         $this->assertStringNotContainsString('Jd Qs', $one);
 

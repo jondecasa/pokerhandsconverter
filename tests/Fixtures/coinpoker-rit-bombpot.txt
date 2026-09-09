@@ -1,0 +1,66 @@
+CoinPoker Hand #130049700216: NLH BombPot (₮0.01/₮0.02/₮0.04) 2026/09/09 12:55:44 CEST
+Table '201367' 6-max Seat #1 is the button
+Seat 1: 5ffd16b1 (₮1.57 in chips)
+Seat 2: b0385946 (₮5.22 in chips)
+Seat 3: cf0b34b3 (₮11.31 in chips)
+Seat 4: 9e6eae1d (₮1.70 in chips)
+Seat 5: 6d348e1e (₮2.64 in chips)
+Seat 6: Hero (₮2 in chips)
+5ffd16b1: posts ante ₮0.04
+b0385946: posts ante ₮0.04
+cf0b34b3: posts ante ₮0.04
+9e6eae1d: posts ante ₮0.04
+6d348e1e: posts ante ₮0.04
+Hero: posts ante ₮0.04
+*** HOLE CARDS ***
+Dealt to 5ffd16b1
+Dealt to b0385946
+Dealt to cf0b34b3
+Dealt to 9e6eae1d
+Dealt to 6d348e1e
+Dealt to Hero [9s 5d]
+*** FIRST FLOP *** [8h 4d 9c]
+*** SECOND FLOP *** [Jc As 2d]
+b0385946: checks
+cf0b34b3: bets ₮0.04
+9e6eae1d: calls ₮0.04
+6d348e1e: folds
+Hero: folds
+5ffd16b1: calls ₮0.04
+b0385946: calls ₮0.04
+*** FIRST TURN *** [8h 4d 9c] [6c]
+*** SECOND TURN *** [Jc As 2d] [8c]
+b0385946: checks
+cf0b34b3: checks
+9e6eae1d: checks
+5ffd16b1: bets ₮0.13
+b0385946: calls ₮0.13
+cf0b34b3: folds
+9e6eae1d: calls ₮0.13
+*** FIRST RIVER *** [8h 4d 9c 6c] [Ks]
+*** SECOND RIVER *** [Jc As 2d 8c] [2c]
+b0385946: checks
+9e6eae1d: checks
+5ffd16b1: checks
+*** FIRST SHOWDOWN ***
+9e6eae1d: shows [4s 3h] (One Pair)
+9e6eae1d collected ₮0.37 from pot
+5ffd16b1: shows [Ah 7s] (High Card)
+b0385946: shows [Jh 5c] (High Card)
+*** SECOND SHOWDOWN ***
+5ffd16b1: shows [Ah 7s] (Two Pair)
+5ffd16b1 collected ₮0.38 from pot
+b0385946: shows [Jh 5c] (Two Pair)
+9e6eae1d: shows [4s 3h] (One Pair)
+*** SUMMARY ***
+Total pot ₮0.79 | Rake ₮0.04
+Hand was run with two boards
+FIRST Board [ 8h 4d 9c 6c Ks ]
+SECOND Board [ Jc As 2d 8c 2c ]
+Game ended: 2026/09/09 12:57:04 CEST
+Seat 1: 5ffd16b1 showed [Ah 7s] and lost with High Card, and won (₮0.38) with Two Pair
+Seat 2: b0385946 showed [Jh 5c] and lost with High Card, and lost with Two Pair
+Seat 3: cf0b34b3 folded on the Turn
+Seat 4: 9e6eae1d showed [4s 3h] and won (₮0.37) with One Pair, and lost with One Pair
+Seat 5: 6d348e1e folded on the Flop
+Seat 6: Hero folded on the Flop
