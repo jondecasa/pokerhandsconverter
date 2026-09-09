@@ -27,38 +27,44 @@
             @endif
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                @foreach ($plans as $key => $plan)
+                @forelse ($plans as $plan)
                     <div class="bg-white shadow-sm sm:rounded-lg p-8 flex flex-col">
-                        <h3 class="text-xl font-bold text-gray-900">{{ $plan['name'] }}</h3>
+                        <h3 class="text-xl font-bold text-gray-900">{{ $plan->name }}</h3>
                         <div class="mt-3">
-                            <span class="text-4xl font-extrabold text-gray-900">{{ $plan['currency'] === 'USD' ? '$' : '' }}{{ $plan['amount'] }}</span>
-                            <span class="text-gray-500">/ {{ $plan['interval'] }}</span>
+                            <span class="text-4xl font-extrabold text-gray-900">{{ $plan->priceLabel() }}</span>
+                            <span class="text-gray-500">/ {{ $plan->interval }}</span>
                         </div>
-                        <p class="text-sm text-gray-600 mt-3">{{ $plan['blurb'] }}</p>
+                        @if ($plan->stakesText())
+                            <div class="mt-2 inline-flex w-max rounded-full bg-gray-100 px-2.5 py-1 text-xs font-medium text-gray-600">{{ $plan->stakesText() }}</div>
+                        @endif
+                        <p class="text-sm text-gray-600 mt-3">{{ $plan->description }}</p>
 
                         <ul class="mt-4 space-y-2 text-sm text-gray-700 flex-1">
-                            <li>✓ Unlimited CoinPoker → PokerTracker 4 conversions</li>
-                            <li>✓ Cash &amp; tournament hand histories</li>
-                            <li>✓ Re-download past conversions</li>
-                            <li>✓ Cancel anytime from the billing portal</li>
+                            @forelse ($plan->featureList() as $feature)
+                                <li>✓ {{ $feature }}</li>
+                            @empty
+                                <li>✓ Unlimited CoinPoker → PokerTracker 4 conversions</li>
+                            @endforelse
                         </ul>
 
-                        @if ($currentPlan === $plan['price_id'] && $plan['price_id'])
-                            <span class="mt-6 inline-flex justify-center px-4 py-2 bg-gray-100 text-gray-600 text-sm rounded-md">Current plan</span>
+                        @if ($currentPrice && $currentPrice === $plan->stripe_price_id)
+                            <span class="mt-6 inline-flex justify-center px-4 py-2 bg-gray-100 text-gray-600 text-sm rounded-md">Current package</span>
                         @else
-                            <form method="POST" action="{{ route('subscription.checkout', $key) }}" class="mt-6">
+                            <form method="POST" action="{{ route('subscription.checkout', $plan) }}" class="mt-6">
                                 @csrf
                                 <button class="w-full inline-flex justify-center px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-md hover:bg-indigo-500">
-                                    @if ($trialDays > 0 && ! $subscribed)
-                                        Start {{ $trialDays }}-day free trial
+                                    @if ($plan->effectiveTrialDays() > 0 && ! $subscribed)
+                                        Start {{ $plan->effectiveTrialDays() }}-day free trial
                                     @else
-                                        Choose {{ $plan['name'] }}
+                                        Choose {{ $plan->name }}
                                     @endif
                                 </button>
                             </form>
                         @endif
                     </div>
-                @endforeach
+                @empty
+                    <p class="text-gray-500">No packages available yet.</p>
+                @endforelse
             </div>
 
             <p class="text-xs text-gray-400 text-center">

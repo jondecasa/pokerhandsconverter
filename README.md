@@ -128,8 +128,35 @@ php artisan serve
 4. Enable the Stripe **Billing customer portal** (Settings → Billing → Customer
    portal) so `/billing` works.
 
-Plans, trial length, subscription name and every converter knob are in
-[`config/pokercoinverter.php`](config/pokercoinverter.php), all env-overridable.
+`STRIPE_PRICE_*` / `PLAN_*` env vars only seed the two starter packages on a
+fresh `db:seed`. After that, packages live in the DB — manage them in the admin
+UI (below). Subscription name, default trial length, the stake ladder and every
+converter knob stay in [`config/pokercoinverter.php`](config/pokercoinverter.php).
+
+### Packages (pricing) & the admin panel
+
+Packages ("plans") are rows in the `plans` table, edited by admins at
+**`/admin/plans`** (`App\Http\Controllers\Admin\PlanController`, gated by the
+`admin` middleware = `users.is_admin`). Per package:
+
+- name, slug, description, price + currency + billing interval
+- **Stripe Price ID** (`price_…`) — required before anyone can subscribe
+- **stake covered** — pick a cap from the ladder in config (`Covers up to NL100`)
+  or set a free-text stake label
+- feature bullet list, trial-day override, sort order
+- **Visible** — listed on the public pricing page and the in-app picker
+- **Hidden** (not visible) — not listed, but still subscribable via its direct
+  link `/subscribe/<slug>` (share with one customer / grandfathered deals)
+- **Inactive** — retired; blocks new sign-ups entirely (existing subs untouched)
+
+Make yourself an admin:
+
+```bash
+php artisan pokercoinverter:make-admin you@example.com
+php artisan pokercoinverter:make-admin you@example.com --revoke   # undo
+```
+
+`php artisan db:seed --class=PlanSeeder` (re)creates the Monthly/Yearly starters.
 
 ---
 
@@ -159,9 +186,11 @@ Marketing pages render through the `<x-marketing-layout>` anonymous component
 | `/billing` | Redirect to the Stripe customer portal |
 | `/convert` | Upload a CoinPoker `.txt`, get a PokerTracker 4-ready `.txt` — **requires an active subscription** |
 | `/conversions/{id}` | Result page: preview, warnings, download |
+| `/admin/plans` | Package & pricing maintenance — **admins only** (`users.is_admin`) |
 
 The `subscribed` middleware (`App\Http\Middleware\EnsureSubscribed`) protects the
-converter routes and redirects non-subscribers to `/account/plans`.
+converter routes and redirects non-subscribers to `/account/plans`. The `admin`
+middleware (`App\Http\Middleware\EnsureAdmin`) 403s everyone who is not an admin.
 
 ### CLI (no subscription needed — handy for tuning)
 

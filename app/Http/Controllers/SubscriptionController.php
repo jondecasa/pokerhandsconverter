@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Plan;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Redirector;
@@ -16,26 +17,23 @@ class SubscriptionController extends Controller
         $name = config('pokercoinverter.subscription_name', 'default');
 
         return view('subscription.pricing', [
-            'plans' => config('pokercoinverter.plans'),
-            'trialDays' => (int) config('pokercoinverter.trial_days'),
-            'currentPlan' => $user?->subscription($name)?->stripe_price,
+            'plans' => Plan::visible()->ordered()->get(),
+            'currentPrice' => $user?->subscription($name)?->stripe_price,
             'subscribed' => (bool) $user?->subscribed($name),
         ]);
     }
 
     /**
-     * Send the user to Stripe Checkout for the chosen plan.
+     * Send the user to Stripe Checkout for the chosen package. Works for any
+     * active package (a hidden one can still be reached by its direct link).
      */
-    public function checkout(Request $request, string $plan): RedirectResponse|Redirector
+    public function checkout(Request $request, Plan $plan): RedirectResponse|Redirector
     {
-        $plans = config('pokercoinverter.plans');
-        abort_unless(isset($plans[$plan]), 404);
+        abort_unless($plan->is_active, 404);
 
-        $priceId = $plans[$plan]['price_id'];
-
-        if (blank($priceId)) {
+        if (blank($plan->stripe_price_id)) {
             return back()->withErrors([
-                'plan' => "The \"{$plan}\" plan has no Stripe price configured. Set STRIPE_PRICE_".strtoupper($plan).' in your .env.',
+                'plan' => "The \"{$plan->name}\" package has no Stripe price set. Add one in Admin → Packages.",
             ]);
         }
 
@@ -46,11 +44,9 @@ class SubscriptionController extends Controller
             return redirect()->route('billing');
         }
 
-        $trialDays = (int) config('pokercoinverter.trial_days');
-
-        $builder = $user->newSubscription($name, $priceId);
-        if ($trialDays > 0) {
-            $builder->trialDays($trialDays);
+        $builder = $user->newSubscription($name, $plan->stripe_price_id);
+        if ($plan->effectiveTrialDays() > 0) {
+            $builder->trialDays($plan->effectiveTrialDays());
         }
 
         return $builder->checkout([

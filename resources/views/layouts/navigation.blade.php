@@ -21,6 +21,11 @@
                     <x-nav-link :href="route('subscription.plans')" :active="request()->routeIs('subscription.plans')">
                         {{ __('Plans') }}
                     </x-nav-link>
+                    @if (auth()->user()?->isAdmin())
+                        <x-nav-link :href="route('admin.plans.index')" :active="request()->routeIs('admin.*')">
+                            {{ __('Admin') }}
+                        </x-nav-link>
+                    @endif
                 </div>
             </div>
 
@@ -82,6 +87,11 @@
             <x-responsive-nav-link :href="route('subscription.plans')" :active="request()->routeIs('subscription.plans')">
                 {{ __('Plans') }}
             </x-responsive-nav-link>
+            @if (auth()->user()?->isAdmin())
+                <x-responsive-nav-link :href="route('admin.plans.index')" :active="request()->routeIs('admin.*')">
+                    {{ __('Admin') }}
+                </x-responsive-nav-link>
+            @endif
         </div>
 
         <!-- Responsive Settings Options -->

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Plan;
 use Illuminate\View\View;
 
 /**
@@ -12,11 +13,16 @@ class MarketingController extends Controller
 {
     public function home(): View
     {
-        return view('welcome');
+        return view('welcome', ['plans' => $this->visiblePlans()]);
     }
 
     public function pricing(): View
     {
-        return view('marketing.pricing');
+        return view('marketing.pricing', ['plans' => $this->visiblePlans()]);
+    }
+
+    private function visiblePlans()
+    {
+        return Plan::visible()->ordered()->get();
     }
 }

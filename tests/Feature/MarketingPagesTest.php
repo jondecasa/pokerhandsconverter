@@ -2,6 +2,8 @@
 
 namespace Tests\Feature;
 
+use App\Models\Plan;
+use Database\Seeders\PlanSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
@@ -9,6 +11,12 @@ use Tests\TestCase;
 class MarketingPagesTest extends TestCase
 {
     use RefreshDatabase;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->seed(PlanSeeder::class);
+    }
 
     #[Test]
     public function the_landing_page_renders_for_guests(): void
@@ -22,11 +30,18 @@ class MarketingPagesTest extends TestCase
     #[Test]
     public function the_public_pricing_page_renders_for_guests(): void
     {
-        $response = $this->get('/pricing')->assertOk();
+        $this->get('/pricing')
+            ->assertOk()
+            ->assertSee('Monthly')
+            ->assertSee('Yearly');
+    }
 
-        foreach (config('pokercoinverter.plans') as $plan) {
-            $response->assertSee($plan['name']);
-        }
+    #[Test]
+    public function hidden_packages_are_not_listed_publicly(): void
+    {
+        Plan::factory()->hidden()->create(['name' => 'Secret Whale Deal']);
+
+        $this->get('/pricing')->assertOk()->assertDontSee('Secret Whale Deal');
     }
 
     #[Test]

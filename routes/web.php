@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\PlanController as AdminPlanController;
 use App\Http\Controllers\ConverterController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\MarketingController;
@@ -35,6 +36,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('/convert', [ConverterController::class, 'store'])->name('convert.store');
         Route::get('/conversions/{conversion}', [ConverterController::class, 'show'])->name('conversions.show');
         Route::get('/conversions/{conversion}/download', [ConverterController::class, 'download'])->name('conversions.download');
+    });
+
+    // Admin — package / pricing maintenance
+    Route::middleware('admin')->prefix('admin')->name('admin.')->group(function () {
+        Route::redirect('/', '/admin/plans');
+        Route::resource('plans', AdminPlanController::class)->except('show');
     });
 });
 

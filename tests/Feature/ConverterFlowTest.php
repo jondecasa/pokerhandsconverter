@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\Plan;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
@@ -64,13 +65,16 @@ class ConverterFlowTest extends TestCase
     }
 
     #[Test]
-    public function the_in_app_plan_picker_renders(): void
+    public function the_in_app_plan_picker_renders_the_visible_packages(): void
     {
+        Plan::factory()->create(['name' => 'Mid Stakes', 'slug' => 'mid']);
+        Plan::factory()->hidden()->create(['name' => 'Hidden VIP', 'slug' => 'vip']);
         $user = User::factory()->create(['email_verified_at' => now()]);
 
         $this->actingAs($user)->get(route('subscription.plans'))
             ->assertOk()
-            ->assertSee('Monthly');
+            ->assertSee('Mid Stakes')
+            ->assertDontSee('Hidden VIP');
     }
 
     #[Test]

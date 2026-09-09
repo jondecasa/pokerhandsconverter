@@ -1,5 +1,4 @@
-@php($trialDays = (int) config('pokercoinverter.trial_days'))
-@php($plans = config('pokercoinverter.plans'))
+@php($trialDays = $plans->max(fn ($p) => $p->effectiveTrialDays()) ?? 0)
 
 <x-marketing-layout>
 
@@ -186,34 +185,40 @@
             </div>
 
             <div class="mx-auto mt-12 grid max-w-3xl gap-6 sm:grid-cols-2">
-                @foreach ($plans as $key => $plan)
-                    <div class="flex flex-col rounded-2xl border bg-white p-8 {{ $key === 'yearly' ? 'border-indigo-600 ring-1 ring-indigo-600' : 'border-slate-200' }}">
-                        @if ($key === 'yearly')
+                @forelse ($plans as $plan)
+                    <div class="flex flex-col rounded-2xl border bg-white p-8 {{ $plan->is_highlighted ? 'border-indigo-600 ring-1 ring-indigo-600' : 'border-slate-200' }}">
+                        @if ($plan->is_highlighted)
                             <span class="mb-3 inline-flex w-max rounded-full bg-indigo-600 px-3 py-1 text-xs font-semibold text-white">Best value</span>
                         @endif
-                        <div class="text-sm font-semibold text-slate-900">{{ $plan['name'] }}</div>
+                        <div class="text-sm font-semibold text-slate-900">{{ $plan->name }}</div>
                         <div class="mt-2">
-                            <span class="text-4xl font-extrabold text-slate-900">{{ ($plan['currency'] ?? 'USD') === 'USD' ? '$' : '' }}{{ $plan['amount'] }}</span>
-                            <span class="text-slate-500">/ {{ $plan['interval'] }}</span>
+                            <span class="text-4xl font-extrabold text-slate-900">{{ $plan->priceLabel() }}</span>
+                            <span class="text-slate-500">/ {{ $plan->interval }}</span>
                         </div>
-                        <p class="mt-3 text-sm text-slate-600">{{ $plan['blurb'] }}</p>
+                        @if ($plan->stakesText())
+                            <div class="mt-2 inline-flex w-max rounded-full bg-slate-100 px-2.5 py-1 text-xs font-medium text-slate-600">{{ $plan->stakesText() }}</div>
+                        @endif
+                        <p class="mt-3 text-sm text-slate-600">{{ $plan->description }}</p>
                         <ul class="mt-5 flex-1 space-y-2 text-sm text-slate-700">
-                            <li>&#10003; Unlimited CoinPoker &rarr; PokerTracker&nbsp;4 conversions</li>
-                            <li>&#10003; Cash &amp; tournament hand histories</li>
-                            <li>&#10003; Conversion history &amp; re-downloads</li>
-                            <li>&#10003; Cancel anytime, self-serve</li>
+                            @forelse ($plan->featureList() as $feature)
+                                <li>&#10003; {{ $feature }}</li>
+                            @empty
+                                <li>&#10003; Unlimited CoinPoker &rarr; PokerTracker&nbsp;4 conversions</li>
+                            @endforelse
                         </ul>
                         @auth
-                            <a href="{{ route('subscription.plans') }}" class="mt-6 rounded-xl bg-indigo-600 px-4 py-3 text-center text-sm font-semibold text-white hover:bg-indigo-500">Choose {{ $plan['name'] }}</a>
+                            <a href="{{ route('subscription.plans') }}" class="mt-6 rounded-xl bg-indigo-600 px-4 py-3 text-center text-sm font-semibold text-white hover:bg-indigo-500">Choose {{ $plan->name }}</a>
                         @else
                             <a href="{{ route('register') }}" class="mt-6 rounded-xl bg-indigo-600 px-4 py-3 text-center text-sm font-semibold text-white hover:bg-indigo-500">
-                                @if ($trialDays > 0) Start free trial @else Get started @endif
+                                @if ($plan->effectiveTrialDays() > 0) Start free trial @else Get started @endif
                             </a>
                         @endauth
                     </div>
-                @endforeach
+                @empty
+                    <p class="col-span-full text-center text-slate-500">Packages are being set up — check back soon.</p>
+                @endforelse
             </div>
-            <p class="mt-6 text-center text-xs text-slate-400">Payments processed by Stripe. Prices in USD.</p>
+            <p class="mt-6 text-center text-xs text-slate-400">Payments processed by Stripe.</p>
         </div>
     </section>
 

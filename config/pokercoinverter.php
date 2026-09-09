@@ -4,40 +4,26 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Subscription plans
+    | Subscription packages
     |--------------------------------------------------------------------------
     |
-    | Each plan maps to a Stripe Price ID. Create the products/prices in your
-    | Stripe dashboard (test mode first) and drop the price IDs into your .env.
-    | "amount" / "interval" / "blurb" are only used for rendering the pricing
-    | page — Stripe remains the source of truth for what is actually charged.
+    | Packages ("plans") now live in the `plans` table and are managed by admins
+    | at /admin/plans. PlanSeeder creates the two starter packages below on a
+    | fresh install; after that, edit them in the admin UI.
     |
     */
-
-    'plans' => [
-        'monthly' => [
-            'name' => 'Monthly',
-            'price_id' => env('STRIPE_PRICE_MONTHLY'),
-            'amount' => env('PLAN_MONTHLY_AMOUNT', '9'),
-            'currency' => env('PLAN_CURRENCY', 'USD'),
-            'interval' => 'month',
-            'blurb' => 'Unlimited conversions, billed monthly. Cancel anytime.',
-        ],
-        'yearly' => [
-            'name' => 'Yearly',
-            'price_id' => env('STRIPE_PRICE_YEARLY'),
-            'amount' => env('PLAN_YEARLY_AMOUNT', '90'),
-            'currency' => env('PLAN_CURRENCY', 'USD'),
-            'interval' => 'year',
-            'blurb' => 'Two months free versus monthly. Unlimited conversions.',
-        ],
-    ],
 
     // Cashier subscription "type" (a.k.a. name). Keep it stable once live.
     'subscription_name' => 'default',
 
-    // Free trial length in days applied at Stripe Checkout. 0 = no trial.
+    // Default free-trial length (days) when a package does not set its own. 0 = none.
     'trial_days' => (int) env('PLAN_TRIAL_DAYS', 7),
+
+    // Stake ladder offered in the admin "stake covered" dropdown.
+    'stakes' => [
+        'NL2', 'NL5', 'NL10', 'NL16', 'NL25', 'NL50', 'NL100',
+        'NL200', 'NL500', 'NL1000', 'NL2000', 'NL5000', 'NL10000',
+    ],
 
     /*
     |--------------------------------------------------------------------------

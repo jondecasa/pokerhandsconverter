@@ -1,5 +1,4 @@
-@php($trialDays = (int) config('pokercoinverter.trial_days'))
-@php($plans = config('pokercoinverter.plans'))
+@php($trialDays = $plans->max(fn ($p) => $p->effectiveTrialDays()) ?? 0)
 
 <x-marketing-layout title="Pricing — PokerCoinverter">
 
@@ -7,52 +6,55 @@
         <div class="mx-auto max-w-2xl text-center">
             <h1 class="text-4xl font-extrabold tracking-tight text-slate-900">Pricing</h1>
             <p class="mt-4 text-lg text-slate-600">
-                One subscription, unlimited conversions.
-                @if ($trialDays > 0) Every plan starts with a {{ $trialDays }}-day free trial. @endif
+                Unlimited conversions on every package.
+                @if ($trialDays > 0) Free trial included. @endif
             </p>
         </div>
 
         <div class="mx-auto mt-14 grid max-w-3xl gap-6 sm:grid-cols-2">
-            @foreach ($plans as $key => $plan)
-                <div class="flex flex-col rounded-2xl border bg-white p-8 {{ $key === 'yearly' ? 'border-indigo-600 ring-1 ring-indigo-600' : 'border-slate-200' }}">
-                    @if ($key === 'yearly')
+            @forelse ($plans as $plan)
+                <div class="flex flex-col rounded-2xl border bg-white p-8 {{ $plan->is_highlighted ? 'border-indigo-600 ring-1 ring-indigo-600' : 'border-slate-200' }}">
+                    @if ($plan->is_highlighted)
                         <span class="mb-3 inline-flex w-max rounded-full bg-indigo-600 px-3 py-1 text-xs font-semibold text-white">Best value</span>
                     @endif
-                    <div class="text-sm font-semibold text-slate-900">{{ $plan['name'] }}</div>
+                    <div class="text-sm font-semibold text-slate-900">{{ $plan->name }}</div>
                     <div class="mt-2">
-                        <span class="text-5xl font-extrabold text-slate-900">{{ ($plan['currency'] ?? 'USD') === 'USD' ? '$' : '' }}{{ $plan['amount'] }}</span>
-                        <span class="text-slate-500">/ {{ $plan['interval'] }}</span>
+                        <span class="text-5xl font-extrabold text-slate-900">{{ $plan->priceLabel() }}</span>
+                        <span class="text-slate-500">/ {{ $plan->interval }}</span>
                     </div>
-                    <p class="mt-3 text-sm text-slate-600">{{ $plan['blurb'] }}</p>
+                    @if ($plan->stakesText())
+                        <div class="mt-2 inline-flex w-max rounded-full bg-slate-100 px-2.5 py-1 text-xs font-medium text-slate-600">{{ $plan->stakesText() }}</div>
+                    @endif
+                    <p class="mt-3 text-sm text-slate-600">{{ $plan->description }}</p>
 
                     <ul class="mt-6 flex-1 space-y-3 text-sm text-slate-700">
-                        @foreach ([
-                            'Unlimited CoinPoker → PokerTracker 4 conversions',
-                            'Cash games and tournaments',
-                            'Per-upload timezone handling',
-                            'Conversion history and re-downloads',
-                            'Warnings for anything unusual in a hand',
-                            'Cancel anytime from your dashboard',
-                        ] as $feature)
+                        @forelse ($plan->featureList() as $feature)
                             <li class="flex gap-2">
                                 <svg viewBox="0 0 24 24" fill="none" class="mt-0.5 h-4 w-4 shrink-0 text-indigo-600"><path d="m5 13 4 4L19 7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
                                 {{ $feature }}
                             </li>
-                        @endforeach
+                        @empty
+                            <li class="flex gap-2">
+                                <svg viewBox="0 0 24 24" fill="none" class="mt-0.5 h-4 w-4 shrink-0 text-indigo-600"><path d="m5 13 4 4L19 7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                                Unlimited CoinPoker → PokerTracker 4 conversions
+                            </li>
+                        @endforelse
                     </ul>
 
                     @auth
                         <a href="{{ route('subscription.plans') }}" class="mt-8 rounded-xl bg-indigo-600 px-4 py-3 text-center text-sm font-semibold text-white hover:bg-indigo-500">
-                            Choose {{ $plan['name'] }}
+                            Choose {{ $plan->name }}
                         </a>
                     @else
                         <a href="{{ route('register') }}" class="mt-8 rounded-xl bg-indigo-600 px-4 py-3 text-center text-sm font-semibold text-white hover:bg-indigo-500">
-                            @if ($trialDays > 0) Start free trial @else Get started @endif
+                            @if ($plan->effectiveTrialDays() > 0) Start free trial @else Get started @endif
                         </a>
                         <p class="mt-2 text-center text-xs text-slate-400">Already have an account? <a href="{{ route('login') }}" class="underline">Log in</a></p>
                     @endauth
                 </div>
-            @endforeach
+            @empty
+                <p class="col-span-full text-center text-slate-500">Packages are being set up — check back soon.</p>
+            @endforelse
         </div>
 
         <div class="mx-auto mt-16 max-w-2xl">
