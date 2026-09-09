@@ -1,9 +1,11 @@
 # PokerCoinverter
 
-A Laravel web app that converts **CoinPoker** hand-history `.txt` files into the
+**PokerCoinverter** converts **CoinPoker** hand-history `.txt` files into the
 hand-history format that **PokerTracker 4** imports cleanly (Hold'em Manager 3
 and similar trackers read it too). Access to the converter is gated behind a
-paid **Stripe subscription** (via Laravel Cashier).
+paid **Stripe subscription**.
+
+Built on the Laravel framework (see `composer.json` for the dependency list).
 
 ---
 
@@ -29,7 +31,9 @@ becomes `CoinPoker Hand #130114200045:  Hold'em No Limit ($0.01/$0.02 USD) - 202
 5. `₮ → $` everywhere (bare amounts get a `$` as a safety net for exports that
    omit the sign); tournament chip counts stay bare.
 6. The per-player `Dealt to <name>` lines are dropped — only
-   `Dealt to Hero [Xx Yy]` is kept.
+   `Dealt to Hero [Xx Yy]` is kept. If the account has a **CoinPoker ID** set
+   (profile / registration, or `--hero=` on the CLI), every `Hero` token is
+   replaced with it.
 7. `<player>: RETURN <amt>` → `Uncalled bet ($amt) returned to <player>`.
 8. `*** SHOWDOWN ***` → `*** SHOW DOWN ***`, or dropped when nobody shows.
 
@@ -54,6 +58,13 @@ becomes `CoinPoker Hand #130114200045:  Hold'em No Limit ($0.01/$0.02 USD) - 202
 hand count plus **splash pots** (a `Splash pot: …` line) and **bomb pots**
 (a `bomb pot` line, or structurally: no blinds posted, everyone antes, straight
 to a flop). Both detections are heuristic — check against real CoinPoker exports.
+
+**Stake gate** — each package can set a **stake cap** (`stakes_cap`, e.g. `NL50`).
+On upload the file's highest cash big blind is compared to the cap
+(`NL50` → `$0.50`); anything above it is refused with a "upgrade your package"
+message and nothing is stored. A package with no cap converts any stake;
+tournaments are never gated. `samples/coinpoker-nl50-example.txt` is a 4-hand
+NL50 file in CoinPoker's raw format for trying this.
 
 Warnings (never exceptions) also cover unknown game codes, unknown timezones and
 blocks that are not hands.

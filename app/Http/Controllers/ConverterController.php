@@ -16,9 +16,13 @@ class ConverterController extends Controller
 {
     public function create(Request $request): View
     {
+        $user = $request->user();
+
         return view('converter.create', [
-            'recent' => $request->user()->conversions()->latest()->take(10)->get(),
+            'recent' => $user->conversions()->latest()->take(10)->get(),
             'maxUploadKb' => config('pokercoinverter.max_upload_kb'),
+            'stakesCap' => $user->currentPlan()?->stakes_cap,
+            'heroName' => $user->heroName(),
         ]);
     }
 
@@ -49,8 +53,11 @@ class ConverterController extends Controller
             return back()->withErrors(['file' => 'This does not look like a CoinPoker hand-history file (no "Hand #" lines found).']);
         }
 
+        $user = $request->user();
+
         $options = ConverterOptions::fromConfig(array_filter([
             'timezone_mode' => $validated['timezone_mode'] ?? null,
+            'hero_name' => $user->heroName() !== 'Hero' ? $user->heroName() : null,
         ]));
 
         $result = (new CoinPokerConverter($options))->convert($raw);
@@ -59,10 +66,22 @@ class ConverterController extends Controller
             return back()->withErrors(['file' => 'No hands could be parsed from that file.']);
         }
 
-        $path = 'conversions/'.$request->user()->id.'/'.Str::uuid()->toString().'.txt';
+        // Stakes gate: the file may not exceed the package's stake cap.
+        $cap = $user->currentPlan()?->stakesCapBigBlind();
+        $maxBb = $result->maxCashBigBlind();
+        if ($cap !== null && $maxBb !== null && $maxBb > $cap + 1e-9) {
+            $capLabel = $user->currentPlan()->stakes_cap;
+            $fileLabel = $result->maxCashStakeLevel();
+
+            return back()->withErrors([
+                'file' => "This file contains {$fileLabel} hands but your package covers up to {$capLabel}. Upgrade your package to convert it.",
+            ]);
+        }
+
+        $path = 'conversions/'.$user->id.'/'.Str::uuid()->toString().'.txt';
         Storage::disk('local')->put($path, $result->output);
 
-        $conversion = $request->user()->conversions()->create([
+        $conversion = $user->conversions()->create([
             'original_filename' => $uploaded->getClientOriginalName(),
             'output_path' => $path,
             'hand_count' => $result->handCount,

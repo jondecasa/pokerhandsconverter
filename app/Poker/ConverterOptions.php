@@ -53,6 +53,12 @@ class ConverterOptions
          *  - 'keep' : leave it as a single hand with every board + a warning
          */
         public string $runItTwiceMode = 'split',
+
+        /**
+         * Screen name to substitute for CoinPoker's anonymised "Hero". Leave as
+         * "Hero" to make no change.
+         */
+        public string $heroName = 'Hero',
     ) {}
 
     public static function fromConfig(array $overrides = []): self
@@ -68,6 +74,7 @@ class ConverterOptions
             fallbackEtOffsetHours: (int) ($overrides['fallback_et_offset_hours'] ?? $c['fallback_et_offset_hours'] ?? 6),
             normalizeTetherSign: (bool) ($overrides['normalize_tether_sign'] ?? $c['normalize_tether_sign'] ?? true),
             runItTwiceMode: $overrides['run_it_twice_mode'] ?? $c['run_it_twice_mode'] ?? 'split',
+            heroName: $overrides['hero_name'] ?? $c['hero_name'] ?? 'Hero',
         );
     }
 }

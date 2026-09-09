@@ -42,4 +42,28 @@ class ConversionResult
     {
         return count(array_filter($this->hands, fn (HandSummary $h) => $h->bombPot));
     }
+
+    /** Highest cash big blind seen in the file (null if there are no cash hands). */
+    public function maxCashBigBlind(): ?float
+    {
+        $bbs = array_filter(array_map(fn (HandSummary $h) => $h->bigBlind(), $this->hands));
+
+        return $bbs ? max($bbs) : null;
+    }
+
+    /** Label for the highest cash stake seen, e.g. "NL50". */
+    public function maxCashStakeLevel(): ?string
+    {
+        $best = null;
+        $bestBb = -1.0;
+        foreach ($this->hands as $h) {
+            $bb = $h->bigBlind();
+            if ($bb !== null && $bb > $bestBb) {
+                $bestBb = $bb;
+                $best = $h->stakeLevel();
+            }
+        }
+
+        return $best;
+    }
 }

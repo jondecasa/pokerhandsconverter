@@ -17,6 +17,20 @@
                     and similar trackers import it too). Max {{ number_format($maxUploadKb / 1024, 0) }} MB per file.
                 </p>
 
+                <div class="mb-4 flex flex-wrap gap-2 text-xs">
+                    <span class="inline-flex items-center rounded-full bg-gray-100 px-2.5 py-1 text-gray-600">
+                        Hero name:
+                        <span class="ml-1 font-medium text-gray-900">{{ $heroName }}</span>
+                        @if ($heroName === 'Hero')
+                            <a href="{{ route('profile.edit') }}" class="ml-1.5 text-indigo-600 hover:underline">set your CoinPoker ID</a>
+                        @endif
+                    </span>
+                    <span class="inline-flex items-center rounded-full bg-gray-100 px-2.5 py-1 text-gray-600">
+                        Package covers:
+                        <span class="ml-1 font-medium text-gray-900">{{ $stakesCap ? 'up to '.$stakesCap : 'all stakes' }}</span>
+                    </span>
+                </div>
+
                 <form method="POST" action="{{ route('convert.store') }}" enctype="multipart/form-data" class="space-y-4">
                     @csrf
 

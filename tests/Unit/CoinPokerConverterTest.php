@@ -190,4 +190,35 @@ class CoinPokerConverterTest extends TestCase
         $this->assertSame(1, $result->handCount);
         $this->assertNotEmpty($result->warnings);
     }
+
+    #[Test]
+    public function it_replaces_hero_with_the_configured_screen_name(): void
+    {
+        $out = (new CoinPokerConverter(new ConverterOptions(heroName: 'batu157')))
+            ->convert($this->fixture('coinpoker-cash.txt'))->output;
+
+        $this->assertStringContainsString('Seat 5: batu157 ($2 in chips)', $out);
+        $this->assertStringContainsString('Dealt to batu157 [Th 2s]', $out);
+        $this->assertStringContainsString('batu157: posts big blind $0.02', $out);
+        $this->assertStringNotContainsString('Hero', $out);
+    }
+
+    #[Test]
+    public function it_keeps_hero_when_no_screen_name_is_set(): void
+    {
+        $out = (new CoinPokerConverter)->convert($this->fixture('coinpoker-cash.txt'))->output;
+
+        $this->assertStringContainsString('Dealt to Hero [Th 2s]', $out);
+    }
+
+    #[Test]
+    public function it_reports_the_highest_cash_stake_in_the_file(): void
+    {
+        $result = (new CoinPokerConverter)->convert(
+            file_get_contents(__DIR__.'/../../samples/coinpoker-nl50-example.txt')
+        );
+
+        $this->assertSame('NL50', $result->maxCashStakeLevel());
+        $this->assertEqualsWithDelta(0.50, $result->maxCashBigBlind(), 0.0001);
+    }
 }

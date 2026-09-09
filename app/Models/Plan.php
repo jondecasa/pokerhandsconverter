@@ -80,6 +80,16 @@ class Plan extends Model
         return filled($this->stakes_cap) ? 'Covers up to '.$this->stakes_cap : null;
     }
 
+    /** Highest big blind this package allows ("NL50" -> 0.50); null = unlimited. */
+    public function stakesCapBigBlind(): ?float
+    {
+        if (blank($this->stakes_cap) || ! preg_match('/(\d+(?:\.\d+)?)/', $this->stakes_cap, $m)) {
+            return null;
+        }
+
+        return ((float) $m[1]) / 100;
+    }
+
     /** @return array<int, string> */
     public function featureList(): array
     {

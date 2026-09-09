@@ -33,12 +33,14 @@ class RegisteredUserController extends Controller
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
+            'coinpoker_id' => ['nullable', 'string', 'max:60'],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
+            'coinpoker_id' => trim((string) $request->input('coinpoker_id')) ?: null,
             'password' => Hash::make($request->password),
         ]);
 

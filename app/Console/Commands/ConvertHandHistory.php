@@ -12,6 +12,7 @@ class ConvertHandHistory extends Command
         {input : Path to the CoinPoker hand-history .txt file}
         {output? : Where to write the converted file (defaults to <input>-pokertracker.txt)}
         {--timezone-mode= : dual|et|keep (overrides config)}
+        {--hero= : screen name to substitute for CoinPoker\'s "Hero"}
         {--force : Overwrite the output file if it already exists}';
 
     protected $description = 'Convert a CoinPoker hand-history file to the PokerTracker 4 format';
@@ -37,6 +38,7 @@ class ConvertHandHistory extends Command
 
         $options = ConverterOptions::fromConfig(array_filter([
             'timezone_mode' => $this->option('timezone-mode'),
+            'hero_name' => $this->option('hero'),
         ]));
 
         $result = (new CoinPokerConverter($options))->convert((string) file_get_contents($input));

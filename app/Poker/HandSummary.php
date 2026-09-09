@@ -21,6 +21,31 @@ class HandSummary
         public bool $bombPot = false,
     ) {}
 
+    /** Big blind in currency units for a cash hand ("$0.02/$0.05" -> 0.05). */
+    public function bigBlind(): ?float
+    {
+        if ($this->format !== 'Cash') {
+            return null;
+        }
+        if (! preg_match('#/[^\d]*([\d.]+)#', $this->stakes, $m)) {
+            return null;
+        }
+
+        return (float) $m[1] ?: null;
+    }
+
+    /** e.g. "NL5" for $0.02/$0.05 cash; null for tournaments. */
+    public function stakeLevel(): ?string
+    {
+        $bb = $this->bigBlind();
+        if ($bb === null) {
+            return null;
+        }
+        $n = $bb * 100;
+
+        return 'NL'.($n == floor($n) ? (string) (int) $n : rtrim(rtrim(number_format($n, 2, '.', ''), '0'), '.'));
+    }
+
     public function toArray(): array
     {
         return [
@@ -28,6 +53,7 @@ class HandSummary
             'format' => $this->format,
             'game' => $this->game,
             'stakes' => $this->stakes,
+            'stake_level' => $this->stakeLevel(),
             'table' => $this->table,
             'max_seats' => $this->maxSeats,
             'played_at' => $this->playedAt,

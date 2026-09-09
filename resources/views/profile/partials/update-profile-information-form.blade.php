@@ -24,6 +24,13 @@
         </div>
 
         <div>
+            <x-input-label for="coinpoker_id" :value="__('CoinPoker ID')" />
+            <x-text-input id="coinpoker_id" name="coinpoker_id" type="text" class="mt-1 block w-full" :value="old('coinpoker_id', $user->coinpoker_id)" autocomplete="off" placeholder="Your CoinPoker screen name" />
+            <p class="mt-1 text-sm text-gray-500">{{ __('Replaces "Hero" in every converted hand history. Leave blank to keep "Hero".') }}</p>
+            <x-input-error class="mt-2" :messages="$errors->get('coinpoker_id')" />
+        </div>
+
+        <div>
             <x-input-label for="email" :value="__('Email')" />
             <x-text-input id="email" name="email" type="email" class="mt-1 block w-full" :value="old('email', $user->email)" required autocomplete="username" />
             <x-input-error class="mt-2" :messages="$errors->get('email')" />

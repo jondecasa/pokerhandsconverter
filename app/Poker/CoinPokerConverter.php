@@ -365,6 +365,9 @@ class CoinPokerConverter
             if (! $isTournament) {
                 $line = $this->addCurrencySymbols($line);
             }
+            if ($this->options->heroName !== 'Hero' && $this->options->heroName !== '') {
+                $line = preg_replace('/\bHero\b/', $this->options->heroName, $line);
+            }
 
             // Drop the per-player "Dealt to <name>" lines with no cards.
             if (preg_match('/^Dealt to \S.*$/', $line) && ! preg_match('/^Dealt to .+ \[.+\]\s*$/', $line)) {
