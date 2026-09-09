@@ -413,9 +413,9 @@ class CoinPokerConverter
 
                 continue;
             }
-            // "SPLASH dropped ₮0.04" — CoinPoker's splash-pot marker (dropped,
-            // counted for stats, so the tracker does not trip on it).
-            if (preg_match('/^SPLASH\s+dropped\b/i', $line)) {
+            // "SPLASH dropped ₮0.04" / "MEGA SPLASH dropped ₮0.20" — CoinPoker's
+            // splash-pot marker (dropped, counted for stats).
+            if (preg_match('/\bSPLASH\s+dropped\b/i', $line)) {
                 continue;
             }
             // Board line: drop it when empty, otherwise trim CoinPoker's
@@ -455,8 +455,8 @@ class CoinPokerConverter
 
     private function isSplashPot(string $hand): bool
     {
-        // Real CoinPoker marker: a "SPLASH dropped ₮0.04" line before the blinds.
-        return (bool) preg_match('/^SPLASH\s+dropped\b/im', $hand)
+        // Real CoinPoker markers: "SPLASH dropped ₮…" or "MEGA SPLASH dropped ₮…".
+        return (bool) preg_match('/\bSPLASH\s+dropped\b/i', $hand)
             || (bool) preg_match('/\bsplash[ _-]?pot\b/i', $hand);
     }
 
