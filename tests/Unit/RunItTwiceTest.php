@@ -32,7 +32,7 @@ class RunItTwiceTest extends TestCase
         $this->assertStringContainsString('Board [7c 2d 9s Kh 4c]', $result->output);
         $this->assertStringContainsString('Board [7c 2d 9s Jd Qs]', $result->output);
         // the real total pot is kept (the tracker splits it itself for RIT)
-        $this->assertStringContainsString('Total pot $19.20 | Rake $0', $result->output);
+        $this->assertStringContainsString('Total pot $20 | Rake $0', $result->output);
         $this->assertStringContainsString('Hand was run twice', $result->output);
         $this->assertTrue($result->hasWarnings());
     }
@@ -57,17 +57,17 @@ class RunItTwiceTest extends TestCase
 
         $this->assertStringContainsString('*** TURN *** [7c 2d 9s] [Kh]', $one);
         $this->assertStringContainsString('Board [7c 2d 9s Kh 4c]', $one);
-        $this->assertStringContainsString('Total pot $9.60 | Rake $0', $one);
-        $this->assertStringContainsString('bravo collected $9.60 from pot', $one);
-        $this->assertStringContainsString('Seat 3: bravo (big blind) showed [As Ah] and won ($9.60)', $one);
+        $this->assertStringContainsString('Total pot $10 | Rake $0', $one);
+        $this->assertStringContainsString('bravo collected $10 from pot', $one);
+        $this->assertStringContainsString('Seat 3: bravo (big blind) showed [As Ah] and won ($10)', $one);
         $this->assertStringContainsString('Seat 1: alpha (small blind) showed [Ks Kd] and lost with a pair of Kings', $one);
         $this->assertStringNotContainsString('FIRST', $one);
         $this->assertStringNotContainsString('Jd Qs', $one);
 
         $this->assertStringContainsString('*** TURN *** [7c 2d 9s] [Jd]', $two);
         $this->assertStringContainsString('Board [7c 2d 9s Jd Qs]', $two);
-        $this->assertStringContainsString('alpha collected $9.60 from pot', $two);
-        $this->assertStringContainsString('Seat 1: alpha (small blind) showed [Ks Kd] and won ($9.60)', $two);
+        $this->assertStringContainsString('alpha collected $10 from pot', $two);
+        $this->assertStringContainsString('Seat 1: alpha (small blind) showed [Ks Kd] and won ($10)', $two);
     }
 
     #[Test]

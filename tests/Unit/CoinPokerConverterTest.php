@@ -163,11 +163,13 @@ class CoinPokerConverterTest extends TestCase
     }
 
     #[Test]
-    public function it_warns_about_run_it_twice_but_keeps_the_native_markers(): void
+    public function it_warns_about_run_it_twice_and_keeps_coinpokers_native_markers(): void
     {
         $hand = "CoinPoker Hand #7: NLH (₮1/₮2) 2026/01/02 03:04:05 CET\n"
             ."Table 'x' 6-max Seat #1 is the button\n"
             ."Seat 1: a (₮200 in chips)\n"
+            ."*** FIRST FLOP *** [As Kd 2c]\n"
+            ."*** SECOND FLOP *** [Ts 8d 4c]\n"
             ."*** SUMMARY ***\n"
             ."Total pot ₮400 | Rake ₮0\n"
             ."Hand was run with two boards\n"
@@ -178,12 +180,11 @@ class CoinPokerConverterTest extends TestCase
 
         $this->assertTrue($result->hasWarnings());
         $this->assertStringContainsString('Run-it-twice', $result->warnings[0]['message']);
-        // kept, but normalised: real total pot, standard phrasing, both boards
+        // kept verbatim so PokerTracker's native CoinPoker profile splits the pot
         $this->assertStringContainsString('Total pot $400 | Rake $0', $result->output);
-        $this->assertStringContainsString('Hand was run twice', $result->output);
-        $this->assertStringContainsString('Board [As Kd 2c 7h 9s]', $result->output);
-        $this->assertStringContainsString('Board [Ts 8d 4c Qh 3s]', $result->output);
-        $this->assertStringNotContainsString('FIRST Board', $result->output);
+        $this->assertStringContainsString('Hand was run with two boards', $result->output);
+        $this->assertStringContainsString('FIRST Board [As Kd 2c 7h 9s]', $result->output);
+        $this->assertStringContainsString('SECOND Board [Ts 8d 4c Qh 3s]', $result->output);
     }
 
     #[Test]

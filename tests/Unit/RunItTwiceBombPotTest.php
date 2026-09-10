@@ -24,22 +24,21 @@ class RunItTwiceBombPotTest extends TestCase
     }
 
     #[Test]
-    public function keep_mode_normalises_it_to_one_native_run_it_twice_hand(): void
+    public function keep_mode_keeps_coinpokers_native_run_it_twice_markers(): void
     {
         $out = (new CoinPokerConverter)->convert($this->fixture())->output;
 
         $this->assertStringNotContainsString('-1:', $out);
-        $this->assertStringContainsString("Hold'em No Limit (\$0.01/\$0.02/\$0.04 USD)", $out);
+        $this->assertStringContainsString("Hold'em No Limit ($0.01/$0.02 USD)", $out);
         $this->assertStringContainsString('*** FIRST FLOP *** [8h 4d 9c]', $out);
         $this->assertStringContainsString('*** SECOND FLOP *** [Jc As 2d]', $out);
-        $this->assertStringContainsString('*** FIRST SHOW DOWN ***', $out);
-        $this->assertStringContainsString('*** SECOND SHOW DOWN ***', $out);
+        // native CoinPoker spelling, kept verbatim for PokerTracker's own profile
+        $this->assertStringContainsString('*** FIRST SHOWDOWN ***', $out);
+        $this->assertStringContainsString('*** SECOND SHOWDOWN ***', $out);
         $this->assertStringContainsString('Total pot $0.79 | Rake $0.04', $out);   // real total kept
-        $this->assertStringContainsString('Hand was run twice', $out);
-        $this->assertStringContainsString('Board [8h 4d 9c 6c Ks]', $out);
-        $this->assertStringContainsString('Board [Jc As 2d 8c 2c]', $out);
-        $this->assertStringNotContainsString('FIRST Board', $out);
-        $this->assertStringNotContainsString('SHOWDOWN', $out); // all spaced now
+        $this->assertStringContainsString('Hand was run with two boards', $out);
+        $this->assertStringContainsString('FIRST Board [8h 4d 9c 6c Ks]', $out);
+        $this->assertStringContainsString('SECOND Board [Jc As 2d 8c 2c]', $out);
         $this->assertStringNotContainsString('BombPot', $out);
     }
 
@@ -50,8 +49,9 @@ class RunItTwiceBombPotTest extends TestCase
 
         $this->assertStringContainsString('CoinPoker Hand #130049700216-1:', $one);
         $this->assertStringContainsString('CoinPoker Hand #130049700216-2:', $two);
-        // "NLH BombPot" -> "Hold'em No Limit", 3-value stakes kept verbatim
-        $this->assertStringContainsString("Hold'em No Limit (\$0.01/\$0.02/\$0.04 USD)", $one);
+        // "NLH BombPot" -> "Hold'em No Limit"; the bomb-pot ante is dropped from
+        // the limit string (the trackers only accept small blind / big blind).
+        $this->assertStringContainsString("Hold'em No Limit ($0.01/$0.02 USD)", $one);
         $this->assertStringNotContainsString('BombPot', $one);
     }
 

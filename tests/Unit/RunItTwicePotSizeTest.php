@@ -43,11 +43,11 @@ class RunItTwicePotSizeTest extends TestCase
         $out = $this->converted();
 
         $this->assertStringNotContainsString('#130049700252-1', $out);
-        $this->assertStringContainsString('*** FIRST SHOW DOWN ***', $out);
-        $this->assertStringContainsString('*** SECOND SHOW DOWN ***', $out);
-        $this->assertStringContainsString('Hand was run twice', $out);
-        $this->assertStringContainsString('Board [Qh Qs 9h 7c]', $out);
-        $this->assertStringContainsString('Board [6d 6c 5c 3c]', $out);
+        $this->assertStringContainsString('*** FIRST SHOWDOWN ***', $out);
+        $this->assertStringContainsString('*** SECOND SHOWDOWN ***', $out);
+        $this->assertStringContainsString('Hand was run with two boards', $out);
+        $this->assertStringContainsString('FIRST Board [Qh Qs 9h 7c]', $out);
+        $this->assertStringContainsString('SECOND Board [6d 6c 5c 3c]', $out);
         $this->assertStringContainsString('Uncalled bet ($0.44) returned to 63a59ceb', $out);
     }
 }

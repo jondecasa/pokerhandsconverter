@@ -421,6 +421,15 @@ class CoinPokerConverter
         $lines = explode("\n", $hand);
 
         $isTournament = str_contains($lines[0], 'Tournament #');
+        $sym = $this->options->currencySymbol;
+
+        // A run-it-twice hand still carrying its CoinPoker "FIRST/SECOND" street
+        // markers: PokerTracker imports those natively, so keep them verbatim
+        // (only the split mode, handled earlier, rewrites them).
+        $isRit = (bool) preg_match(
+            '/^\*\*\*\s+(?:FIRST|SECOND|THIRD|FOURTH)\s+(?:FLOP|TURN|RIVER|SHOW\s?DOWN)\s+\*\*\*/mi',
+            $hand,
+        );
 
         // --- table / blinds / button context (for summary position tags) ---
         $buttonSeat = null;
@@ -462,6 +471,12 @@ class CoinPokerConverter
         $showdownHasShow = false;
         $showdownBuffer = [];
 
+        // Per-street betting state, used to expand CoinPoker's bare "ALLIN"
+        // keyword into a real bets / calls / raises "... and is all-in" action.
+        $streetIn = [];   // player name => chips committed on the current street
+        $curBet = 0.0;    // highest street commitment so far (the amount to call)
+        $cashedOut = false;
+
         $flush = function () use (&$out, &$showdownBuffer, &$showdownHasShow) {
             if ($showdownBuffer === []) {
                 return;
@@ -489,6 +504,82 @@ class CoinPokerConverter
                 $line = preg_replace('/\bHero\b/', $this->options->heroName, $line);
             }
 
+            // ---- betting-state tracking + CoinPoker-only action keywords ----
+
+            // A new betting round resets the per-street commitments.
+            if (preg_match('/^\*\*\*\s+(?:(?:FIRST|SECOND|THIRD|FOURTH)\s+)?(?:FLOP|TURN|RIVER)\s+\*\*\*/i', $line)
+                || preg_match('/^\*\*\*\s+(?:(?:FIRST|SECOND|THIRD|FOURTH)\s+)?SHOW\s?DOWN\s+\*\*\*/i', $line)) {
+                $streetIn = [];
+                $curBet = 0.0;
+            }
+
+            // "posts auto big blind" / "posts auto small blind" -> plain post.
+            $line = preg_replace('/(:\s+posts )auto (big blind|small blind)\b/i', '$1$2', $line) ?? $line;
+
+            // Blind / ante / straddle posts feed the betting state.
+            if (preg_match('/^(.+?):\s+posts (?:small blind|big blind|the straddle|straddle)\s+\D*?([\d.]+)/i', $line, $m)) {
+                $streetIn[$m[1]] = round(($streetIn[$m[1]] ?? 0) + (float) $m[2], 2);
+                $curBet = max($curBet, $streetIn[$m[1]]);
+            }
+
+            // "<player>: STRADDLE ₮0.04" — a voluntary third blind. Model it as a
+            // raise to that amount so the pot math and later "to" amounts line up.
+            if (preg_match('/^(.+?):\s+STRADDLE\s+\D*?([\d.]+)\s*$/i', $line, $m)) {
+                $name = $m[1];
+                $to = (float) $m[2];
+                $delta = round($to - $curBet, 2);
+                $line = ($curBet > 0 && $delta > 0)
+                    ? sprintf('%s: raises %s%s to %s%s', $name, $sym, $this->fmtMoney($delta), $sym, $this->fmtMoney($to))
+                    : sprintf('%s: posts big blind %s%s', $name, $sym, $this->fmtMoney($to));
+                $streetIn[$name] = $to;
+                $curBet = max($curBet, $to);
+                $out[] = $line;
+
+                continue;
+            }
+
+            // "<player>: ALLIN ₮X" — CoinPoker's keyword for shoving the rest of a
+            // stack. Expand to the real action (call / bet / raise) + " and is
+            // all-in", which is what PokerTracker / HM3 parse.
+            if (preg_match('/^(.+?):\s+ALLIN\s+\D*?([\d.]+)\s*$/i', $line, $m)) {
+                $name = $m[1];
+                $add = (float) $m[2];
+                $prev = (float) ($streetIn[$name] ?? 0);
+                $total = round($prev + $add, 2);
+                $money = fn (float $v) => ($isTournament ? '' : $sym).$this->fmtMoney($v);
+
+                if ($total <= $curBet + 0.0001) {
+                    $line = sprintf('%s: calls %s and is all-in', $name, $money($add));
+                } elseif ($curBet <= 0.0001) {
+                    $line = sprintf('%s: bets %s and is all-in', $name, $money($add));
+                } else {
+                    $line = sprintf('%s: raises %s to %s and is all-in', $name, $money(round($total - $curBet, 2)), $money($total));
+                }
+                $streetIn[$name] = $total;
+                $curBet = max($curBet, $total);
+                $out[] = $line;
+
+                continue;
+            }
+
+            // All-in insurance: "<player> cashed out the hand for ₮X | Cash Out
+            // Fee ₮Y". Trackers have no concept of it — drop the line; the
+            // "collected" lines already reflect the reduced distribution.
+            if (preg_match('/^.+?\s+cashed out the hand\b/i', $line)) {
+                $cashedOut = true;
+
+                continue;
+            }
+
+            // Keep the betting state fresh from ordinary action lines.
+            if (preg_match('/^(.+?):\s+(?:bets|calls)\s+\D*?([\d.]+)/i', $line, $m)) {
+                $streetIn[$m[1]] = round(($streetIn[$m[1]] ?? 0) + (float) $m[2], 2);
+                $curBet = max($curBet, $streetIn[$m[1]]);
+            } elseif (preg_match('/^(.+?):\s+raises\s+\D*?[\d.]+\s+to\s+\D*?([\d.]+)/i', $line, $m)) {
+                $streetIn[$m[1]] = (float) $m[2];
+                $curBet = max($curBet, (float) $m[2]);
+            }
+
             // Drop the per-player "Dealt to <name>" lines with no cards.
             if (preg_match('/^Dealt to \S.*$/', $line) && ! preg_match('/^Dealt to .+ \[.+\]\s*$/', $line)) {
                 continue;
@@ -500,10 +591,11 @@ class CoinPokerConverter
                 $line = 'Uncalled bet ('.$amt.') returned to '.$m[1];
             }
 
-            // Run-it-twice showdown markers stay (one per board), just spaced
-            // like the trackers expect: "*** FIRST SHOW DOWN ***".
+            // Run-it-twice showdown markers: one per board. PokerTracker imports
+            // CoinPoker run-it-twice natively, so keep the "*** FIRST SHOWDOWN ***"
+            // spelling exactly as written.
             if (preg_match('/^\*\*\*\s+(FIRST|SECOND|THIRD|FOURTH)\s+SHOW\s?DOWN\s+\*\*\*\s*$/i', $line, $m)) {
-                $out[] = '*** '.strtoupper($m[1]).' SHOW DOWN ***';
+                $out[] = '*** '.strtoupper($m[1]).' SHOWDOWN ***';
 
                 continue;
             }
@@ -531,18 +623,15 @@ class CoinPokerConverter
                 }
             }
 
-            // "Hand was run once" is noise; the run-twice/thrice line is kept but
-            // normalised so the tracker imports it as a native run-it-twice hand.
-            if (preg_match('/^Hand was run once\s*$/', $line)) {
+            // "Hand was run once" is noise. The run-twice/thrice line is kept
+            // verbatim ("two times" / "with two boards") — PokerTracker's native
+            // CoinPoker profile reads it and splits the pot across the boards.
+            if (preg_match('/^Hand was run once\s*$/i', $line)) {
                 continue;
             }
-            if (preg_match('/^Hand was run (?:(twice)|(\d+) times|with (two|three|four|\d+) boards)\s*$/i', $line, $m)) {
-                $n = $m[1] !== '' ? 2
-                    : ($m[2] !== '' ? (int) $m[2]
-                    : ['two' => 2, 'three' => 3, 'four' => 4][strtolower($m[3])] ?? (int) $m[3]);
-                $line = $n === 2 ? 'Hand was run twice' : "Hand was run {$n} times";
-                $warnings[] = 'Run-it-twice hand kept as one hand with '.$n.' boards — the tracker splits the pot itself on import.';
-                $out[] = $line;
+            if (preg_match('/^Hand was run (?!once\b).+$/i', $line)) {
+                $warnings[] = 'Run-it-twice hand kept as one hand with its native CoinPoker markers — the tracker splits the pot itself on import.';
+                $out[] = rtrim($line);
 
                 continue;
             }
@@ -551,14 +640,16 @@ class CoinPokerConverter
             if (preg_match('/\bSPLASH\s+dropped\b/i', $line)) {
                 continue;
             }
-            // Board line (incl. run-it-twice "FIRST Board [ .. ]"): drop the
-            // ordinal prefix, drop it entirely when empty, trim "[ .. ]" padding.
-            if (preg_match('/^(?:(?:FIRST|SECOND|THIRD|FOURTH)\s+)?Board\s+\[(.*)\]\s*$/i', $line, $m)) {
-                $inner = trim($m[1]);
+            // Board line: trim "[ .. ]" padding, drop it entirely when empty. For a
+            // run-it-twice hand keep the "FIRST" / "SECOND" prefix so the tracker
+            // can tell the boards apart; otherwise drop any stray ordinal.
+            if (preg_match('/^((?:FIRST|SECOND|THIRD|FOURTH)\s+)?Board\s+\[(.*)\]\s*$/i', $line, $m)) {
+                $inner = trim($m[2]);
                 if ($inner === '') {
                     continue;
                 }
-                $line = 'Board ['.$inner.']';
+                $prefix = ($isRit && $m[1] !== '') ? strtoupper(trim($m[1])).' ' : '';
+                $line = $prefix.'Board ['.$inner.']';
             }
             if (preg_match('/^Game (started|ended):/', $line)) {
                 continue;
@@ -576,6 +667,9 @@ class CoinPokerConverter
         }
         $flush();
 
+        $this->collapseShowdowns($out);
+        $this->reconcilePot($out, $cashedOut, $warnings);
+
         $text = implode("\n", $out);
         $summary = $this->summarise($out, $isTournament);
         if ($summary !== null) {
@@ -584,6 +678,193 @@ class CoinPokerConverter
         }
 
         return [$text, $summary, $warnings];
+    }
+
+    /**
+     * CoinPoker prints one "shows / collected" pair per sub-pot, so a player who
+     * takes a main pot and a side pot appears two (or more) times. PokerTracker
+     * only counts the first "collected" line per player, which then disagrees
+     * with the total pot. Collapse each showdown section to one line per distinct
+     * "shows" and one "collected ... from pot" per player carrying the summed
+     * amount.
+     *
+     * @param  array<int, string>  $out
+     */
+    private function collapseShowdowns(array &$out): void
+    {
+        $isMarker = fn (string $l): bool => (bool) preg_match(
+            '/^\*\*\*\s+(?:(?:FIRST|SECOND|THIRD|FOURTH)\s+)?SHOW\s?DOWN\s+\*\*\*/i',
+            $l,
+        );
+
+        $result = [];
+        $count = count($out);
+        for ($i = 0; $i < $count; $i++) {
+            $result[] = $out[$i];
+            if (! $isMarker($out[$i])) {
+                continue;
+            }
+
+            // Consume this showdown section up to the next "*** ..." marker.
+            $section = [];
+            $seen = [];
+            $collectAt = [];   // player => index in $section of its collected line
+            $collectSum = [];  // player => summed amount
+            $collectSym = [];  // player => currency prefix as written
+
+            for ($i++; $i < $count && ! str_starts_with(ltrim($out[$i]), '*** '); $i++) {
+                $l = $out[$i];
+
+                if (preg_match('/^(\S.*?)\s+collected\s+(\D*?)([\d.]+)\s+from\s+pot\b/i', $l, $m)) {
+                    $player = $m[1];
+                    if (isset($collectAt[$player])) {
+                        $collectSum[$player] += (float) $m[3];
+
+                        continue;
+                    }
+                    $collectAt[$player] = count($section);
+                    $collectSum[$player] = (float) $m[3];
+                    $collectSym[$player] = $m[2];
+                    $section[] = $l;
+
+                    continue;
+                }
+
+                $key = trim($l);
+                if (isset($seen[$key])) {
+                    continue; // repeated "X: shows [..]" from the next sub-pot
+                }
+                $seen[$key] = true;
+                $section[] = $l;
+            }
+            $i--; // step back onto the marker line for the outer loop
+
+            foreach ($collectAt as $player => $idx) {
+                $section[$idx] = $player.' collected '
+                    .$collectSym[$player].$this->fmtMoney(round($collectSum[$player], 2))
+                    .' from pot';
+            }
+
+            foreach ($section as $l) {
+                $result[] = $l;
+            }
+        }
+
+        $out = $result;
+    }
+
+    /**
+     * PokerTracker computes the pot from the betting action and checks it against
+     * the sum of the "collected" lines plus rake — it ignores the "Total pot"
+     * summary line. CoinPoker sometimes credits the winner less than the pot
+     * actually holds (a splash-pot drop or an all-in cash-out skims money the
+     * betting still shows), which trips that check. Recompute the pot from the
+     * action, top up the largest "collected" line to close any shortfall, and
+     * restate the summary line to match.
+     *
+     * @param  array<int, string>  $out
+     * @param  array<int, string>  $warnings
+     */
+    private function reconcilePot(array &$out, bool $cashedOut, array &$warnings): void
+    {
+        // Split run-it-twice sub-hands ("#<id>-1:", "#<id>-2:") deliberately carry
+        // the whole betting action but only their board's share of the pot —
+        // splitRunItTwice() has already sized those, so leave them alone.
+        if (isset($out[0]) && preg_match('/Hand\s+#[0-9]+-[0-9]+:/', $out[0])) {
+            return;
+        }
+
+        $collectedIdx = [];
+        foreach ($out as $k => $l) {
+            if (preg_match('/^(\S.*?)\s+collected\s+\D*?([\d.]+)\s+from\s+pot\b/i', $l, $m)) {
+                $collectedIdx[$k] = (float) $m[2];
+            }
+        }
+        if ($collectedIdx === []) {
+            return;
+        }
+
+        $potKey = null;
+        $stated = $rake = 0.0;
+        foreach ($out as $k => $l) {
+            if (preg_match('/^Total pot\s+(\D*?)([\d.]+)(?:\s*\|\s*Rake\s+\D*?([\d.]+))?/i', $l, $m)) {
+                $potKey = $k;
+                $stated = (float) $m[2];
+                $rake = isset($m[3]) && $m[3] !== '' ? (float) $m[3] : 0.0;
+                break;
+            }
+        }
+        if ($potKey === null) {
+            return;
+        }
+
+        $actionPot = $this->potFromAction($out);
+        $collectedSum = round(array_sum($collectedIdx), 2);
+        $target = round($actionPot - $rake, 2);          // chips that must be handed out
+        $shortfall = round($target - $collectedSum, 2);
+
+        if ($shortfall >= 0.01) {
+            // Credit the missing chips to the biggest winner.
+            $biggest = array_keys($collectedIdx, max($collectedIdx), true)[0];
+            $fixed = round($collectedIdx[$biggest] + $shortfall, 2);
+            preg_match('/^(\S.*?)\s+collected\s+(\D*?)[\d.]+\s+from\s+pot\b(.*)$/i', $out[$biggest], $mm);
+            $out[$biggest] = $mm[1].' collected '.$mm[2].$this->fmtMoney($fixed).' from pot'.($mm[3] ?? '');
+            $collectedSum = round($collectedSum + $shortfall, 2);
+            $warnings[] = $cashedOut
+                ? 'Topped up the winning "collected" amount by '.$this->fmtMoney($shortfall).' (an all-in cash-out skimmed the pot; the tracker cannot model insurance, so the hand imports with the full pot going to the winner).'
+                : 'Topped up the winning "collected" amount by '.$this->fmtMoney($shortfall).' so it matches the pot the betting built (CoinPoker under-reported the amount won).';
+        }
+
+        $realPot = round(max($collectedSum + $rake, $actionPot), 2);
+        if (abs($realPot - $stated) >= 0.005) {
+            $out[$potKey] = preg_replace('/^(Total pot\s+\D*?)[\d.]+/i', '${1}'.$this->fmtMoney($realPot), $out[$potKey], 1) ?? $out[$potKey];
+        }
+    }
+
+    /**
+     * Total chips wagered, reconstructed from the converted action lines: blinds,
+     * antes and straddles, every bet / call / raise (by its "to" delta), less any
+     * uncalled bet returned. Street commitments reset on each board street.
+     *
+     * @param  array<int, string>  $out
+     */
+    private function potFromAction(array $out): float
+    {
+        $pot = 0.0;
+        $street = [];
+
+        foreach ($out as $l) {
+            if (preg_match('/^\*\*\*\s+(?:(?:FIRST|SECOND|THIRD|FOURTH)\s+)?(?:FLOP|TURN|RIVER|SHOW\s?DOWN)\s+\*\*\*/i', $l)) {
+                $street = [];
+
+                continue;
+            }
+            if (preg_match('/^(.+?):\s+posts\s+(?:small blind|big blind|the ante|ante|straddle|the straddle|button blind|missed blind|dead)\s+\D*?([\d.]+)/i', $l, $m)) {
+                $pot += (float) $m[2];
+                $street[$m[1]] = round(($street[$m[1]] ?? 0) + (float) $m[2], 2);
+
+                continue;
+            }
+            if (preg_match('/^(.+?):\s+(?:bets|calls)\s+\D*?([\d.]+)/i', $l, $m)) {
+                $pot += (float) $m[2];
+                $street[$m[1]] = round(($street[$m[1]] ?? 0) + (float) $m[2], 2);
+
+                continue;
+            }
+            if (preg_match('/^(.+?):\s+raises\s+\D*?[\d.]+\s+to\s+\D*?([\d.]+)/i', $l, $m)) {
+                $to = (float) $m[2];
+                $pot += round($to - ($street[$m[1]] ?? 0), 2);
+                $street[$m[1]] = $to;
+
+                continue;
+            }
+            if (preg_match('/^Uncalled bet\s+\(\D*?([\d.]+)\)\s+returned to\s+(.+?)\s*$/i', $l, $m)) {
+                $pot -= (float) $m[1];
+                $street[$m[2]] = round(($street[$m[2]] ?? 0) - (float) $m[1], 2);
+            }
+        }
+
+        return round($pot, 2);
     }
 
     private function isSplashPot(string $hand): bool
@@ -689,6 +970,13 @@ class CoinPokerConverter
             $stakes = preg_replace('/\d+(?:\.\d+)?/', $sym.'$0', $stakes) ?? $stakes;
         }
 
+        // Bomb-pot headers carry a third value (the ante), e.g. "$0.01/$0.02/$0.04".
+        // The trackers' limit parser only accepts small blind / big blind; the ante
+        // is still stated on the "posts ante" lines, so keep just the first two.
+        if (preg_match('#^(\S*?[\d.]+\s*/\s*\S*?[\d.]+)\s*/\s*\S*?[\d.]+#', $stakes, $m)) {
+            $stakes = $m[1];
+        }
+
         return trim($stakes).' '.$this->options->currencyCode;
     }
 
@@ -739,6 +1027,12 @@ class CoinPokerConverter
     {
         // CoinPoker: "didn't show" is not a summary phrase the trackers parse.
         $rest = preg_replace('/\bdidn\'t show\b/i', 'mucked', $rest) ?? $rest;
+
+        // All-in insurance: "... and cashed out for ₮X | Cash Out Fee ₮Y" is not
+        // parseable. Treat the player as having lost the pot (the insurance
+        // payout is a side transaction the tracker cannot represent).
+        $rest = preg_replace('/\s+and cashed out for\b.*$/i', ' and lost', $rest) ?? $rest;
+        $rest = preg_replace('/\s+cashed out for\b.*$/i', ' mucked', $rest) ?? $rest;
 
         // Already converted (has a position tag) — leave it alone.
         if (preg_match('/^\S.*\s\((?:button|small blind|big blind)\)\s/', $rest)) {
