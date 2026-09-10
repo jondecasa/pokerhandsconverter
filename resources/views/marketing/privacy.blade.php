@@ -23,8 +23,7 @@
             parties.</p>
 
             <h2 class="mt-8 text-lg font-semibold text-slate-900">Processors</h2>
-            <p>Stripe (payments), [your hosting provider] (application hosting), [your email provider]
-            (transactional email).</p>
+            <p>Stripe (payments).</p>
 
             <h2 class="mt-8 text-lg font-semibold text-slate-900">Retention &amp; deletion</h2>
             <p>Converted files are kept until you delete them or close your account. Email
