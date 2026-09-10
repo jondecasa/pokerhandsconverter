@@ -8,15 +8,15 @@
         </div>
     </x-slot>
 
-    <div class="py-12">
-        <div class="max-w-6xl mx-auto sm:px-6 lg:px-8 space-y-6">
+    <div class="py-6 sm:py-12">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-4 sm:space-y-6">
 
             @if (session('status'))
                 <div class="bg-green-50 border border-green-200 text-green-800 rounded-lg p-4">{{ session('status') }}</div>
             @endif
 
-            <div class="pc-card overflow-hidden">
-                <table class="min-w-full divide-y divide-gray-200 text-sm">
+            <div class="pc-card overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200 text-sm whitespace-nowrap">
                     <thead class="bg-gray-50 text-left text-xs uppercase tracking-wide text-gray-500">
                         <tr>
                             <th class="px-4 py-3">Package</th>

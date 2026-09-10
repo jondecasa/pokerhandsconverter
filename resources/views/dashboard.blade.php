@@ -5,8 +5,8 @@
         </h2>
     </x-slot>
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
+    <div class="py-6 sm:py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-4 sm:space-y-6">
 
             @if (session('status'))
                 <div class="bg-green-50 border border-green-200 text-green-800 rounded-lg p-4">
@@ -15,7 +15,7 @@
             @endif
 
             {{-- Subscription status --}}
-            <div class="pc-card p-6">
+            <div class="pc-card p-4 sm:p-6">
                 <div class="flex flex-wrap items-center justify-between gap-4">
                     <div>
                         <h3 class="text-lg font-semibold text-gray-900">Subscription</h3>
@@ -57,46 +57,42 @@
             </div>
 
             {{-- Quick stats --}}
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                <div class="pc-card p-6">
-                    <div class="text-3xl font-bold text-gray-900">{{ number_format($stats['files']) }}</div>
-                    <div class="text-sm text-gray-500 mt-1">Files converted</div>
+            <div class="grid grid-cols-2 gap-4 sm:grid-cols-3">
+                <div class="pc-card p-4 sm:p-6">
+                    <div class="text-2xl font-bold text-gray-900 sm:text-3xl">{{ number_format($stats['files']) }}</div>
+                    <div class="mt-1 text-xs text-gray-500 sm:text-sm">Files converted</div>
                 </div>
-                <div class="pc-card p-6">
-                    <div class="text-3xl font-bold text-gray-900">{{ number_format($stats['hands']) }}</div>
-                    <div class="text-sm text-gray-500 mt-1">Hands converted</div>
+                <div class="pc-card p-4 sm:p-6">
+                    <div class="text-2xl font-bold text-gray-900 sm:text-3xl">{{ number_format($stats['hands']) }}</div>
+                    <div class="mt-1 text-xs text-gray-500 sm:text-sm">Hands converted</div>
                 </div>
-                <div class="pc-card p-6 flex items-center">
-                    <a href="{{ route('convert.create') }}" class="inline-flex items-center px-4 py-2 bg-indigo-600 text-white text-sm rounded-md hover:bg-indigo-500">
-                        Convert a file &rarr;
-                    </a>
-                </div>
+                <a href="{{ route('convert.create') }}"
+                   class="col-span-2 flex items-center justify-center gap-1.5 rounded-xl border border-indigo-600 bg-indigo-600 p-4 text-sm font-semibold text-white hover:bg-indigo-500 sm:col-span-1 sm:p-6">
+                    Convert a file &rarr;
+                </a>
             </div>
 
             {{-- Recent conversions --}}
-            <div class="pc-card p-6"
+            <div class="pc-card p-4 sm:p-6"
                  x-data="{ pendingAction: null, pendingName: '' }">
-                <h3 class="text-lg font-semibold text-gray-900 mb-4">Recent conversions</h3>
+                <h3 class="mb-3 text-lg font-semibold text-gray-900 sm:mb-4">Recent conversions</h3>
                 @forelse ($recent as $conversion)
-                    <div class="flex items-center justify-between gap-4 py-2 border-b last:border-0 text-sm">
-                        <div class="truncate">
-                            <a href="{{ route('conversions.show', $conversion) }}" class="text-indigo-600 hover:underline">{{ $conversion->original_filename }}</a>
-                            <span class="text-gray-400">· {{ $conversion->created_at->diffForHumans() }}</span>
-                        </div>
-                        <div class="flex items-center gap-3 shrink-0">
-                            <span class="text-gray-500">
-                                {{ $conversion->hand_count }} hands
+                    <div class="flex items-center gap-3 border-b py-2.5 last:border-0">
+                        <div class="min-w-0 flex-1">
+                            <a href="{{ route('conversions.show', $conversion) }}" class="block truncate text-sm text-indigo-600 hover:underline">{{ $conversion->original_filename }}</a>
+                            <div class="mt-0.5 text-xs text-gray-400">
+                                {{ $conversion->hand_count }} hands · {{ $conversion->created_at->diffForHumans() }}
                                 @if ($conversion->warning_count) · <span class="text-amber-600">{{ $conversion->warning_count }} warnings</span> @endif
-                            </span>
-                            <button type="button"
-                                    title="Delete conversion"
-                                    x-on:click="pendingAction='{{ route('conversions.destroy', $conversion) }}'; pendingName=@js($conversion->original_filename); $dispatch('open-modal', 'confirm-conversion-deletion')"
-                                    class="inline-flex items-center justify-center h-8 w-8 rounded-md bg-red-600 text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-1">
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
-                                </svg>
-                            </button>
+                            </div>
                         </div>
+                        <button type="button"
+                                title="Delete conversion"
+                                x-on:click="pendingAction='{{ route('conversions.destroy', $conversion) }}'; pendingName=@js($conversion->original_filename); $dispatch('open-modal', 'confirm-conversion-deletion')"
+                                class="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-red-600 text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-1">
+                            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                            </svg>
+                        </button>
                     </div>
                 @empty
                     <p class="text-sm text-gray-500">Nothing converted yet.</p>

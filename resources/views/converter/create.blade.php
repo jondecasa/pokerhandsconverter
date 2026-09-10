@@ -3,14 +3,14 @@
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">Convert a hand history</h2>
     </x-slot>
 
-    <div class="py-12">
-        <div class="max-w-3xl mx-auto sm:px-6 lg:px-8 space-y-6">
+    <div class="py-6 sm:py-12">
+        <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 space-y-4 sm:space-y-6">
 
             @if (session('status'))
                 <div class="bg-green-50 border border-green-200 text-green-800 rounded-lg p-4">{{ session('status') }}</div>
             @endif
 
-            <div class="pc-card p-6">
+            <div class="pc-card p-4 sm:p-6">
                 <p class="text-sm text-gray-600 mb-4">
                     Upload a <strong>CoinPoker</strong> hand-history <code>.txt</code> file. You will get back a
                     <code>.txt</code> in the format <strong>PokerTracker&nbsp;4</strong> reads (Hold'em Manager&nbsp;3
@@ -77,23 +77,23 @@
             </div>
 
             @if ($recent->isNotEmpty())
-                <div class="pc-card p-6"
+                <div class="pc-card p-4 sm:p-6"
                      x-data="{ pendingAction: null, pendingName: '' }">
                     <h3 class="text-lg font-semibold text-gray-900 mb-3">Recent</h3>
                     @foreach ($recent as $conversion)
-                        <div class="flex items-center justify-between gap-4 py-2 border-b last:border-0 text-sm">
-                            <a href="{{ route('conversions.show', $conversion) }}" class="text-indigo-600 hover:underline truncate">{{ $conversion->original_filename }}</a>
-                            <div class="flex items-center gap-3 shrink-0">
-                                <span class="text-gray-500">{{ $conversion->hand_count }} hands · {{ $conversion->created_at->diffForHumans() }}</span>
-                                <button type="button"
-                                        title="Delete conversion"
-                                        x-on:click="pendingAction='{{ route('conversions.destroy', $conversion) }}'; pendingName=@js($conversion->original_filename); $dispatch('open-modal', 'confirm-conversion-deletion')"
-                                        class="inline-flex items-center justify-center h-8 w-8 rounded-md bg-red-600 text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-1">
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
-                                    </svg>
-                                </button>
+                        <div class="flex items-center gap-3 py-2.5 border-b last:border-0">
+                            <div class="min-w-0 flex-1">
+                                <a href="{{ route('conversions.show', $conversion) }}" class="block truncate text-sm text-indigo-600 hover:underline">{{ $conversion->original_filename }}</a>
+                                <div class="mt-0.5 text-xs text-gray-400">{{ $conversion->hand_count }} hands · {{ $conversion->created_at->diffForHumans() }}</div>
                             </div>
+                            <button type="button"
+                                    title="Delete conversion"
+                                    x-on:click="pendingAction='{{ route('conversions.destroy', $conversion) }}'; pendingName=@js($conversion->original_filename); $dispatch('open-modal', 'confirm-conversion-deletion')"
+                                    class="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-red-600 text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-1">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                                </svg>
+                            </button>
                         </div>
                     @endforeach
 

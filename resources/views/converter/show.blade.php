@@ -3,33 +3,33 @@
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">Conversion result</h2>
     </x-slot>
 
-    <div class="py-12">
-        <div class="max-w-4xl mx-auto sm:px-6 lg:px-8 space-y-6">
+    <div class="py-6 sm:py-12">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-4 sm:space-y-6">
 
             @if (session('status'))
                 <div class="bg-green-50 border border-green-200 text-green-800 rounded-lg p-4">{{ session('status') }}</div>
             @endif
 
             {{-- Upload summary --}}
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                <div class="pc-card p-6 text-center">
-                    <div class="text-3xl font-bold text-gray-900">{{ number_format($conversion->hand_count) }}</div>
-                    <div class="text-sm text-gray-500 mt-1">Hands</div>
+            <div class="grid grid-cols-3 gap-3 sm:gap-4">
+                <div class="pc-card p-3 text-center sm:p-6">
+                    <div class="text-xl font-bold text-gray-900 sm:text-3xl">{{ number_format($conversion->hand_count) }}</div>
+                    <div class="mt-1 text-xs text-gray-500 sm:text-sm">Hands</div>
                 </div>
-                <div class="pc-card p-6 text-center">
-                    <div class="text-3xl font-bold {{ $conversion->splash_pots ? 'text-indigo-600' : 'text-gray-900' }}">{{ number_format($conversion->splash_pots) }}</div>
-                    <div class="text-sm text-gray-500 mt-1">Splash pots</div>
+                <div class="pc-card p-3 text-center sm:p-6">
+                    <div class="text-xl font-bold sm:text-3xl {{ $conversion->splash_pots ? 'text-indigo-600' : 'text-gray-900' }}">{{ number_format($conversion->splash_pots) }}</div>
+                    <div class="mt-1 text-xs text-gray-500 sm:text-sm">Splash pots</div>
                 </div>
-                <div class="pc-card p-6 text-center">
-                    <div class="text-3xl font-bold {{ $conversion->bomb_pots ? 'text-indigo-600' : 'text-gray-900' }}">{{ number_format($conversion->bomb_pots) }}</div>
-                    <div class="text-sm text-gray-500 mt-1">Bomb pots</div>
+                <div class="pc-card p-3 text-center sm:p-6">
+                    <div class="text-xl font-bold sm:text-3xl {{ $conversion->bomb_pots ? 'text-indigo-600' : 'text-gray-900' }}">{{ number_format($conversion->bomb_pots) }}</div>
+                    <div class="mt-1 text-xs text-gray-500 sm:text-sm">Bomb pots</div>
                 </div>
             </div>
 
-            <div class="pc-card p-6">
+            <div class="pc-card p-4 sm:p-6">
                 <div class="flex flex-wrap items-start justify-between gap-4">
-                    <div>
-                        <h3 class="text-lg font-semibold text-gray-900">{{ $conversion->original_filename }}</h3>
+                    <div class="min-w-0">
+                        <h3 class="text-lg font-semibold text-gray-900 break-words">{{ $conversion->original_filename }}</h3>
                         <p class="text-sm text-gray-500 mt-1">
                             {{ $conversion->hand_count }} hands ·
                             {{ number_format($conversion->input_bytes / 1024, 1) }} KB in ·
@@ -66,7 +66,7 @@
             @endif
 
             @if ($preview)
-                <div class="pc-card p-6">
+                <div class="pc-card p-4 sm:p-6">
                     <h4 class="font-semibold text-gray-900 mb-2">Preview</h4>
                     <pre class="text-xs bg-gray-900 text-gray-100 rounded-lg p-4 overflow-x-auto whitespace-pre">{{ $preview }}</pre>
                 </div>
