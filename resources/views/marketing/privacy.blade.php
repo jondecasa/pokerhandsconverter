@@ -27,14 +27,14 @@
 
             <h2 class="mt-8 text-lg font-semibold text-slate-900">Retention &amp; deletion</h2>
             <p>Converted files are kept until you delete them or close your account. Email
-            info@pokerhandsconverter.com to request deletion of your account and associated files.</p>
+            {{ config('pokerhandsconverter.contact_email') }} to request deletion of your account and associated files.</p>
 
             <h2 class="mt-8 text-lg font-semibold text-slate-900">Your rights</h2>
             <p>Depending on your jurisdiction you may have rights to access, correct, export or delete your
             personal data. Contact us to exercise them.</p>
 
             <h2 class="mt-8 text-lg font-semibold text-slate-900">Contact</h2>
-            <p>info@pokerhandsconverter.com</p>
+            <p>{{ config('pokerhandsconverter.contact_email') }}</p>
         </div>
     </section>
 </x-marketing-layout>

@@ -45,6 +45,7 @@
                 <a href="{{ route('home') }}#features" class="text-sm font-medium text-slate-600 hover:text-slate-900">Features</a>
                 <a href="{{ route('pricing') }}" class="text-sm font-medium text-slate-600 hover:text-slate-900">Pricing</a>
                 <a href="{{ route('home') }}#faq" class="text-sm font-medium text-slate-600 hover:text-slate-900">FAQ</a>
+                <a href="{{ route('contact') }}" class="text-sm font-medium text-slate-600 hover:text-slate-900">Contact</a>
             </div>
 
             <div class="hidden items-center gap-3 md:flex">
@@ -74,6 +75,7 @@
                 <a href="{{ route('home') }}#features" class="text-sm font-medium text-slate-700">Features</a>
                 <a href="{{ route('pricing') }}" class="text-sm font-medium text-slate-700">Pricing</a>
                 <a href="{{ route('home') }}#faq" class="text-sm font-medium text-slate-700">FAQ</a>
+                <a href="{{ route('contact') }}" class="text-sm font-medium text-slate-700">Contact</a>
                 <hr class="border-slate-200">
                 @auth
                     <a href="{{ route('dashboard') }}" class="rounded-lg bg-indigo-600 px-4 py-2 text-center text-sm font-semibold text-white">Go to dashboard</a>
@@ -126,6 +128,7 @@
                         <ul class="mt-3 space-y-2">
                             <li><a href="{{ route('terms') }}" class="text-slate-500 hover:text-slate-900">Terms</a></li>
                             <li><a href="{{ route('privacy') }}" class="text-slate-500 hover:text-slate-900">Privacy</a></li>
+                            <li><a href="{{ route('contact') }}" class="text-slate-500 hover:text-slate-900">Contact</a></li>
                         </ul>
                     </div>
                 </div>

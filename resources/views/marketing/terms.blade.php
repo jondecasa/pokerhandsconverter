@@ -37,7 +37,7 @@
             after changes take effect constitutes acceptance.</p>
 
             <h2 class="mt-8 text-lg font-semibold text-slate-900">7. Contact</h2>
-            <p>Questions: info@pokerhandsconverter.com.</p>
+            <p>Questions: {{ config('pokerhandsconverter.contact_email') }}.</p>
         </div>
     </section>
 </x-marketing-layout>

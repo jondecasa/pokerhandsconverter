@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\PlanController as AdminPlanController;
+use App\Http\Controllers\ContactController;
 use App\Http\Controllers\ConverterController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\MarketingController;
@@ -15,6 +16,8 @@ Route::get('/', [MarketingController::class, 'home'])->name('home');
 Route::get('/pricing', [MarketingController::class, 'pricing'])->name('pricing');
 Route::view('/terms', 'marketing.terms')->name('terms');
 Route::view('/privacy', 'marketing.privacy')->name('privacy');
+Route::get('/contact', [ContactController::class, 'show'])->name('contact');
+Route::post('/contact', [ContactController::class, 'submit'])->middleware('throttle:5,1')->name('contact.submit');
 
 /*
 | Authenticated app ("the back")

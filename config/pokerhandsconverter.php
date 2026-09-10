@@ -16,6 +16,10 @@ return [
     // Cashier subscription "type" (a.k.a. name). Keep it stable once live.
     'subscription_name' => 'default',
 
+    // Where the public contact form delivers, and the address shown in the
+    // legal pages.
+    'contact_email' => env('CONTACT_EMAIL', 'info@pokerhandsconverter.com'),
+
     // Default free-trial length (days) when a package does not set its own. 0 = none.
     'trial_days' => (int) env('PLAN_TRIAL_DAYS', 7),
 
