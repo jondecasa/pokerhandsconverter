@@ -7,7 +7,7 @@
         <p class="mt-4 text-lg text-slate-600">
             Questions about a conversion that didn&rsquo;t import, billing, or anything else &mdash; send us a note.
             You can also email
-            <a href="mailto:{{ config('pokerhandsconverter.contact_email') }}" class="font-medium text-indigo-600 hover:text-indigo-500">{{ config('pokerhandsconverter.contact_email') }}</a>
+            <a href="mailto:{{ config('pokerhandsconverter.contact_email') }}" class="font-medium text-indigo-600 hover:text-indigo-500 break-words">{{ config('pokerhandsconverter.contact_email') }}</a>
             directly.
         </p>
 

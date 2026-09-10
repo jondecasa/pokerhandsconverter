@@ -8,17 +8,17 @@
              style="background-image:linear-gradient(#fff 1px,transparent 1px),linear-gradient(90deg,#fff 1px,transparent 1px);background-size:48px 48px;"></div>
         <div class="pointer-events-none absolute -top-40 left-1/2 h-96 w-[42rem] -translate-x-1/2 rounded-full bg-indigo-600/30 blur-3xl"></div>
 
-        <div class="relative mx-auto max-w-7xl px-6 py-20 lg:py-28">
-            <div class="grid items-center gap-14 lg:grid-cols-2">
-                <div>
-                    <span class="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-3 py-1 text-xs font-medium text-indigo-200">
+        <div class="relative mx-auto max-w-7xl px-6 py-16 sm:py-20 lg:py-28">
+            <div class="grid items-center gap-10 lg:grid-cols-2 lg:gap-14">
+                <div class="min-w-0">
+                    <span class="inline-flex max-w-full flex-wrap items-center gap-x-2 gap-y-1 rounded-2xl border border-white/15 bg-white/5 px-3 py-1.5 text-xs font-medium text-indigo-200">
                         Cash games &amp; tournaments · HM3 · PT4 · Hand2Note
                     </span>
-                    <h1 class="mt-5 text-4xl font-extrabold leading-[1.1] tracking-tight sm:text-5xl lg:text-6xl">
+                    <h1 class="mt-5 text-3xl font-extrabold leading-[1.15] tracking-tight sm:text-5xl sm:leading-[1.1] lg:text-6xl">
                         Your CoinPoker hands,<br>
                         <span class="text-indigo-400">readable by your tracker.</span>
                     </h1>
-                    <p class="mt-6 max-w-xl text-lg text-slate-300">
+                    <p class="mt-6 max-w-xl text-base text-slate-300 sm:text-lg">
                         CoinPoker exports hand histories that Hold'em Manager and PokerTracker&nbsp;4 refuse to import.
                         PokerHandsConverter rewrites them in seconds into a format PokerTracker&nbsp;4 reads &mdash; header,
                         currency, timezone and stakes, all fixed automatically.
@@ -45,7 +45,7 @@
                 </div>
 
                 {{-- before / after card --}}
-                <div class="rounded-2xl border border-white/10 bg-slate-900/70 p-2 shadow-2xl backdrop-blur">
+                <div class="min-w-0 rounded-2xl border border-white/10 bg-slate-900/70 p-2 shadow-2xl backdrop-blur">
                     <div class="flex items-center gap-1.5 px-3 py-2">
                         <span class="h-3 w-3 rounded-full bg-red-400/80"></span>
                         <span class="h-3 w-3 rounded-full bg-amber-400/80"></span>
@@ -128,7 +128,7 @@
                     ['2', 'We reformat it', 'Every part the tracker reads &mdash; the header, game type, amounts, timestamps and the summary &mdash; is rewritten into the exact layout PokerTracker 4 expects. Cash games and tournaments are handled automatically.'],
                     ['3', 'Import and review', 'Download the converted .txt, point PokerTracker 4 at it, and your HUD lights up. Past conversions stay in your history to re-download.'],
                 ] as [$n, $t, $d])
-                    <div class="relative rounded-2xl border border-slate-200 bg-white p-8">
+                    <div class="relative rounded-2xl border border-slate-200 bg-white p-6 sm:p-8">
                         <div class="grid h-10 w-10 place-items-center rounded-full bg-indigo-600 text-sm font-bold text-white">{{ $n }}</div>
                         <h3 class="mt-4 text-lg font-semibold text-slate-900">{{ $t }}</h3>
                         <p class="mt-2 text-sm text-slate-600">{!! $d !!}</p>
@@ -186,7 +186,7 @@
 
             <div class="mx-auto mt-12 grid max-w-3xl gap-6 sm:grid-cols-2">
                 @forelse ($plans as $plan)
-                    <div class="flex flex-col rounded-2xl border bg-white p-8 {{ $plan->is_highlighted ? 'border-indigo-600 ring-1 ring-indigo-600' : 'border-slate-200' }}">
+                    <div class="flex flex-col rounded-2xl border bg-white p-6 sm:p-8 {{ $plan->is_highlighted ? 'border-indigo-600 ring-1 ring-indigo-600' : 'border-slate-200' }}">
                         @if ($plan->is_highlighted)
                             <span class="mb-3 inline-flex w-max rounded-full bg-indigo-600 px-3 py-1 text-xs font-semibold text-white">Best value</span>
                         @endif
