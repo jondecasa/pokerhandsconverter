@@ -129,7 +129,7 @@ return [
 
     'cookie' => env(
         'SESSION_COOKIE',
-        Str::slug((string) env('APP_NAME', 'pokercoinverter')).'-session'
+        Str::slug((string) env('APP_NAME', 'pokerhandsconverter')).'-session'
     ),
 
     /*

@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'name' => env('APP_NAME', 'PokerCoinverter'),
+    'name' => env('APP_NAME', 'PokerHandsConverter'),
 
     /*
     |--------------------------------------------------------------------------

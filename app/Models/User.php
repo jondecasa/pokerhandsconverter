@@ -80,7 +80,7 @@ class User extends Authenticatable
     /** The package behind the user's active subscription, if it maps to one. */
     public function currentPlan(): ?Plan
     {
-        $price = $this->subscription(config('pokercoinverter.subscription_name', 'default'))?->stripe_price;
+        $price = $this->subscription(config('pokerhandsconverter.subscription_name', 'default'))?->stripe_price;
 
         if (blank($price)) {
             return null;

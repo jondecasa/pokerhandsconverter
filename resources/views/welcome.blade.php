@@ -20,7 +20,7 @@
                     </h1>
                     <p class="mt-6 max-w-xl text-lg text-slate-300">
                         CoinPoker exports hand histories that Hold'em Manager and PokerTracker&nbsp;4 refuse to import.
-                        PokerCoinverter rewrites them in seconds into a format PokerTracker&nbsp;4 reads &mdash; header,
+                        PokerHandsConverter rewrites them in seconds into a format PokerTracker&nbsp;4 reads &mdash; header,
                         currency, timezone and stakes, all fixed automatically.
                     </p>
 

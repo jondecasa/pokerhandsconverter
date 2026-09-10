@@ -28,7 +28,7 @@
                                 @elseif ($onGracePeriod)
                                     Cancelled — access ends {{ optional($subscription->ends_at)->toFormattedDateString() }}.
                                 @else
-                                    Active. Thanks for supporting PokerCoinverter.
+                                    Active. Thanks for supporting PokerHandsConverter.
                                 @endif
                             </p>
                         @else

@@ -1,6 +1,6 @@
-# PokerCoinverter
+# PokerHandsConverter
 
-**PokerCoinverter** converts **CoinPoker** hand-history `.txt` files into the
+**PokerHandsConverter** converts **CoinPoker** hand-history `.txt` files into the
 hand-history format that **PokerTracker 4** imports cleanly (Hold'em Manager 3
 and similar trackers read it too). Access to the converter is gated behind a
 paid **Stripe subscription**.
@@ -17,7 +17,7 @@ Verified against real CoinPoker exports. Per hand:
 becomes `CoinPoker Hand #130114200045:  Hold'em No Limit ($0.01/$0.02 USD) - 2026/09/09 12:01:21 CET [2026/09/09 6:01:21 ET]`:
 
 1. The `CoinPoker Hand #` prefix is **kept** — PokerTracker 4 / Hold'em Manager 3
-   import CoinPoker natively (change `config('pokercoinverter.converter.room_name')`
+   import CoinPoker natively (change `config('pokerhandsconverter.converter.room_name')`
    only if your tracker needs a different site name).
 2. Game code expanded: `NLH → Hold'em No Limit`, `PLO → Omaha Pot Limit`, etc.
 3. Tether sign `₮ → $`, currency code (`USD`) added inside the parenthesis, ` - `
@@ -114,14 +114,14 @@ Create the MySQL database and point `.env` at it (defaults assume local
 XAMPP/MariaDB — `root`, no password):
 
 ```sql
-CREATE DATABASE pokercoinverter CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+CREATE DATABASE pokerhandsconverter CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 ```
 
 ```dotenv
 DB_CONNECTION=mysql
 DB_HOST=127.0.0.1
 DB_PORT=3306
-DB_DATABASE=pokercoinverter
+DB_DATABASE=pokerhandsconverter
 DB_USERNAME=root
 DB_PASSWORD=
 ```
@@ -168,7 +168,7 @@ php artisan serve
 `STRIPE_PRICE_*` / `PLAN_*` env vars only seed the two starter packages on a
 fresh `db:seed`. After that, packages live in the DB — manage them in the admin
 UI (below). Subscription name, default trial length, the stake ladder and every
-converter knob stay in [`config/pokercoinverter.php`](config/pokercoinverter.php).
+converter knob stay in [`config/pokerhandsconverter.php`](config/pokerhandsconverter.php).
 
 ### Packages (pricing) & the admin panel
 
@@ -189,8 +189,8 @@ Packages ("plans") are rows in the `plans` table, edited by admins at
 Make yourself an admin:
 
 ```bash
-php artisan pokercoinverter:make-admin you@example.com
-php artisan pokercoinverter:make-admin you@example.com --revoke   # undo
+php artisan pokerhandsconverter:make-admin you@example.com
+php artisan pokerhandsconverter:make-admin you@example.com --revoke   # undo
 ```
 
 `php artisan db:seed --class=PlanSeeder` (re)creates the Monthly/Yearly starters.

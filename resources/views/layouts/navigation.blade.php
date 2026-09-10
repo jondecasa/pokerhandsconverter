@@ -13,7 +13,7 @@
     {{-- Brand --}}
     <a href="{{ route('dashboard') }}" class="flex h-16 items-center gap-2.5 border-b border-white/10 px-5">
         <img src="{{ asset('logo.svg') }}" alt="" width="36" height="36" class="h-9 w-9 rounded-[10px]">
-        <span class="text-lg font-extrabold tracking-tight text-white">Poker<span class="text-indigo-400">Coinverter</span></span>
+        <span class="text-lg font-extrabold tracking-tight text-white">PokerHands<span class="text-indigo-400">Converter</span></span>
     </a>
 
     {{-- Primary nav --}}

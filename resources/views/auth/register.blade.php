@@ -1,5 +1,5 @@
 <x-guest-layout>
-    <x-slot name="heading">Create your PokerCoinverter account</x-slot>
+    <x-slot name="heading">Create your PokerHandsConverter account</x-slot>
 
     <form method="POST" action="{{ route('register') }}">
         @csrf

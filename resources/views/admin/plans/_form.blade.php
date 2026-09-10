@@ -75,7 +75,7 @@
     </div>
 
     <div>
-        <label class="block text-sm font-medium text-gray-700">Trial days <span class="text-gray-400">(blank = default {{ (int) config('pokercoinverter.trial_days') }})</span></label>
+        <label class="block text-sm font-medium text-gray-700">Trial days <span class="text-gray-400">(blank = default {{ (int) config('pokerhandsconverter.trial_days') }})</span></label>
         <input name="trial_days" type="number" min="0" max="365" value="{{ old('trial_days', $plan->trial_days) }}"
                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm text-sm">
         <x-input-error :messages="$errors->get('trial_days')" class="mt-1" />

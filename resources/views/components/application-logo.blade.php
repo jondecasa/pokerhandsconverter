@@ -1,1 +1,1 @@
-<img src="{{ asset('logo.svg') }}" alt="PokerCoinverter" {{ $attributes->merge(['class' => 'rounded-xl']) }}>
+<img src="{{ asset('logo.svg') }}" alt="PokerHandsConverter" {{ $attributes->merge(['class' => 'rounded-xl']) }}>

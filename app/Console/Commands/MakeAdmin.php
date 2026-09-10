@@ -7,7 +7,7 @@ use Illuminate\Console\Command;
 
 class MakeAdmin extends Command
 {
-    protected $signature = 'pokercoinverter:make-admin {email} {--revoke : Remove admin instead of granting it}';
+    protected $signature = 'pokerhandsconverter:make-admin {email} {--revoke : Remove admin instead of granting it}';
 
     protected $description = 'Grant (or revoke) admin access for a user by email';
 

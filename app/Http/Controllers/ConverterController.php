@@ -20,7 +20,7 @@ class ConverterController extends Controller
 
         return view('converter.create', [
             'recent' => $user->conversions()->latest()->take(10)->get(),
-            'maxUploadKb' => config('pokercoinverter.max_upload_kb'),
+            'maxUploadKb' => config('pokerhandsconverter.max_upload_kb'),
             'stakesCap' => $user->currentPlan()?->stakes_cap,
             'heroName' => $user->heroName(),
             'includeBombPots' => (bool) $user->pref('include_bomb_pots', true),
@@ -30,7 +30,7 @@ class ConverterController extends Controller
 
     public function store(Request $request): RedirectResponse
     {
-        $maxKb = (int) config('pokercoinverter.max_upload_kb');
+        $maxKb = (int) config('pokerhandsconverter.max_upload_kb');
 
         $validated = $request->validate([
             // Trackers export plain-text ".txt"; we accept any file within the

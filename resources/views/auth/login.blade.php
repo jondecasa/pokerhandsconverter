@@ -1,5 +1,5 @@
 <x-guest-layout>
-    <x-slot name="heading">Log in to PokerCoinverter</x-slot>
+    <x-slot name="heading">Log in to PokerHandsConverter</x-slot>
 
     <x-auth-session-status class="mb-4" :status="session('status')" />
 

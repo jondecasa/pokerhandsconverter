@@ -1,4 +1,4 @@
-<x-marketing-layout title="Privacy Policy — PokerCoinverter">
+<x-marketing-layout title="Privacy Policy — PokerHandsConverter">
     <section class="mx-auto max-w-3xl px-6 py-16">
         <h1 class="text-3xl font-extrabold tracking-tight text-slate-900">Privacy Policy</h1>
         <p class="mt-2 text-sm text-slate-400">Last updated {{ date('F Y') }}</p>
@@ -27,14 +27,14 @@
 
             <h2 class="mt-8 text-lg font-semibold text-slate-900">Retention &amp; deletion</h2>
             <p>Converted files are kept until you delete them or close your account. Email
-            [support@your-domain] to request deletion of your account and associated files.</p>
+            info@pokerhandsconverter.com to request deletion of your account and associated files.</p>
 
             <h2 class="mt-8 text-lg font-semibold text-slate-900">Your rights</h2>
             <p>Depending on your jurisdiction you may have rights to access, correct, export or delete your
             personal data. Contact us to exercise them.</p>
 
             <h2 class="mt-8 text-lg font-semibold text-slate-900">Contact</h2>
-            <p>[support@your-domain]</p>
+            <p>info@pokerhandsconverter.com</p>
         </div>
     </section>
 </x-marketing-layout>

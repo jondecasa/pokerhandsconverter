@@ -1,6 +1,6 @@
 @php($trialDays = $plans->max(fn ($p) => $p->effectiveTrialDays()) ?? 0)
 
-<x-marketing-layout title="Pricing — PokerCoinverter">
+<x-marketing-layout title="Pricing — PokerHandsConverter">
 
     <section class="mx-auto max-w-5xl px-6 py-20">
         <div class="mx-auto max-w-2xl text-center">
@@ -62,7 +62,7 @@
             <div class="mt-6 divide-y divide-slate-200 border-y border-slate-200">
                 @foreach ([
                     ['How does the free trial work?', ($trialDays > 0 ? "You get $trialDays days of full access. You won't be charged until the trial ends, and you can cancel before then at no cost." : 'There is currently no free trial — your subscription starts immediately.')],
-                    ['Which payment methods do you accept?', 'All major cards, processed securely by Stripe. PokerCoinverter never stores or sees your card details.'],
+                    ['Which payment methods do you accept?', 'All major cards, processed securely by Stripe. PokerHandsConverter never stores or sees your card details.'],
                     ['Can I switch between monthly and yearly?', 'Yes. Change your plan any time from the billing portal linked in your dashboard; Stripe prorates the difference.'],
                     ['What happens if I cancel?', 'You keep access until the end of the period you already paid for, then the account reverts to no active subscription. Your conversion history is preserved.'],
                     ['Do you offer refunds?', 'Contact us within 14 days of a charge if the converter did not work for your files and we could not fix it — see our Terms.'],

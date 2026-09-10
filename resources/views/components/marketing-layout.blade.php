@@ -1,6 +1,6 @@
 @props([
-    'title' => 'PokerCoinverter — Convert CoinPoker hand histories for PokerTracker 4',
-    'description' => 'PokerCoinverter turns your CoinPoker hand-history files into a format PokerTracker 4 imports cleanly. Cash games and tournaments.',
+    'title' => 'PokerHandsConverter — Convert CoinPoker hand histories for PokerTracker 4',
+    'description' => 'PokerHandsConverter turns your CoinPoker hand-history files into a format PokerTracker 4 imports cleanly. Cash games and tournaments.',
 ])
 
 <!DOCTYPE html>
@@ -36,8 +36,8 @@
     >
         <nav class="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
             <a href="{{ route('home') }}" class="flex items-center gap-2.5 text-lg font-extrabold tracking-tight text-slate-900">
-                <img src="{{ asset('logo.svg') }}" alt="PokerCoinverter" width="36" height="36" class="h-9 w-9 rounded-[10px]">
-                Poker<span class="text-indigo-600">Coinverter</span>
+                <img src="{{ asset('logo.svg') }}" alt="PokerHandsConverter" width="36" height="36" class="h-9 w-9 rounded-[10px]">
+                PokerHands<span class="text-indigo-600">Converter</span>
             </a>
 
             <div class="hidden items-center gap-8 md:flex">
@@ -95,7 +95,7 @@
             <div class="flex flex-col gap-8 md:flex-row md:items-start md:justify-between">
                 <div class="max-w-sm">
                     <div class="flex items-center gap-2 text-base font-extrabold text-slate-900">
-                        Poker<span class="text-indigo-600">Coinverter</span>
+                        PokerHands<span class="text-indigo-600">Converter</span>
                     </div>
                     <p class="mt-3 text-sm text-slate-500">
                         Convert CoinPoker hand histories into a format PokerTracker 4 reads, so your tracker and HUD just work.
@@ -131,7 +131,7 @@
                 </div>
             </div>
             <div class="mt-10 border-t border-slate-200 pt-6 text-xs text-slate-400">
-                &copy; {{ date('Y') }} PokerCoinverter. Not affiliated with, endorsed by, or sponsored by CoinPoker,
+                &copy; {{ date('Y') }} PokerHandsConverter. Not affiliated with, endorsed by, or sponsored by CoinPoker,
                 PokerTracker or Hold'em Manager.
             </div>
         </div>

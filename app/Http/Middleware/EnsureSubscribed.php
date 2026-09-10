@@ -15,7 +15,7 @@ class EnsureSubscribed
     public function handle(Request $request, Closure $next): Response
     {
         $user = $request->user();
-        $name = config('pokercoinverter.subscription_name', 'default');
+        $name = config('pokerhandsconverter.subscription_name', 'default');
 
         if (! $user || ! $user->subscribed($name)) {
             return redirect()

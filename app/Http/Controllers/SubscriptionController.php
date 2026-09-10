@@ -15,7 +15,7 @@ class SubscriptionController extends Controller
     public function pricing(Request $request): View
     {
         $user = $request->user();
-        $name = config('pokercoinverter.subscription_name', 'default');
+        $name = config('pokerhandsconverter.subscription_name', 'default');
 
         return view('subscription.pricing', [
             'plans' => Plan::visible()->ordered()->get(),
@@ -33,7 +33,7 @@ class SubscriptionController extends Controller
         abort_unless($plan->is_active, 404);
 
         $user = $request->user();
-        $name = config('pokercoinverter.subscription_name', 'default');
+        $name = config('pokerhandsconverter.subscription_name', 'default');
 
         if ($user->subscribed($name)) {
             return $user->hasStripeId()
@@ -98,7 +98,7 @@ class SubscriptionController extends Controller
      */
     public function resume(Request $request): RedirectResponse
     {
-        $name = config('pokercoinverter.subscription_name', 'default');
+        $name = config('pokerhandsconverter.subscription_name', 'default');
         $subscription = $request->user()->subscription($name);
 
         if ($subscription && $subscription->onGracePeriod()) {
@@ -116,7 +116,7 @@ class SubscriptionController extends Controller
      */
     public function cancel(Request $request): RedirectResponse
     {
-        $name = config('pokercoinverter.subscription_name', 'default');
+        $name = config('pokerhandsconverter.subscription_name', 'default');
         $subscription = $request->user()->subscription($name);
 
         if (! $subscription) {

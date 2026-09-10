@@ -70,7 +70,7 @@ class ConverterOptions
 
     public static function fromConfig(array $overrides = []): self
     {
-        $c = config('pokercoinverter.converter', []);
+        $c = config('pokerhandsconverter.converter', []);
 
         return new self(
             roomName: $overrides['room_name'] ?? $c['room_name'] ?? 'CoinPoker',

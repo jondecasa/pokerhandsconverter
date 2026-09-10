@@ -10,7 +10,7 @@ class DashboardController extends Controller
     public function __invoke(Request $request): View
     {
         $user = $request->user();
-        $name = config('pokercoinverter.subscription_name', 'default');
+        $name = config('pokerhandsconverter.subscription_name', 'default');
         $subscription = $user->subscription($name);
 
         return view('dashboard', [

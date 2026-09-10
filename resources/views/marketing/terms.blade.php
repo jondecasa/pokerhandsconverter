@@ -1,4 +1,4 @@
-<x-marketing-layout title="Terms of Service — PokerCoinverter">
+<x-marketing-layout title="Terms of Service — PokerHandsConverter">
     <section class="mx-auto max-w-3xl px-6 py-16">
         <h1 class="text-3xl font-extrabold tracking-tight text-slate-900">Terms of Service</h1>
         <p class="mt-2 text-sm text-slate-400">Last updated {{ date('F Y') }}</p>
@@ -8,7 +8,7 @@
             replace the bracketed placeholders before going live.</p>
 
             <h2 class="mt-8 text-lg font-semibold text-slate-900">1. Service</h2>
-            <p>PokerCoinverter ("the Service", operated by [Your Company], "we") converts poker hand-history
+            <p>PokerHandsConverter ("the Service", operated by [Your Company], "we") converts poker hand-history
             text files from CoinPoker's export format into the layout that PokerTracker 4 and similar
             tracking software import. We are not affiliated with CoinPoker, PokerTracker, Hold'em Manager
             or any tracker vendor.</p>
@@ -37,7 +37,7 @@
             after changes take effect constitutes acceptance.</p>
 
             <h2 class="mt-8 text-lg font-semibold text-slate-900">7. Contact</h2>
-            <p>Questions: [support@your-domain].</p>
+            <p>Questions: info@pokerhandsconverter.com.</p>
         </div>
     </section>
 </x-marketing-layout>

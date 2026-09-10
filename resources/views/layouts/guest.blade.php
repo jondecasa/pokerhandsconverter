@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>{{ ($title ?? null) ? $title.' · ' : '' }}{{ config('app.name', 'PokerCoinverter') }}</title>
+        <title>{{ ($title ?? null) ? $title.' · ' : '' }}{{ config('app.name', 'PokerHandsConverter') }}</title>
 
         <link rel="icon" type="image/svg+xml" href="{{ asset('favicon.svg') }}">
         <link rel="apple-touch-icon" href="{{ asset('favicon.svg') }}">
@@ -19,8 +19,8 @@
         <div class="min-h-screen flex flex-col items-center justify-center bg-slate-50 px-4 py-10">
 
             <a href="{{ route('home') }}" class="flex items-center gap-2.5 text-xl font-extrabold tracking-tight text-slate-900">
-                <img src="{{ asset('logo.svg') }}" alt="PokerCoinverter" width="40" height="40" class="h-10 w-10 rounded-[11px]">
-                Poker<span class="text-indigo-600">Coinverter</span>
+                <img src="{{ asset('logo.svg') }}" alt="PokerHandsConverter" width="40" height="40" class="h-10 w-10 rounded-[11px]">
+                PokerHands<span class="text-indigo-600">Converter</span>
             </a>
 
             @isset($heading)

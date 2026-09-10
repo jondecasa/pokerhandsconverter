@@ -23,8 +23,8 @@ class MarketingPagesTest extends TestCase
     {
         $this->get('/')
             ->assertOk()
-            ->assertSee('PokerCoinverter')
-            ->assertSee('Start your '.config('pokercoinverter.trial_days').'-day free trial');
+            ->assertSee('PokerHandsConverter')
+            ->assertSee('Start your '.config('pokerhandsconverter.trial_days').'-day free trial');
     }
 
     #[Test]

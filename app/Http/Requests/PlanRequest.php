@@ -28,7 +28,7 @@ class PlanRequest extends FormRequest
                 Rule::requiredIf(fn () => (float) $this->input('price') > 0),
                 'nullable', 'string', 'max:255',
             ],
-            'stakes_cap' => ['nullable', Rule::in(config('pokercoinverter.stakes'))],
+            'stakes_cap' => ['nullable', Rule::in(config('pokerhandsconverter.stakes'))],
             'stakes_label' => ['nullable', 'string', 'max:120'],
             'features' => ['nullable', 'string'], // textarea, one feature per line
             'trial_days' => ['nullable', 'integer', 'min:0', 'max:365'],

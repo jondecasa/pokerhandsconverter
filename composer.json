@@ -1,8 +1,8 @@
 {
     "$schema": "https://getcomposer.org/schema.json",
-    "name": "pokercoinverter/app",
+    "name": "pokerhandsconverter/app",
     "type": "project",
-    "description": "PokerCoinverter — converts CoinPoker hand histories for PokerTracker 4.",
+    "description": "PokerHandsConverter — converts CoinPoker hand histories for PokerTracker 4.",
     "keywords": ["poker", "coinpoker", "pokertracker", "hand-history", "converter"],
     "license": "MIT",
     "require": {

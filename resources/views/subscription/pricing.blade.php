@@ -70,7 +70,7 @@
             </div>
 
             <p class="text-xs text-gray-400 text-center">
-                Payments are processed securely by Stripe. PokerCoinverter never sees your card details.
+                Payments are processed securely by Stripe. PokerHandsConverter never sees your card details.
             </p>
         </div>
     </div>

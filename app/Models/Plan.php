@@ -56,7 +56,7 @@ class Plan extends Model
 
     public function effectiveTrialDays(): int
     {
-        return $this->trial_days ?? (int) config('pokercoinverter.trial_days', 0);
+        return $this->trial_days ?? (int) config('pokerhandsconverter.trial_days', 0);
     }
 
     public function priceLabel(): string

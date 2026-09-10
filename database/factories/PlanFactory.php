@@ -23,7 +23,7 @@ class PlanFactory extends Factory
             'currency' => 'USD',
             'interval' => fake()->randomElement(['month', 'year']),
             'stripe_price_id' => null,
-            'stakes_cap' => fake()->randomElement(config('pokercoinverter.stakes')),
+            'stakes_cap' => fake()->randomElement(config('pokerhandsconverter.stakes')),
             'stakes_label' => null,
             'features' => ['Unlimited conversions', 'Cash & tournaments', 'Conversion history'],
             'trial_days' => null,

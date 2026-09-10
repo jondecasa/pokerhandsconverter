@@ -27,7 +27,7 @@ class PlanController extends Controller
                 'is_active' => true,
                 'features' => [],
             ]),
-            'stakes' => config('pokercoinverter.stakes'),
+            'stakes' => config('pokerhandsconverter.stakes'),
         ]);
     }
 
@@ -43,7 +43,7 @@ class PlanController extends Controller
     {
         return view('admin.plans.edit', [
             'plan' => $plan,
-            'stakes' => config('pokercoinverter.stakes'),
+            'stakes' => config('pokerhandsconverter.stakes'),
         ]);
     }
 
