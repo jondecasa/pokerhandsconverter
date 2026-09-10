@@ -132,10 +132,44 @@
             </div>
             <div class="mt-10 border-t border-slate-200 pt-6 text-xs text-slate-400">
                 &copy; {{ date('Y') }} PokerCoinverter. Not affiliated with, endorsed by, or sponsored by CoinPoker,
-                PokerTracker or Hold'em Manager. Product names are used only to describe compatibility.
+                PokerTracker or Hold'em Manager.
             </div>
         </div>
     </footer>
+
+    {{-- ===================== COOKIE NOTICE ===================== --}}
+    <div
+        x-data="{
+            show: false,
+            init() {
+                try { this.show = ! localStorage.getItem('pc_cookie_ack') } catch (e) { this.show = true }
+            },
+            ack() {
+                try { localStorage.setItem('pc_cookie_ack', '1') } catch (e) {}
+                this.show = false
+            }
+        }"
+        x-show="show"
+        x-cloak
+        x-transition:enter="transition ease-out duration-300"
+        x-transition:enter-start="opacity-0 translate-y-4"
+        x-transition:enter-end="opacity-100 translate-y-0"
+        class="fixed inset-x-0 bottom-0 z-50 px-4 pb-4 sm:px-6"
+    >
+        <div class="mx-auto flex max-w-3xl flex-col gap-3 rounded-xl border border-slate-200 bg-white p-4 shadow-lg sm:flex-row sm:items-center sm:justify-between">
+            <p class="text-sm text-slate-600">
+                We use cookies to keep you signed in and to run the site. We don&rsquo;t use them for advertising or
+                third-party tracking. See our <a href="{{ route('privacy') }}" class="font-medium text-indigo-600 hover:text-indigo-500">privacy&nbsp;policy</a>.
+            </p>
+            <button
+                type="button"
+                x-on:click="ack()"
+                class="shrink-0 rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-500"
+            >
+                Got it
+            </button>
+        </div>
+    </div>
 
     <style>[x-cloak]{display:none!important}</style>
 </body>

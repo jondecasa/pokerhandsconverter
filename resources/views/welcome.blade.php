@@ -125,7 +125,7 @@
             <div class="mt-14 grid gap-8 md:grid-cols-3">
                 @foreach ([
                     ['1', 'Upload your file', 'Drop in the .txt CoinPoker exported. Cash games and tournaments, single hands or full sessions.'],
-                    ['2', 'We reformat it', 'Header and game code, the ₮ sign &rarr; $, the timezone stamp, the "Dealt to" noise and the summary lines are all rewritten to what PokerTracker 4 reads. Tournament chip counts stay untouched.'],
+                    ['2', 'We reformat it', 'Every part the tracker reads &mdash; the header, game type, amounts, timestamps and the summary &mdash; is rewritten into the exact layout PokerTracker 4 expects. Cash games and tournaments are handled automatically.'],
                     ['3', 'Import and review', 'Download the converted .txt, point PokerTracker 4 at it, and your HUD lights up. Past conversions stay in your history to re-download.'],
                 ] as [$n, $t, $d])
                     <div class="relative rounded-2xl border border-slate-200 bg-white p-8">
@@ -160,7 +160,7 @@
                 ['Timezone your way', 'Output the European dual stamp (local time + "[… ET]"), a single Eastern-time stamp, or leave CoinPoker\'s time untouched. You choose per upload.'],
                 ['Honest warnings', 'Run-it-twice boards, unparseable timestamps and stray blocks are flagged &mdash; the converter never silently guesses.'],
                 ['Conversion history', 'Every file you convert is kept in your account with hand counts and warnings, ready to re-download.'],
-                ['Your data stays yours', 'Files are processed for your account only and never shared. Card details go straight to Stripe &mdash; we never see them.'],
+                ['Your data stays yours', 'Files are processed for your account only, never shared or sold. Delete any conversion &mdash; and its converted file &mdash; whenever you want.'],
             ] as [$t, $d])
                 <div class="rounded-2xl border border-slate-200 bg-white p-6">
                     <div class="grid h-10 w-10 place-items-center rounded-lg bg-indigo-50 text-indigo-600">
