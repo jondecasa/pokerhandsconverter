@@ -75,16 +75,40 @@
             <div class="flex items-center justify-between">
                 <a href="{{ route('convert.create') }}" class="inline-block text-sm text-indigo-600 hover:underline">&larr; Convert another file</a>
 
-                <form method="POST" action="{{ route('conversions.destroy', $conversion) }}"
-                      onsubmit="return confirm('Delete this conversion and its converted file? This cannot be undone.');">
+                <x-danger-button x-data="" x-on:click.prevent="$dispatch('open-modal', 'confirm-conversion-deletion')">
+                    <svg class="w-4 h-4 me-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                    </svg>
+                    Delete conversion
+                </x-danger-button>
+            </div>
+
+            <x-modal name="confirm-conversion-deletion" focusable>
+                <form method="POST" action="{{ route('conversions.destroy', $conversion) }}" class="p-6">
                     @csrf
                     @method('DELETE')
-                    <button type="submit"
-                            class="inline-flex items-center px-4 py-2 border border-red-300 text-red-700 text-sm font-medium rounded-md hover:bg-red-50">
-                        Delete this conversion
-                    </button>
+
+                    <div class="flex items-start gap-4">
+                        <div class="shrink-0 flex h-10 w-10 items-center justify-center rounded-full bg-red-100">
+                            <svg class="h-5 w-5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <h2 class="text-lg font-semibold text-gray-900">Delete this conversion?</h2>
+                            <p class="mt-1 text-sm text-gray-600">
+                                <span class="font-medium text-gray-900">{{ $conversion->original_filename }}</span> and its
+                                converted file will be permanently removed. This cannot be undone.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="mt-6 flex justify-end gap-3">
+                        <x-secondary-button x-on:click="$dispatch('close')">Cancel</x-secondary-button>
+                        <x-danger-button>Delete conversion</x-danger-button>
+                    </div>
                 </form>
-            </div>
+            </x-modal>
 
         </div>
     </div>
