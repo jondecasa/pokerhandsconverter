@@ -15,7 +15,7 @@
             @endif
 
             {{-- Subscription status --}}
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6">
+            <div class="pc-card p-6">
                 <div class="flex flex-wrap items-center justify-between gap-4">
                     <div>
                         <h3 class="text-lg font-semibold text-gray-900">Subscription</h3>
@@ -58,15 +58,15 @@
 
             {{-- Quick stats --}}
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                <div class="bg-white shadow-sm sm:rounded-lg p-6">
+                <div class="pc-card p-6">
                     <div class="text-3xl font-bold text-gray-900">{{ number_format($stats['files']) }}</div>
                     <div class="text-sm text-gray-500 mt-1">Files converted</div>
                 </div>
-                <div class="bg-white shadow-sm sm:rounded-lg p-6">
+                <div class="pc-card p-6">
                     <div class="text-3xl font-bold text-gray-900">{{ number_format($stats['hands']) }}</div>
                     <div class="text-sm text-gray-500 mt-1">Hands converted</div>
                 </div>
-                <div class="bg-white shadow-sm sm:rounded-lg p-6 flex items-center">
+                <div class="pc-card p-6 flex items-center">
                     <a href="{{ route('convert.create') }}" class="inline-flex items-center px-4 py-2 bg-indigo-600 text-white text-sm rounded-md hover:bg-indigo-500">
                         Convert a file &rarr;
                     </a>
@@ -74,7 +74,7 @@
             </div>
 
             {{-- Recent conversions --}}
-            <div class="bg-white shadow-sm sm:rounded-lg p-6"
+            <div class="pc-card p-6"
                  x-data="{ pendingAction: null, pendingName: '' }">
                 <h3 class="text-lg font-semibold text-gray-900 mb-4">Recent conversions</h3>
                 @forelse ($recent as $conversion)

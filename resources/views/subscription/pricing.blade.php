@@ -28,7 +28,7 @@
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 @forelse ($plans as $plan)
-                    <div class="bg-white shadow-sm sm:rounded-lg p-8 flex flex-col">
+                    <div class="pc-card p-8 flex flex-col">
                         <h3 class="text-xl font-bold text-gray-900">{{ $plan->name }}</h3>
                         <div class="mt-3">
                             <span class="text-4xl font-extrabold text-gray-900">{{ $plan->priceLabel() }}</span>

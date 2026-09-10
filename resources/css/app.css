@@ -1,3 +1,19 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+    /* Backoffice surface: a bordered, softly shadowed card on the slate canvas. */
+    .pc-card {
+        @apply rounded-xl border border-slate-200 bg-white shadow-sm;
+    }
+
+    /* Sidebar navigation item. */
+    .pc-navlink {
+        @apply flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-slate-300 transition hover:bg-white/5 hover:text-white;
+    }
+
+    .pc-navlink-active {
+        @apply bg-indigo-600 text-white shadow-sm hover:bg-indigo-600 hover:text-white;
+    }
+}

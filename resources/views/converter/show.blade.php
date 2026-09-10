@@ -12,21 +12,21 @@
 
             {{-- Upload summary --}}
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                <div class="bg-white shadow-sm sm:rounded-lg p-6 text-center">
+                <div class="pc-card p-6 text-center">
                     <div class="text-3xl font-bold text-gray-900">{{ number_format($conversion->hand_count) }}</div>
                     <div class="text-sm text-gray-500 mt-1">Hands</div>
                 </div>
-                <div class="bg-white shadow-sm sm:rounded-lg p-6 text-center">
+                <div class="pc-card p-6 text-center">
                     <div class="text-3xl font-bold {{ $conversion->splash_pots ? 'text-indigo-600' : 'text-gray-900' }}">{{ number_format($conversion->splash_pots) }}</div>
                     <div class="text-sm text-gray-500 mt-1">Splash pots</div>
                 </div>
-                <div class="bg-white shadow-sm sm:rounded-lg p-6 text-center">
+                <div class="pc-card p-6 text-center">
                     <div class="text-3xl font-bold {{ $conversion->bomb_pots ? 'text-indigo-600' : 'text-gray-900' }}">{{ number_format($conversion->bomb_pots) }}</div>
                     <div class="text-sm text-gray-500 mt-1">Bomb pots</div>
                 </div>
             </div>
 
-            <div class="bg-white shadow-sm sm:rounded-lg p-6">
+            <div class="pc-card p-6">
                 <div class="flex flex-wrap items-start justify-between gap-4">
                     <div>
                         <h3 class="text-lg font-semibold text-gray-900">{{ $conversion->original_filename }}</h3>
@@ -66,7 +66,7 @@
             @endif
 
             @if ($preview)
-                <div class="bg-white shadow-sm sm:rounded-lg p-6">
+                <div class="pc-card p-6">
                     <h4 class="font-semibold text-gray-900 mb-2">Preview</h4>
                     <pre class="text-xs bg-gray-900 text-gray-100 rounded-lg p-4 overflow-x-auto whitespace-pre">{{ $preview }}</pre>
                 </div>

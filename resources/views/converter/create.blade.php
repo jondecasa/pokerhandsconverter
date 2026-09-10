@@ -10,7 +10,7 @@
                 <div class="bg-green-50 border border-green-200 text-green-800 rounded-lg p-4">{{ session('status') }}</div>
             @endif
 
-            <div class="bg-white shadow-sm sm:rounded-lg p-6">
+            <div class="pc-card p-6">
                 <p class="text-sm text-gray-600 mb-4">
                     Upload a <strong>CoinPoker</strong> hand-history <code>.txt</code> file. You will get back a
                     <code>.txt</code> in the format <strong>PokerTracker&nbsp;4</strong> reads (Hold'em Manager&nbsp;3
@@ -77,7 +77,7 @@
             </div>
 
             @if ($recent->isNotEmpty())
-                <div class="bg-white shadow-sm sm:rounded-lg p-6"
+                <div class="pc-card p-6"
                      x-data="{ pendingAction: null, pendingName: '' }">
                     <h3 class="text-lg font-semibold text-gray-900 mb-3">Recent</h3>
                     @foreach ($recent as $conversion)

@@ -5,7 +5,7 @@
 
     <div class="py-12">
         <div class="max-w-3xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white shadow-sm sm:rounded-lg p-6">
+            <div class="pc-card p-6">
                 <form method="POST" action="{{ route('admin.plans.store') }}">
                     @include('admin.plans._form', ['submitLabel' => 'Create package'])
                 </form>
