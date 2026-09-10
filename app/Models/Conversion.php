@@ -34,6 +34,17 @@ class Conversion extends Model
         ];
     }
 
+    protected static function booted(): void
+    {
+        // Deleting the record deletes everything tied to it: the stored
+        // converted file goes too, whatever triggered the delete.
+        static::deleting(function (Conversion $conversion): void {
+            if ($conversion->output_path) {
+                Storage::disk('local')->delete($conversion->output_path);
+            }
+        });
+    }
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);

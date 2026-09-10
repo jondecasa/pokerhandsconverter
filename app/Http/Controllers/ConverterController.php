@@ -155,6 +155,20 @@ class ConverterController extends Controller
         );
     }
 
+    public function destroy(Request $request, Conversion $conversion): RedirectResponse
+    {
+        $this->authorizeOwner($request, $conversion);
+
+        $name = $conversion->original_filename;
+
+        // The model's "deleting" hook removes the stored output file too.
+        $conversion->delete();
+
+        return redirect()
+            ->route('convert.create')
+            ->with('status', "Deleted the conversion of \"{$name}\" and its converted file.");
+    }
+
     private function authorizeOwner(Request $request, Conversion $conversion): void
     {
         abort_unless($conversion->user_id === $request->user()->id, 403);

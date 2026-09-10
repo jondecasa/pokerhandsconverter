@@ -669,6 +669,7 @@ class CoinPokerConverter
 
         $this->collapseShowdowns($out);
         $this->reconcilePot($out, $cashedOut, $warnings);
+        $this->syncSeatSummaryAmounts($out, $isRit);
 
         $text = implode("\n", $out);
         $summary = $this->summarise($out, $isTournament);
@@ -818,6 +819,58 @@ class CoinPokerConverter
         $realPot = round(max($collectedSum + $rake, $actionPot), 2);
         if (abs($realPot - $stated) >= 0.005) {
             $out[$potKey] = preg_replace('/^(Total pot\s+\D*?)[\d.]+/i', '${1}'.$this->fmtMoney($realPot), $out[$potKey], 1) ?? $out[$potKey];
+        }
+    }
+
+    /**
+     * PokerTracker also cross-checks the pot against the "Seat N: <player> ...
+     * won ($x) / collected ($x)" amounts in the summary. CoinPoker writes only
+     * one sub-pot there when a player won several, so after collapsing the
+     * showdown and topping up the "collected" lines, mirror each winner's real
+     * total onto their summary seat line. Run-it-twice lines are left alone —
+     * their per-board amounts are already right and the tracker splits them.
+     *
+     * @param  array<int, string>  $out
+     */
+    private function syncSeatSummaryAmounts(array &$out, bool $isRit): void
+    {
+        if ($isRit) {
+            return;
+        }
+
+        $won = [];
+        foreach ($out as $l) {
+            if (preg_match('/^(\S.*?)\s+collected\s+\D*?([\d.]+)\s+from\s+pot\b/i', $l, $m)) {
+                $won[$m[1]] = round(($won[$m[1]] ?? 0) + (float) $m[2], 2);
+            }
+        }
+        if ($won === []) {
+            return;
+        }
+
+        $inSummary = false;
+        foreach ($out as $k => $l) {
+            if (rtrim($l) === '*** SUMMARY ***') {
+                $inSummary = true;
+
+                continue;
+            }
+            if (! $inSummary || ! preg_match('/^Seat\s+\d+:\s+(\S+)\s/', $l, $m)) {
+                continue;
+            }
+            $player = $m[1];
+            if (! isset($won[$player]) || str_contains($l, ', and ')) {
+                continue; // not a winner here, or a merged run-it-twice line
+            }
+            if (preg_match_all('/\b(?:won|collected)\s+\(\D*?[\d.]+\)/i', $l) !== 1) {
+                continue;
+            }
+            $out[$k] = preg_replace_callback(
+                '/(\b(?:won|collected)\s+\()(\D*?)[\d.]+(\))/i',
+                fn (array $mm): string => $mm[1].$mm[2].$this->fmtMoney($won[$player]).$mm[3],
+                $l,
+                1,
+            ) ?? $l;
         }
     }
 

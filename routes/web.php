@@ -36,6 +36,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('/convert', [ConverterController::class, 'store'])->name('convert.store');
         Route::get('/conversions/{conversion}', [ConverterController::class, 'show'])->name('conversions.show');
         Route::get('/conversions/{conversion}/download', [ConverterController::class, 'download'])->name('conversions.download');
+        Route::delete('/conversions/{conversion}', [ConverterController::class, 'destroy'])->name('conversions.destroy');
     });
 
     // Admin — package / pricing maintenance

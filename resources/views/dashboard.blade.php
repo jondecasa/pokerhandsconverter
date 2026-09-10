@@ -77,14 +77,22 @@
             <div class="bg-white shadow-sm sm:rounded-lg p-6">
                 <h3 class="text-lg font-semibold text-gray-900 mb-4">Recent conversions</h3>
                 @forelse ($recent as $conversion)
-                    <div class="flex items-center justify-between py-2 border-b last:border-0 text-sm">
+                    <div class="flex items-center justify-between gap-4 py-2 border-b last:border-0 text-sm">
                         <div class="truncate">
                             <a href="{{ route('conversions.show', $conversion) }}" class="text-indigo-600 hover:underline">{{ $conversion->original_filename }}</a>
                             <span class="text-gray-400">· {{ $conversion->created_at->diffForHumans() }}</span>
                         </div>
-                        <div class="text-gray-500 shrink-0 ml-4">
-                            {{ $conversion->hand_count }} hands
-                            @if ($conversion->warning_count) · <span class="text-amber-600">{{ $conversion->warning_count }} warnings</span> @endif
+                        <div class="flex items-center gap-3 shrink-0">
+                            <span class="text-gray-500">
+                                {{ $conversion->hand_count }} hands
+                                @if ($conversion->warning_count) · <span class="text-amber-600">{{ $conversion->warning_count }} warnings</span> @endif
+                            </span>
+                            <form method="POST" action="{{ route('conversions.destroy', $conversion) }}"
+                                  onsubmit="return confirm('Delete this conversion and its converted file? This cannot be undone.');">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="text-red-600 hover:text-red-500 hover:underline">Delete</button>
+                            </form>
                         </div>
                     </div>
                 @empty

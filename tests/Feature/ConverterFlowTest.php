@@ -124,4 +124,39 @@ class ConverterFlowTest extends TestCase
         $this->actingAs($intruder)->get(route('conversions.show', $conversion))->assertForbidden();
         $this->actingAs($intruder)->get(route('conversions.download', $conversion))->assertForbidden();
     }
+
+    #[Test]
+    public function the_owner_can_delete_a_conversion_and_its_output_file(): void
+    {
+        Storage::fake('local');
+        $user = $this->subscribedUser();
+        $this->actingAs($user)->post('/convert', ['file' => $this->fixtureUpload()]);
+        $conversion = $user->conversions()->firstOrFail();
+        Storage::disk('local')->assertExists($conversion->output_path);
+
+        $this->actingAs($user)
+            ->delete(route('conversions.destroy', $conversion))
+            ->assertRedirect(route('convert.create'))
+            ->assertSessionHas('status');
+
+        $this->assertDatabaseMissing('conversions', ['id' => $conversion->id]);
+        Storage::disk('local')->assertMissing($conversion->output_path);
+    }
+
+    #[Test]
+    public function a_user_cannot_delete_another_users_conversion(): void
+    {
+        Storage::fake('local');
+        $owner = $this->subscribedUser();
+        $this->actingAs($owner)->post('/convert', ['file' => $this->fixtureUpload()]);
+        $conversion = $owner->conversions()->firstOrFail();
+
+        $intruder = $this->subscribedUser();
+        $this->actingAs($intruder)
+            ->delete(route('conversions.destroy', $conversion))
+            ->assertForbidden();
+
+        $this->assertDatabaseHas('conversions', ['id' => $conversion->id]);
+        Storage::disk('local')->assertExists($conversion->output_path);
+    }
 }

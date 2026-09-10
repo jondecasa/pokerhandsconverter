@@ -72,7 +72,19 @@
                 </div>
             @endif
 
-            <a href="{{ route('convert.create') }}" class="inline-block text-sm text-indigo-600 hover:underline">&larr; Convert another file</a>
+            <div class="flex items-center justify-between">
+                <a href="{{ route('convert.create') }}" class="inline-block text-sm text-indigo-600 hover:underline">&larr; Convert another file</a>
+
+                <form method="POST" action="{{ route('conversions.destroy', $conversion) }}"
+                      onsubmit="return confirm('Delete this conversion and its converted file? This cannot be undone.');">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit"
+                            class="inline-flex items-center px-4 py-2 border border-red-300 text-red-700 text-sm font-medium rounded-md hover:bg-red-50">
+                        Delete this conversion
+                    </button>
+                </form>
+            </div>
 
         </div>
     </div>
