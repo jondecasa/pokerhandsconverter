@@ -63,7 +63,14 @@ class SubscriptionController extends Controller
 
         $builder = $user->newSubscription($name, $plan->stripe_price_id);
         if ($plan->effectiveTrialDays() > 0) {
-            $builder->trialDays($plan->effectiveTrialDays());
+            // trialDays() would end the trial at "now + N days", the same
+            // time-of-day it was started. Stripe Checkout works out the trial
+            // length it displays from that timestamp at page-load time, a few
+            // seconds after we compute it here — just enough drift to round
+            // the shown count down to N-1 for the whole first day. Rounding
+            // the end up to midnight keeps the full N days (plus a few spare
+            // hours) so the displayed count matches the configured one.
+            $builder->trialUntil(now()->addDays($plan->effectiveTrialDays())->endOfDay());
         }
 
         return $builder->checkout([
