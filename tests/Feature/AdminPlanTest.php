@@ -110,6 +110,20 @@ class AdminPlanTest extends TestCase
     }
 
     #[Test]
+    public function the_direct_subscribe_link_also_works_as_a_plain_get(): void
+    {
+        // A hidden package's "/subscribe/<slug>" link is meant to be shared and
+        // just clicked -> it must open with GET, not only respond to POST.
+        Plan::factory()->create([
+            'slug' => 'get-checkout', 'price' => 0, 'stripe_price_id' => null,
+        ]);
+        $user = User::factory()->create(['email_verified_at' => now()]);
+
+        $this->actingAs($user)->get('/subscribe/get-checkout')
+            ->assertRedirect(route('subscription.success'));
+    }
+
+    #[Test]
     public function an_inactive_package_slug_404s_on_checkout(): void
     {
         Plan::factory()->inactive()->create(['slug' => 'retired']);

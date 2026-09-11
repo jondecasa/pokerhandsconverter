@@ -27,7 +27,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // Billing / subscription
     Route::get('/account/plans', [SubscriptionController::class, 'pricing'])->name('subscription.plans');
-    Route::post('/subscribe/{plan}', [SubscriptionController::class, 'checkout'])->name('subscription.checkout');
+    // GET too: hidden packages are shared as a bare "/subscribe/<slug>" link the
+    // customer just clicks (see the admin packages help text) — a POST-only
+    // route can't be opened that way, and it also breaks the post-login
+    // redirect-back for a logged-out visitor.
+    Route::match(['get', 'post'], '/subscribe/{plan}', [SubscriptionController::class, 'checkout'])->name('subscription.checkout');
     Route::get('/subscription/success', [SubscriptionController::class, 'success'])->name('subscription.success');
     Route::get('/billing', [SubscriptionController::class, 'billingPortal'])->name('billing');
     Route::post('/subscription/resume', [SubscriptionController::class, 'resume'])->name('subscription.resume');
