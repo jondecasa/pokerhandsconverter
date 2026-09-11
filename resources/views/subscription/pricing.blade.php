@@ -24,6 +24,10 @@
                     <a href="{{ route('billing') }}" class="underline">Manage billing</a> or
                     <a href="{{ route('convert.create') }}" class="underline">start converting</a>.
                 </div>
+            @elseif ($trialUsed)
+                <div class="bg-slate-50 border border-slate-200 text-slate-600 rounded-lg p-4 text-sm">
+                    You've already used your free trial on this account, so a new subscription starts billing right away.
+                </div>
             @endif
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -55,7 +59,7 @@
                                 <button class="w-full inline-flex justify-center px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-md hover:bg-indigo-500">
                                     @if ($plan->isFree())
                                         Get it free
-                                    @elseif ($plan->effectiveTrialDays() > 0 && ! $subscribed)
+                                    @elseif ($plan->effectiveTrialDays() > 0 && ! $subscribed && ! $trialUsed)
                                         Start {{ $plan->effectiveTrialDays() }}-day free trial
                                     @else
                                         Choose {{ $plan->name }}

@@ -98,4 +98,14 @@ class User extends Authenticatable
     {
         return $this->hasMany(Conversion::class);
     }
+
+    /**
+     * Whether this account has ever been granted a trial before — on any
+     * subscription, past or present, including a cancelled one. Free ($0)
+     * packages never set a trial, so subscribing to one doesn't count.
+     */
+    public function hasUsedTrial(): bool
+    {
+        return $this->subscriptions()->whereNotNull('trial_ends_at')->exists();
+    }
 }

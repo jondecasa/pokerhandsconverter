@@ -22,6 +22,7 @@ class SubscriptionController extends Controller
             'plans' => Plan::visible()->ordered()->get(),
             'currentPrice' => $user?->subscription($name)?->stripe_price,
             'subscribed' => (bool) $user?->subscribed($name),
+            'trialUsed' => (bool) $user?->hasUsedTrial(),
         ]);
     }
 
@@ -62,7 +63,7 @@ class SubscriptionController extends Controller
         }
 
         $builder = $user->newSubscription($name, $plan->stripe_price_id);
-        if ($plan->effectiveTrialDays() > 0) {
+        if ($plan->effectiveTrialDays() > 0 && ! $user->hasUsedTrial()) {
             // trialDays() would end the trial at "now + N days", the same
             // time-of-day it was started. Stripe Checkout works out the trial
             // length it displays from that timestamp at page-load time, a few
