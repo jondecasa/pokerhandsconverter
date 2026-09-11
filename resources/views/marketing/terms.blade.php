@@ -8,7 +8,7 @@
             replace the bracketed placeholders before going live.</p>
 
             <h2 class="mt-8 text-lg font-semibold text-slate-900">1. Service</h2>
-            <p>PokerHandsConverter ("the Service", operated by [Your Company], "we") converts poker hand-history
+            <p>PokerHandsConverter ("the Service", "we") converts poker hand-history
             text files from CoinPoker's export format into the layout that PokerTracker 4 and similar
             tracking software import. We are not affiliated with CoinPoker, PokerTracker, Hold'em Manager
             or any tracker vendor.</p>
