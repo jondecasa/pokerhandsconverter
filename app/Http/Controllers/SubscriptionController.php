@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Redirector;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
+use Laravel\Cashier\Checkout;
 use Laravel\Cashier\Exceptions\IncompletePayment;
 
 class SubscriptionController extends Controller
@@ -28,7 +29,7 @@ class SubscriptionController extends Controller
      * Send the user to Stripe Checkout for the chosen package. Works for any
      * active package (a hidden one can still be reached by its direct link).
      */
-    public function checkout(Request $request, Plan $plan): RedirectResponse|Redirector
+    public function checkout(Request $request, Plan $plan): RedirectResponse|Redirector|Checkout
     {
         abort_unless($plan->is_active, 404);
 
