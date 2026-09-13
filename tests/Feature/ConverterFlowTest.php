@@ -2,10 +2,12 @@
 
 namespace Tests\Feature;
 
+use App\Mail\ConversionFeedback;
 use App\Models\Plan;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
@@ -176,5 +178,85 @@ class ConverterFlowTest extends TestCase
 
         $this->assertDatabaseHas('conversions', ['id' => $conversion->id]);
         Storage::disk('local')->assertExists($conversion->output_path);
+    }
+
+    #[Test]
+    public function warnings_render_as_a_collapsed_details_block(): void
+    {
+        Storage::fake('local');
+        $user = $this->subscribedUser();
+        $this->actingAs($user)->post('/convert', ['file' => $this->fixtureUpload()]);
+        $conversion = $user->conversions()->firstOrFail();
+        $conversion->update(['warnings' => [['hand' => 3, 'message' => 'Run-it-twice hand kept as one hand.']]]);
+
+        $html = $this->actingAs($user)->get(route('conversions.show', $conversion))->getContent();
+
+        $this->assertStringContainsString('<details', $html);
+        $this->assertStringNotContainsString('<details open', $html);
+        $this->assertStringContainsString('1 warning(s)', $html);
+    }
+
+    #[Test]
+    public function the_owner_can_email_feedback_about_a_pt4_import_problem(): void
+    {
+        Mail::fake();
+        Storage::fake('local');
+        $user = $this->subscribedUser();
+        $this->actingAs($user)->post('/convert', ['file' => $this->fixtureUpload()]);
+        $conversion = $user->conversions()->firstOrFail();
+
+        $response = $this->actingAs($user)->post(route('conversions.feedback', $conversion), [
+            'message' => 'PokerTracker rejected this with "Invalid pot size" on hand #12345.',
+        ]);
+
+        $response->assertRedirect()->assertSessionHas('status');
+
+        Mail::assertSent(ConversionFeedback::class, function (ConversionFeedback $mail) use ($user, $conversion) {
+            return $mail->hasTo(config('pokerhandsconverter.contact_email'))
+                && $mail->hasReplyTo($user->email)
+                && $mail->conversion->is($conversion)
+                && str_contains($mail->body, 'Invalid pot size');
+        });
+    }
+
+    #[Test]
+    public function feedback_requires_a_real_message_and_only_the_owner_can_send_it(): void
+    {
+        Mail::fake();
+        Storage::fake('local');
+        $owner = $this->subscribedUser();
+        $this->actingAs($owner)->post('/convert', ['file' => $this->fixtureUpload()]);
+        $conversion = $owner->conversions()->firstOrFail();
+
+        $this->actingAs($owner)
+            ->post(route('conversions.feedback', $conversion), ['message' => 'too short'])
+            ->assertSessionHasErrors('message');
+
+        $intruder = $this->subscribedUser();
+        $this->actingAs($intruder)
+            ->post(route('conversions.feedback', $conversion), ['message' => 'This is a long enough message.'])
+            ->assertForbidden();
+
+        Mail::assertNothingSent();
+    }
+
+    #[Test]
+    public function an_admin_can_open_a_reported_conversion_but_not_delete_it(): void
+    {
+        Storage::fake('local');
+        $owner = $this->subscribedUser();
+        $this->actingAs($owner)->post('/convert', ['file' => $this->fixtureUpload()]);
+        $conversion = $owner->conversions()->firstOrFail();
+
+        // Also subscribed: /conversions/* sits behind the "subscribed" middleware
+        // for everyone, admins included.
+        $admin = $this->subscribedUser();
+        $admin->forceFill(['is_admin' => true])->save();
+
+        $this->actingAs($admin)->get(route('conversions.show', $conversion))->assertOk();
+        $this->actingAs($admin)->get(route('conversions.download', $conversion))->assertOk();
+        $this->actingAs($admin)->delete(route('conversions.destroy', $conversion))->assertForbidden();
+
+        $this->assertDatabaseHas('conversions', ['id' => $conversion->id]);
     }
 }

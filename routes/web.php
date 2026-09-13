@@ -44,6 +44,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/conversions/{conversion}', [ConverterController::class, 'show'])->name('conversions.show');
         Route::get('/conversions/{conversion}/download', [ConverterController::class, 'download'])->name('conversions.download');
         Route::delete('/conversions/{conversion}', [ConverterController::class, 'destroy'])->name('conversions.destroy');
+        Route::post('/conversions/{conversion}/feedback', [ConverterController::class, 'feedback'])
+            ->middleware('throttle:5,1')
+            ->name('conversions.feedback');
     });
 
     // Admin — package / pricing maintenance

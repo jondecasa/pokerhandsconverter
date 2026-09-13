@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\ConversionFeedback;
 use App\Models\Conversion;
 use App\Poker\CoinPokerConverter;
 use App\Poker\ConverterOptions;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
@@ -132,7 +134,7 @@ class ConverterController extends Controller
 
     public function show(Request $request, Conversion $conversion): View
     {
-        $this->authorizeOwner($request, $conversion);
+        $this->authorizeViewer($request, $conversion);
 
         return view('converter.show', [
             'conversion' => $conversion,
@@ -144,7 +146,7 @@ class ConverterController extends Controller
 
     public function download(Request $request, Conversion $conversion): StreamedResponse
     {
-        $this->authorizeOwner($request, $conversion);
+        $this->authorizeViewer($request, $conversion);
 
         abort_unless($conversion->outputExists(), 404);
 
@@ -169,8 +171,33 @@ class ConverterController extends Controller
             ->with('status', "Deleted the conversion of \"{$name}\" and its converted file.");
     }
 
+    /** A user reports a tracker import problem for their own conversion — emails the admin. */
+    public function feedback(Request $request, Conversion $conversion): RedirectResponse
+    {
+        $this->authorizeOwner($request, $conversion);
+
+        $data = $request->validate([
+            'message' => ['required', 'string', 'min:10', 'max:3000'],
+        ]);
+
+        Mail::to(config('pokerhandsconverter.contact_email'))->send(
+            new ConversionFeedback($request->user(), $conversion, $data['message'])
+        );
+
+        return back()->with('status', "Thanks — we'll take a look at \"{$conversion->original_filename}\".");
+    }
+
     private function authorizeOwner(Request $request, Conversion $conversion): void
     {
         abort_unless($conversion->user_id === $request->user()->id, 403);
+    }
+
+    /** Same as authorizeOwner, but lets an admin open a conversion someone reported for debugging. */
+    private function authorizeViewer(Request $request, Conversion $conversion): void
+    {
+        abort_unless(
+            $conversion->user_id === $request->user()->id || $request->user()->isAdmin(),
+            403
+        );
     }
 }

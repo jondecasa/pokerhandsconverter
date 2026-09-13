@@ -55,14 +55,19 @@
             </div>
 
             @if ($conversion->warnings)
-                <div class="bg-amber-50 border border-amber-200 rounded-lg p-4">
-                    <h4 class="font-semibold text-amber-800 mb-2">{{ count($conversion->warnings) }} warning(s)</h4>
-                    <ul class="list-disc list-inside text-sm text-amber-800 space-y-1">
+                <details class="group rounded-lg border border-amber-200 bg-amber-50">
+                    <summary class="flex cursor-pointer list-none items-center justify-between gap-2 p-4 font-semibold text-amber-800">
+                        <span>{{ count($conversion->warnings) }} warning(s)</span>
+                        <svg class="h-5 w-5 shrink-0 text-amber-500 transition group-open:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
+                        </svg>
+                    </summary>
+                    <ul class="list-disc list-inside text-sm text-amber-800 space-y-1 px-4 pb-4">
                         @foreach ($conversion->warnings as $warning)
                             <li>@if(!is_null($warning['hand'])) <span class="font-mono">#{{ $warning['hand'] }}</span> — @endif {{ $warning['message'] }}</li>
                         @endforeach
                     </ul>
-                </div>
+                </details>
             @endif
 
             @if ($preview)
@@ -71,6 +76,26 @@
                     <pre class="text-xs bg-gray-900 text-gray-100 rounded-lg p-4 overflow-x-auto whitespace-pre">{{ $preview }}</pre>
                 </div>
             @endif
+
+            {{-- Report a PT4 import problem --}}
+            <div class="pc-card p-4 sm:p-6">
+                <h4 class="font-semibold text-gray-900">Got an error importing this into PT4?</h4>
+                <p class="mt-1 text-sm text-gray-500">
+                    Tell us what happened and we'll look into it — this sends us the filename and hand count above so we can debug it.
+                </p>
+                <form method="POST" action="{{ route('conversions.feedback', $conversion) }}" class="mt-3">
+                    @csrf
+                    <label for="feedback-message" class="sr-only">What went wrong</label>
+                    <textarea id="feedback-message" name="message" rows="3" required minlength="10" maxlength="3000"
+                              placeholder="e.g. PokerTracker rejected hand #130114200045 with &quot;Invalid pot size&quot;"
+                              class="block w-full rounded-lg border-gray-300 text-sm shadow-sm focus:border-indigo-500 focus:ring-indigo-500">{{ old('message') }}</textarea>
+                    <x-input-error :messages="$errors->get('message')" class="mt-1" />
+                    <button type="submit"
+                            class="mt-3 inline-flex items-center rounded-md bg-gray-800 px-4 py-2 text-sm font-medium text-white hover:bg-gray-700">
+                        Send feedback
+                    </button>
+                </form>
+            </div>
 
             <div class="flex items-center justify-between">
                 <a href="{{ route('convert.create') }}" class="inline-block text-sm text-indigo-600 hover:underline">&larr; Convert another file</a>
