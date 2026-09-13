@@ -197,6 +197,27 @@ class ConverterFlowTest extends TestCase
     }
 
     #[Test]
+    public function the_preview_renders_as_a_collapsed_block_after_the_feedback_form(): void
+    {
+        Storage::fake('local');
+        $user = $this->subscribedUser();
+        $this->actingAs($user)->post('/convert', ['file' => $this->fixtureUpload()]);
+        $conversion = $user->conversions()->firstOrFail();
+
+        $html = $this->actingAs($user)->get(route('conversions.show', $conversion))->getContent();
+
+        $this->assertStringContainsString('Preview', $html);
+        $feedbackPos = strpos($html, 'Got an error importing this into PT4?');
+        $previewPos = strpos($html, '>Preview<');
+        $this->assertNotFalse($feedbackPos);
+        $this->assertNotFalse($previewPos);
+        $this->assertLessThan($previewPos, $feedbackPos, 'The feedback form should render before the preview block.');
+
+        $previewDetails = substr($html, strrpos(substr($html, 0, $previewPos), '<details'));
+        $this->assertStringNotContainsString('<details open', $previewDetails);
+    }
+
+    #[Test]
     public function the_owner_can_email_feedback_about_a_pt4_import_problem(): void
     {
         Mail::fake();

@@ -70,13 +70,6 @@
                 </details>
             @endif
 
-            @if ($preview)
-                <div class="pc-card p-4 sm:p-6">
-                    <h4 class="font-semibold text-gray-900 mb-2">Preview</h4>
-                    <pre class="text-xs bg-gray-900 text-gray-100 rounded-lg p-4 overflow-x-auto whitespace-pre">{{ $preview }}</pre>
-                </div>
-            @endif
-
             {{-- Report a PT4 import problem --}}
             <div class="pc-card p-4 sm:p-6">
                 <h4 class="font-semibold text-gray-900">Got an error importing this into PT4?</h4>
@@ -96,6 +89,18 @@
                     </button>
                 </form>
             </div>
+
+            @if ($preview)
+                <details class="group pc-card p-4 sm:p-6">
+                    <summary class="flex cursor-pointer list-none items-center justify-between gap-2 font-semibold text-gray-900">
+                        <span>Preview</span>
+                        <svg class="h-5 w-5 shrink-0 text-gray-500 transition group-open:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
+                        </svg>
+                    </summary>
+                    <pre class="mt-2 text-xs bg-gray-900 text-gray-100 rounded-lg p-4 overflow-x-auto whitespace-pre">{{ $preview }}</pre>
+                </details>
+            @endif
 
             <div class="flex items-center justify-between">
                 <a href="{{ route('convert.create') }}" class="inline-block text-sm text-indigo-600 hover:underline">&larr; Convert another file</a>
