@@ -103,6 +103,24 @@ class ConverterFlowTest extends TestCase
     }
 
     #[Test]
+    public function the_conversion_url_uses_an_opaque_token_not_the_numeric_id(): void
+    {
+        Storage::fake('local');
+        $user = $this->subscribedUser();
+        $this->actingAs($user)->post('/convert', ['file' => $this->fixtureUpload()]);
+        $conversion = $user->conversions()->firstOrFail();
+
+        $this->assertMatchesRegularExpression('/^[A-Za-z0-9]{20,30}$/', $conversion->public_id);
+        $this->assertStringNotContainsString("/conversions/{$conversion->id}", route('conversions.show', $conversion));
+        $this->assertStringContainsString("/conversions/{$conversion->public_id}", route('conversions.show', $conversion));
+
+        $this->actingAs($user)->get(route('conversions.show', $conversion))->assertOk();
+
+        // The old-style "guess the next numeric id" URL no longer resolves.
+        $this->actingAs($user)->get("/conversions/{$conversion->id}")->assertNotFound();
+    }
+
+    #[Test]
     public function a_non_text_upload_is_rejected(): void
     {
         $user = $this->subscribedUser();

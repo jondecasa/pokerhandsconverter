@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class Conversion extends Model
 {
@@ -36,6 +37,12 @@ class Conversion extends Model
 
     protected static function booted(): void
     {
+        // The URL uses this, not the auto-increment id, so a conversion can't
+        // be found by guessing/incrementing — only by knowing the link.
+        static::creating(function (Conversion $conversion): void {
+            $conversion->public_id ??= self::generateUniquePublicId();
+        });
+
         // Deleting the record deletes everything tied to it: the stored
         // converted file goes too, whatever triggered the delete.
         static::deleting(function (Conversion $conversion): void {
@@ -43,6 +50,21 @@ class Conversion extends Model
                 Storage::disk('local')->delete($conversion->output_path);
             }
         });
+    }
+
+    private static function generateUniquePublicId(): string
+    {
+        do {
+            $id = Str::random(26);
+        } while (self::where('public_id', $id)->exists());
+
+        return $id;
+    }
+
+    /** Route-model binding uses the opaque public_id, never the numeric id. */
+    public function getRouteKeyName(): string
+    {
+        return 'public_id';
     }
 
     public function user(): BelongsTo
