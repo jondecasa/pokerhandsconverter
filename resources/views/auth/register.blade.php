@@ -1,6 +1,8 @@
 <x-guest-layout>
     <x-slot name="heading">Create your PokerHandsConverter account</x-slot>
 
+    @include('auth.partials.google-button')
+
     <form method="POST" action="{{ route('register') }}">
         @csrf
 

@@ -25,8 +25,10 @@ class User extends Authenticatable
         'name',
         'email',
         'coinpoker_id',
+        'google_id',
         'preferences',
         'password',
+        'email_verified_at',
     ];
 
     /**
