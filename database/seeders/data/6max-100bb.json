@@ -1,0 +1,2919 @@
+{
+    "name": "Cash-6MAX 100BB",
+    "slug": "cash-6max-100bb",
+    "sort_order": 0,
+    "scenarios": [
+        {
+            "group_label": "OR",
+            "group_order": 0,
+            "row_label": "EP",
+            "row_order": 0,
+            "button_label": "100BB",
+            "button_order": 0,
+            "is_default": true,
+            "legend": [
+                {
+                    "key": "or",
+                    "label": "OR",
+                    "color": "#3b82f6"
+                }
+            ],
+            "combos": {
+                "AA": "or",
+                "AKs": "or",
+                "AQs": "or",
+                "AJs": "or",
+                "ATs": "or",
+                "A9s": "or",
+                "A8s": "or",
+                "A5s": "or",
+                "A4s": "or",
+                "AKo": "or",
+                "KK": "or",
+                "KQs": "or",
+                "KJs": "or",
+                "KTs": "or",
+                "K9s": "or",
+                "AQo": "or",
+                "KQo": "or",
+                "QQ": "or",
+                "QJs": "or",
+                "QTs": "or",
+                "AJo": "or",
+                "JJ": "or",
+                "JTs": "or",
+                "TT": "or",
+                "T9s": "or",
+                "99": "or",
+                "88": "or",
+                "77": "or",
+                "66": "or"
+            },
+            "stats": {
+                "badges": [
+                    {
+                        "label": "VPIP",
+                        "value": "12.5%",
+                        "highlight": false
+                    },
+                    {
+                        "label": "OR",
+                        "value": "13%",
+                        "highlight": true
+                    }
+                ],
+                "bars": []
+            }
+        },
+        {
+            "group_label": "OR",
+            "group_order": 0,
+            "row_label": "MP",
+            "row_order": 1,
+            "button_label": "100BB",
+            "button_order": 0,
+            "is_default": false,
+            "legend": [
+                {
+                    "key": "or",
+                    "label": "OR",
+                    "color": "#3b82f6"
+                }
+            ],
+            "combos": {
+                "AA": "or",
+                "AKs": "or",
+                "AQs": "or",
+                "AJs": "or",
+                "ATs": "or",
+                "A9s": "or",
+                "A8s": "or",
+                "A7s": "or",
+                "A6s": "or",
+                "A5s": "or",
+                "A4s": "or",
+                "A3s": "or",
+                "AKo": "or",
+                "AQo": "or",
+                "AJo": "or",
+                "ATo": "or",
+                "KK": "or",
+                "KQs": "or",
+                "KJs": "or",
+                "KTs": "or",
+                "K9s": "or",
+                "K8s": "or",
+                "QQ": "or",
+                "QJs": "or",
+                "QTs": "or",
+                "Q9s": "or",
+                "JJ": "or",
+                "JTs": "or",
+                "J9s": "or",
+                "TT": "or",
+                "T9s": "or",
+                "99": "or",
+                "98s": "or",
+                "88": "or",
+                "77": "or",
+                "66": "or",
+                "55": "or",
+                "KQo": "or",
+                "KJo": "or"
+            },
+            "stats": {
+                "badges": [
+                    {
+                        "label": "VPIP",
+                        "value": "16.9%",
+                        "highlight": false
+                    },
+                    {
+                        "label": "OR",
+                        "value": "17%",
+                        "highlight": true
+                    }
+                ],
+                "bars": []
+            }
+        },
+        {
+            "group_label": "OR",
+            "group_order": 0,
+            "row_label": "CO",
+            "row_order": 2,
+            "button_label": "100BB",
+            "button_order": 0,
+            "is_default": false,
+            "legend": [
+                {
+                    "key": "or",
+                    "label": "OR",
+                    "color": "#3b82f6"
+                },
+                {
+                    "key": "or_ext",
+                    "label": "OR ampliación",
+                    "color": "#fbbf24"
+                }
+            ],
+            "combos": {
+                "AA": "or",
+                "AKs": "or",
+                "AQs": "or",
+                "AJs": "or",
+                "ATs": "or",
+                "A9s": "or",
+                "A8s": "or",
+                "A7s": "or",
+                "A6s": "or",
+                "A5s": "or",
+                "A4s": "or",
+                "A3s": "or",
+                "A2s": "or",
+                "AKo": "or",
+                "KK": "or",
+                "KQs": "or",
+                "KJs": "or",
+                "KTs": "or",
+                "K9s": "or",
+                "K8s": "or",
+                "K7s": "or",
+                "K6s": "or",
+                "AQo": "or",
+                "KQo": "or",
+                "QQ": "or",
+                "QJs": "or",
+                "QTs": "or",
+                "Q9s": "or",
+                "AJo": "or",
+                "KJo": "or",
+                "QJo": "or",
+                "JJ": "or",
+                "JTs": "or",
+                "J9s": "or",
+                "ATo": "or",
+                "KTo": "or",
+                "QTo": "or",
+                "JTo": "or",
+                "TT": "or",
+                "T9s": "or",
+                "A9o": "or",
+                "K9o": "or_ext",
+                "Q9o": "or_ext",
+                "J9o": "or_ext",
+                "T9o": "or_ext",
+                "99": "or",
+                "98s": "or",
+                "88": "or",
+                "87s": "or",
+                "77": "or",
+                "76s": "or",
+                "66": "or",
+                "65s": "or",
+                "55": "or",
+                "54s": "or",
+                "44": "or",
+                "K5s": "or_ext",
+                "K4s": "or_ext",
+                "K3s": "or_ext",
+                "K2s": "or_ext",
+                "Q8s": "or_ext",
+                "Q7s": "or_ext",
+                "Q6s": "or_ext",
+                "J8s": "or_ext",
+                "J7s": "or_ext",
+                "T8s": "or_ext",
+                "T7s": "or_ext",
+                "97s": "or",
+                "A8o": "or_ext",
+                "86s": "or_ext",
+                "A7o": "or_ext",
+                "75s": "or_ext",
+                "A6o": "or_ext",
+                "64s": "or_ext",
+                "A5o": "or_ext",
+                "33": "or_ext",
+                "22": "or_ext"
+            },
+            "stats": {
+                "badges": [
+                    {
+                        "label": "VPIP",
+                        "value": "36.7%",
+                        "highlight": false
+                    },
+                    {
+                        "label": "OR",
+                        "value": "24%",
+                        "highlight": true
+                    },
+                    {
+                        "label": "OR ampliación",
+                        "value": "12%",
+                        "highlight": true
+                    }
+                ],
+                "bars": []
+            }
+        },
+        {
+            "group_label": "OR",
+            "group_order": 0,
+            "row_label": "BTN",
+            "row_order": 3,
+            "button_label": "100BB",
+            "button_order": 0,
+            "is_default": false,
+            "legend": [
+                {
+                    "key": "or",
+                    "label": "OR",
+                    "color": "#3b82f6"
+                },
+                {
+                    "key": "or_ext",
+                    "label": "OR ampliación",
+                    "color": "#fbbf24"
+                }
+            ],
+            "combos": {
+                "AA": "or",
+                "AKs": "or",
+                "AQs": "or",
+                "AJs": "or",
+                "ATs": "or",
+                "A9s": "or",
+                "A8s": "or",
+                "A7s": "or",
+                "A6s": "or",
+                "A5s": "or",
+                "A4s": "or",
+                "A3s": "or",
+                "A2s": "or",
+                "AKo": "or",
+                "KK": "or",
+                "KQs": "or",
+                "KJs": "or",
+                "KTs": "or",
+                "K9s": "or",
+                "K8s": "or",
+                "K7s": "or",
+                "K6s": "or",
+                "K5s": "or",
+                "K4s": "or",
+                "K3s": "or",
+                "K2s": "or",
+                "AQo": "or",
+                "KQo": "or",
+                "QQ": "or",
+                "QJs": "or",
+                "QTs": "or",
+                "Q9s": "or",
+                "Q8s": "or",
+                "Q7s": "or",
+                "Q6s": "or",
+                "AJo": "or",
+                "KJo": "or",
+                "QJo": "or",
+                "JJ": "or",
+                "JTs": "or",
+                "J9s": "or",
+                "J8s": "or",
+                "J7s": "or",
+                "J6s": "or",
+                "ATo": "or",
+                "KTo": "or",
+                "QTo": "or",
+                "JTo": "or",
+                "TT": "or",
+                "T9s": "or",
+                "T8s": "or",
+                "T7s": "or",
+                "T6s": "or",
+                "A9o": "or",
+                "K9o": "or",
+                "Q9o": "or",
+                "J9o": "or",
+                "T9o": "or",
+                "99": "or",
+                "98s": "or",
+                "97s": "or",
+                "A8o": "or",
+                "K8o": "or",
+                "88": "or",
+                "87s": "or",
+                "86s": "or",
+                "A7o": "or",
+                "77": "or",
+                "76s": "or",
+                "A6o": "or",
+                "66": "or",
+                "65s": "or",
+                "64s": "or",
+                "63s": "or_ext",
+                "A5o": "or",
+                "55": "or",
+                "54s": "or",
+                "A4o": "or",
+                "44": "or",
+                "43s": "or_ext",
+                "A3o": "or",
+                "33": "or",
+                "A2o": "or",
+                "22": "or",
+                "Q2s": "or_ext",
+                "J5s": "or_ext",
+                "J4s": "or_ext",
+                "J3s": "or_ext",
+                "J2s": "or_ext",
+                "T5s": "or_ext",
+                "T4s": "or_ext",
+                "T3s": "or_ext",
+                "95s": "or_ext",
+                "Q8o": "or_ext",
+                "J8o": "or_ext",
+                "T8o": "or",
+                "85s": "or_ext",
+                "K7o": "or_ext",
+                "Q7o": "or_ext",
+                "T7o": "or_ext",
+                "75s": "or",
+                "74s": "or_ext",
+                "K6o": "or_ext",
+                "76o": "or_ext",
+                "K5o": "or_ext",
+                "65o": "or_ext",
+                "53s": "or_ext",
+                "K4o": "or_ext",
+                "K3o": "or_ext",
+                "98o": "or",
+                "96s": "or",
+                "Q5s": "or",
+                "Q4s": "or",
+                "Q3s": "or",
+                "97o": "or_ext",
+                "87o": "or_ext"
+            },
+            "stats": {
+                "badges": [
+                    {
+                        "label": "VPIP",
+                        "value": "60.8%",
+                        "highlight": false
+                    },
+                    {
+                        "label": "OR",
+                        "value": "44%",
+                        "highlight": true
+                    },
+                    {
+                        "label": "OR ampliación",
+                        "value": "17%",
+                        "highlight": true
+                    }
+                ],
+                "bars": []
+            }
+        },
+        {
+            "group_label": "OR",
+            "group_order": 0,
+            "row_label": "SB",
+            "row_order": 4,
+            "button_label": "100BB",
+            "button_order": 0,
+            "is_default": false,
+            "legend": [
+                {
+                    "key": "or",
+                    "label": "OR",
+                    "color": "#3b82f6"
+                },
+                {
+                    "key": "or_ext",
+                    "label": "OR ampliación",
+                    "color": "#fbbf24"
+                }
+            ],
+            "combos": {
+                "AA": "or",
+                "AKs": "or",
+                "AQs": "or",
+                "AJs": "or",
+                "ATs": "or",
+                "A9s": "or",
+                "A8s": "or",
+                "A7s": "or",
+                "A6s": "or",
+                "A5s": "or",
+                "A4s": "or",
+                "A3s": "or",
+                "A2s": "or",
+                "AKo": "or",
+                "KK": "or",
+                "KQs": "or",
+                "KJs": "or",
+                "KTs": "or",
+                "K9s": "or",
+                "K8s": "or",
+                "K7s": "or",
+                "K6s": "or",
+                "K5s": "or",
+                "K4s": "or",
+                "K3s": "or",
+                "K2s": "or",
+                "AQo": "or",
+                "KQo": "or",
+                "QQ": "or",
+                "QJs": "or",
+                "QTs": "or",
+                "Q9s": "or",
+                "Q8s": "or",
+                "Q7s": "or",
+                "Q6s": "or",
+                "Q5s": "or",
+                "Q4s": "or",
+                "Q3s": "or",
+                "Q2s": "or",
+                "AJo": "or",
+                "KJo": "or",
+                "QJo": "or",
+                "JJ": "or",
+                "JTs": "or",
+                "J9s": "or",
+                "J8s": "or",
+                "J7s": "or",
+                "J6s": "or",
+                "ATo": "or",
+                "KTo": "or",
+                "QTo": "or",
+                "JTo": "or",
+                "TT": "or",
+                "T9s": "or",
+                "T8s": "or",
+                "T7s": "or",
+                "T6s": "or",
+                "A9o": "or",
+                "K9o": "or",
+                "Q9o": "or",
+                "J9o": "or",
+                "T9o": "or",
+                "99": "or",
+                "98s": "or",
+                "97s": "or",
+                "96s": "or",
+                "A8o": "or",
+                "K8o": "or",
+                "Q8o": "or",
+                "J8o": "or",
+                "T8o": "or",
+                "98o": "or",
+                "88": "or",
+                "87s": "or",
+                "86s": "or",
+                "85s": "or",
+                "A7o": "or",
+                "K7o": "or",
+                "J7o": "or_ext",
+                "T7o": "or_ext",
+                "87o": "or",
+                "77": "or",
+                "76s": "or",
+                "74s": "or",
+                "73s": "or_ext",
+                "A6o": "or",
+                "J6o": "or_ext",
+                "86o": "or_ext",
+                "76o": "or_ext",
+                "66": "or",
+                "65s": "or",
+                "64s": "or",
+                "63s": "or_ext",
+                "62s": "or_ext",
+                "A5o": "or",
+                "55": "or",
+                "54s": "or",
+                "53s": "or",
+                "52s": "or_ext",
+                "A4o": "or",
+                "K4o": "or_ext",
+                "54o": "or_ext",
+                "44": "or",
+                "43s": "or_ext",
+                "A3o": "or",
+                "33": "or",
+                "32s": "or_ext",
+                "A2o": "or",
+                "22": "or",
+                "J5s": "or",
+                "J4s": "or",
+                "J3s": "or_ext",
+                "J2s": "or_ext",
+                "T5s": "or",
+                "T4s": "or_ext",
+                "T3s": "or_ext",
+                "95s": "or",
+                "94s": "or_ext",
+                "84s": "or_ext",
+                "Q7o": "or_ext",
+                "97o": "or_ext",
+                "75s": "or",
+                "K6o": "or_ext",
+                "Q6o": "or_ext",
+                "K5o": "or_ext",
+                "Q5o": "or_ext",
+                "75o": "or_ext",
+                "65o": "or_ext",
+                "Q4o": "or_ext",
+                "K3o": "or_ext",
+                "K2o": "or_ext",
+                "42s": "or_ext",
+                "93s": "or_ext",
+                "T2s": "or_ext"
+            },
+            "stats": {
+                "badges": [
+                    {
+                        "label": "VPIP",
+                        "value": "70.7%",
+                        "highlight": false
+                    },
+                    {
+                        "label": "OR",
+                        "value": "50%",
+                        "highlight": true
+                    },
+                    {
+                        "label": "OR ampliación",
+                        "value": "21%",
+                        "highlight": true
+                    }
+                ],
+                "bars": []
+            }
+        },
+        {
+            "group_label": "vs 3bet",
+            "group_order": 1,
+            "row_label": "EP-MP",
+            "row_order": 0,
+            "button_label": "vs CO-BTN",
+            "button_order": 0,
+            "is_default": false,
+            "legend": [
+                {
+                    "key": "fold",
+                    "label": "Fold",
+                    "color": "#ef4444"
+                },
+                {
+                    "key": "call",
+                    "label": "Call",
+                    "color": "#eab308"
+                },
+                {
+                    "key": "4bf",
+                    "label": "4bet → Fold",
+                    "color": "#22c55e"
+                },
+                {
+                    "key": "4bc",
+                    "label": "4bet → Call",
+                    "color": "#3b82f6"
+                }
+            ],
+            "combos": {
+                "AA": "4bc",
+                "KK": "4bc",
+                "JJ": "call",
+                "TT": "call",
+                "AJs": "call",
+                "A5s": "fold",
+                "A4s": "fold",
+                "A3s": "fold",
+                "T9s": "fold",
+                "J9s": "fold",
+                "JTs": "fold",
+                "QTs": "fold",
+                "AQs": "call",
+                "QJs": "fold",
+                "QQ": "4bc",
+                "AKs": "4bc",
+                "ATs": "4bf",
+                "A9s": "fold",
+                "A8s": "fold",
+                "A7s": "fold",
+                "A6s": "fold",
+                "AKo": "4bc",
+                "KQs": "call",
+                "KJs": "4bf",
+                "KTs": "fold",
+                "K9s": "fold",
+                "K8s": "fold",
+                "AQo": "4bf",
+                "KQo": "fold",
+                "Q9s": "fold",
+                "AJo": "fold",
+                "KJo": "fold",
+                "ATo": "fold",
+                "99": "fold",
+                "88": "fold",
+                "77": "fold",
+                "66": "fold",
+                "55": "fold",
+                "98s": "fold"
+            },
+            "stats": {
+                "badges": [
+                    {
+                        "label": "VPIP",
+                        "value": "16.9%",
+                        "highlight": false
+                    },
+                    {
+                        "label": "OR 2.2BBs",
+                        "value": "17%",
+                        "highlight": true
+                    }
+                ],
+                "bars": [
+                    {
+                        "label": "F",
+                        "pct": 65,
+                        "color": "#ef4444"
+                    },
+                    {
+                        "label": "C",
+                        "pct": 11,
+                        "color": "#eab308"
+                    },
+                    {
+                        "label": "R",
+                        "pct": 24,
+                        "color": "#67e8f9"
+                    }
+                ]
+            }
+        },
+        {
+            "group_label": "vs 3bet",
+            "group_order": 1,
+            "row_label": "EP-MP",
+            "row_order": 0,
+            "button_label": "vs SB-BB",
+            "button_order": 1,
+            "is_default": false,
+            "legend": [
+                {
+                    "key": "fold",
+                    "label": "Fold",
+                    "color": "#ef4444"
+                },
+                {
+                    "key": "call",
+                    "label": "Call",
+                    "color": "#eab308"
+                },
+                {
+                    "key": "4bf",
+                    "label": "4bet → Fold",
+                    "color": "#22c55e"
+                },
+                {
+                    "key": "4bc",
+                    "label": "4bet → Call",
+                    "color": "#3b82f6"
+                }
+            ],
+            "combos": {
+                "AA": "4bc",
+                "AKs": "4bc",
+                "KK": "4bc",
+                "QQ": "4bc",
+                "AQs": "call",
+                "AKo": "call",
+                "KQs": "call",
+                "JJ": "call",
+                "AJs": "4bf",
+                "ATs": "4bf",
+                "KJs": "4bf",
+                "A9s": "fold",
+                "A8s": "fold",
+                "A7s": "fold",
+                "A6s": "fold",
+                "A5s": "fold",
+                "A4s": "fold",
+                "A3s": "fold",
+                "KTs": "fold",
+                "K9s": "fold",
+                "K8s": "fold",
+                "AQo": "fold",
+                "KQo": "fold",
+                "QJs": "fold",
+                "QTs": "fold",
+                "AJo": "fold",
+                "KJo": "fold",
+                "JTs": "fold",
+                "ATo": "fold",
+                "TT": "fold",
+                "T9s": "fold",
+                "99": "fold",
+                "98s": "fold",
+                "88": "fold",
+                "77": "fold",
+                "66": "fold",
+                "55": "fold"
+            },
+            "stats": {
+                "badges": [
+                    {
+                        "label": "VPIP",
+                        "value": "16.3%",
+                        "highlight": false
+                    },
+                    {
+                        "label": "OR 2.2BBs",
+                        "value": "16%",
+                        "highlight": true
+                    }
+                ],
+                "bars": [
+                    {
+                        "label": "F",
+                        "pct": 72,
+                        "color": "#ef4444"
+                    },
+                    {
+                        "label": "C",
+                        "pct": 12,
+                        "color": "#eab308"
+                    },
+                    {
+                        "label": "R",
+                        "pct": 16,
+                        "color": "#67e8f9"
+                    }
+                ]
+            }
+        },
+        {
+            "group_label": "vs 3bet",
+            "group_order": 1,
+            "row_label": "CO",
+            "row_order": 1,
+            "button_label": "vs BTN",
+            "button_order": 0,
+            "is_default": false,
+            "legend": [
+                {
+                    "key": "fold",
+                    "label": "Fold",
+                    "color": "#ef4444"
+                },
+                {
+                    "key": "call",
+                    "label": "Call",
+                    "color": "#eab308"
+                },
+                {
+                    "key": "4bf",
+                    "label": "4bet → Fold",
+                    "color": "#22c55e"
+                },
+                {
+                    "key": "4bc",
+                    "label": "4bet → Call",
+                    "color": "#3b82f6"
+                }
+            ],
+            "combos": {
+                "AA": "4bc",
+                "AKs": "4bc",
+                "AKo": "4bc",
+                "KK": "4bc",
+                "QQ": "4bc",
+                "JJ": "4bc",
+                "TT": "4bc",
+                "AQs": "call",
+                "AJs": "call",
+                "KQs": "call",
+                "KJs": "call",
+                "KQo": "fold",
+                "QJs": "call",
+                "QTs": "fold",
+                "Q9s": "fold",
+                "JTs": "fold",
+                "J9s": "fold",
+                "T9s": "fold",
+                "T8s": "fold",
+                "99": "call",
+                "ATs": "4bf",
+                "A9s": "4bf",
+                "A5s": "4bf",
+                "KTs": "4bf",
+                "AQo": "4bf",
+                "A8s": "fold",
+                "A7s": "fold",
+                "A6s": "fold",
+                "A4s": "fold",
+                "A3s": "fold",
+                "A2s": "fold",
+                "K9s": "fold",
+                "K8s": "fold",
+                "K7s": "fold",
+                "K6s": "fold",
+                "AJo": "fold",
+                "KJo": "fold",
+                "QJo": "fold",
+                "ATo": "fold",
+                "KTo": "fold",
+                "QTo": "fold",
+                "JTo": "fold",
+                "A9o": "fold",
+                "98s": "fold",
+                "97s": "fold",
+                "88": "fold",
+                "87s": "fold",
+                "77": "fold",
+                "76s": "fold",
+                "66": "fold",
+                "65s": "fold",
+                "55": "fold",
+                "44": "fold"
+            },
+            "stats": {
+                "badges": [
+                    {
+                        "label": "VPIP",
+                        "value": "24.3%",
+                        "highlight": false
+                    },
+                    {
+                        "label": "OR 2.2BBs",
+                        "value": "24%",
+                        "highlight": true
+                    }
+                ],
+                "bars": [
+                    {
+                        "label": "F",
+                        "pct": 69,
+                        "color": "#ef4444"
+                    },
+                    {
+                        "label": "C",
+                        "pct": 8,
+                        "color": "#eab308"
+                    },
+                    {
+                        "label": "R",
+                        "pct": 23,
+                        "color": "#67e8f9"
+                    }
+                ]
+            }
+        },
+        {
+            "group_label": "vs 3bet",
+            "group_order": 1,
+            "row_label": "CO",
+            "row_order": 1,
+            "button_label": "vs SB-BB",
+            "button_order": 1,
+            "is_default": false,
+            "legend": [
+                {
+                    "key": "fold",
+                    "label": "Fold",
+                    "color": "#ef4444"
+                },
+                {
+                    "key": "call",
+                    "label": "Call",
+                    "color": "#eab308"
+                },
+                {
+                    "key": "4bf",
+                    "label": "4bet → Fold",
+                    "color": "#22c55e"
+                },
+                {
+                    "key": "4bc",
+                    "label": "4bet → Call",
+                    "color": "#3b82f6"
+                }
+            ],
+            "combos": {
+                "AA": "4bc",
+                "AKs": "4bc",
+                "AKo": "4bc",
+                "KK": "4bc",
+                "QQ": "4bc",
+                "JJ": "4bc",
+                "AQs": "call",
+                "AJs": "call",
+                "KQs": "call",
+                "TT": "call",
+                "99": "call",
+                "ATs": "4bf",
+                "A9s": "4bf",
+                "KJs": "4bf",
+                "KTs": "4bf",
+                "AQo": "4bf",
+                "A8s": "fold",
+                "A7s": "fold",
+                "A6s": "fold",
+                "A5s": "fold",
+                "A4s": "fold",
+                "A3s": "fold",
+                "A2s": "fold",
+                "K9s": "fold",
+                "K8s": "fold",
+                "K7s": "fold",
+                "K6s": "fold",
+                "KQo": "fold",
+                "QJs": "fold",
+                "QTs": "fold",
+                "Q9s": "fold",
+                "AJo": "fold",
+                "KJo": "fold",
+                "QJo": "fold",
+                "JTs": "fold",
+                "J9s": "fold",
+                "ATo": "fold",
+                "KTo": "fold",
+                "QTo": "fold",
+                "JTo": "fold",
+                "T9s": "fold",
+                "T8s": "fold",
+                "A9o": "fold",
+                "98s": "fold",
+                "97s": "fold",
+                "88": "fold",
+                "87s": "fold",
+                "77": "fold",
+                "76s": "fold",
+                "66": "fold",
+                "65s": "fold",
+                "55": "fold",
+                "44": "fold"
+            },
+            "stats": {
+                "badges": [
+                    {
+                        "label": "VPIP",
+                        "value": "24.3%",
+                        "highlight": false
+                    },
+                    {
+                        "label": "OR 2.2BBs",
+                        "value": "24%",
+                        "highlight": true
+                    }
+                ],
+                "bars": [
+                    {
+                        "label": "F",
+                        "pct": 71,
+                        "color": "#ef4444"
+                    },
+                    {
+                        "label": "C",
+                        "pct": 7,
+                        "color": "#eab308"
+                    },
+                    {
+                        "label": "R",
+                        "pct": 21,
+                        "color": "#67e8f9"
+                    }
+                ]
+            }
+        },
+        {
+            "group_label": "vs 3bet",
+            "group_order": 1,
+            "row_label": "BTN",
+            "row_order": 2,
+            "button_label": "vs SB-BB",
+            "button_order": 0,
+            "is_default": false,
+            "legend": [
+                {
+                    "key": "fold",
+                    "label": "Fold",
+                    "color": "#ef4444"
+                },
+                {
+                    "key": "call",
+                    "label": "Call",
+                    "color": "#eab308"
+                },
+                {
+                    "key": "4bf",
+                    "label": "4bet → Fold",
+                    "color": "#22c55e"
+                },
+                {
+                    "key": "4bc",
+                    "label": "4bet → Call",
+                    "color": "#3b82f6"
+                }
+            ],
+            "combos": {
+                "AA": "4bc",
+                "AKs": "4bc",
+                "AKo": "4bc",
+                "KK": "4bc",
+                "QQ": "4bc",
+                "JJ": "4bc",
+                "TT": "4bc",
+                "AQs": "call",
+                "AJs": "call",
+                "ATs": "call",
+                "KQs": "call",
+                "KJs": "call",
+                "KTs": "call",
+                "AQo": "call",
+                "QJs": "call",
+                "QTs": "call",
+                "JTs": "call",
+                "99": "call",
+                "88": "call",
+                "77": "call",
+                "66": "call",
+                "65s": "call",
+                "A9s": "call",
+                "A8s": "4bf",
+                "A6s": "fold",
+                "A5s": "4bf",
+                "A4s": "4bf",
+                "K9s": "4bf",
+                "KQo": "4bf",
+                "AJo": "4bf",
+                "A7s": "4bf",
+                "A3s": "fold",
+                "A2s": "fold",
+                "K8s": "fold",
+                "K7s": "fold",
+                "K6s": "fold",
+                "K5s": "fold",
+                "K4s": "fold",
+                "K3s": "fold",
+                "K2s": "fold",
+                "Q9s": "fold",
+                "Q8s": "fold",
+                "Q7s": "fold",
+                "Q6s": "fold",
+                "Q5s": "fold",
+                "Q4s": "fold",
+                "Q3s": "fold",
+                "KJo": "fold",
+                "QJo": "fold",
+                "J9s": "call",
+                "J8s": "fold",
+                "J7s": "fold",
+                "J6s": "fold",
+                "J5s": "fold",
+                "ATo": "fold",
+                "KTo": "fold",
+                "QTo": "fold",
+                "JTo": "fold",
+                "T9s": "call",
+                "T8s": "fold",
+                "T7s": "fold",
+                "T6s": "fold",
+                "A9o": "fold",
+                "K9o": "fold",
+                "Q9o": "fold",
+                "J9o": "fold",
+                "T9o": "fold",
+                "98s": "fold",
+                "97s": "fold",
+                "96s": "fold",
+                "A8o": "fold",
+                "K8o": "fold",
+                "T8o": "fold",
+                "98o": "fold",
+                "87s": "fold",
+                "86s": "fold",
+                "A7o": "fold",
+                "76s": "call",
+                "75s": "fold",
+                "A6o": "fold",
+                "64s": "fold",
+                "A5o": "fold",
+                "55": "fold",
+                "54s": "fold",
+                "A4o": "fold",
+                "44": "fold",
+                "A3o": "fold",
+                "33": "fold",
+                "A2o": "fold",
+                "22": "fold"
+            },
+            "stats": {
+                "badges": [
+                    {
+                        "label": "VPIP",
+                        "value": "44.2%",
+                        "highlight": false
+                    },
+                    {
+                        "label": "OR 2.5BBs",
+                        "value": "44%",
+                        "highlight": true
+                    }
+                ],
+                "bars": [
+                    {
+                        "label": "F",
+                        "pct": 69,
+                        "color": "#ef4444"
+                    },
+                    {
+                        "label": "C",
+                        "pct": 16,
+                        "color": "#eab308"
+                    },
+                    {
+                        "label": "R",
+                        "pct": 15,
+                        "color": "#67e8f9"
+                    }
+                ]
+            }
+        },
+        {
+            "group_label": "vs 3bet",
+            "group_order": 1,
+            "row_label": "SB",
+            "row_order": 3,
+            "button_label": "vs BB",
+            "button_order": 0,
+            "is_default": false,
+            "legend": [
+                {
+                    "key": "fold",
+                    "label": "Fold",
+                    "color": "#ef4444"
+                },
+                {
+                    "key": "call",
+                    "label": "Call",
+                    "color": "#eab308"
+                },
+                {
+                    "key": "4bf",
+                    "label": "4bet → Fold",
+                    "color": "#22c55e"
+                },
+                {
+                    "key": "4bc",
+                    "label": "4bet → Call",
+                    "color": "#3b82f6"
+                }
+            ],
+            "combos": {
+                "AA": "4bc",
+                "AKs": "4bc",
+                "AQs": "4bc",
+                "AKo": "4bc",
+                "KK": "4bc",
+                "AQo": "4bc",
+                "QQ": "4bc",
+                "JJ": "4bc",
+                "TT": "4bc",
+                "99": "4bc",
+                "AJs": "call",
+                "ATs": "call",
+                "A9s": "call",
+                "A8s": "call",
+                "A5s": "call",
+                "KQs": "call",
+                "KJs": "call",
+                "KTs": "call",
+                "K9s": "call",
+                "K8s": "call",
+                "KQo": "call",
+                "QJs": "call",
+                "QTs": "call",
+                "Q9s": "call",
+                "JTs": "call",
+                "J9s": "call",
+                "T9s": "call",
+                "T8s": "call",
+                "A9o": "fold",
+                "K9o": "fold",
+                "Q9o": "fold",
+                "J9o": "fold",
+                "T9o": "fold",
+                "98s": "fold",
+                "A8o": "fold",
+                "K8o": "fold",
+                "Q8o": "fold",
+                "J8o": "fold",
+                "T8o": "fold",
+                "98o": "fold",
+                "88": "call",
+                "87o": "fold",
+                "77": "call",
+                "76s": "call",
+                "66": "call",
+                "65s": "call",
+                "55": "call",
+                "44": "call",
+                "33": "call",
+                "22": "call",
+                "A7s": "call",
+                "A6s": "4bf",
+                "A4s": "4bf",
+                "A3s": "4bf",
+                "K7s": "4bf",
+                "K5s": "4bf",
+                "AJo": "4bf",
+                "KJo": "4bf",
+                "QJo": "fold",
+                "ATo": "4bf",
+                "KTo": "fold",
+                "QTo": "fold",
+                "JTo": "fold",
+                "A2s": "fold",
+                "K6s": "fold",
+                "K4s": "fold",
+                "K3s": "fold",
+                "K2s": "fold",
+                "Q8s": "fold",
+                "Q7s": "fold",
+                "Q6s": "fold",
+                "Q5s": "fold",
+                "Q4s": "fold",
+                "Q3s": "fold",
+                "Q2s": "fold",
+                "J8s": "fold",
+                "J7s": "fold",
+                "J6s": "fold",
+                "J5s": "fold",
+                "J4s": "fold",
+                "T7s": "fold",
+                "T6s": "fold",
+                "T5s": "fold",
+                "97s": "fold",
+                "96s": "fold",
+                "95s": "fold",
+                "87s": "fold",
+                "86s": "fold",
+                "85s": "fold",
+                "A7o": "fold",
+                "K7o": "fold",
+                "75s": "fold",
+                "74s": "fold",
+                "A6o": "fold",
+                "64s": "fold",
+                "A5o": "fold",
+                "54s": "fold",
+                "53s": "fold",
+                "A4o": "fold",
+                "A3o": "fold",
+                "A2o": "fold"
+            },
+            "stats": {
+                "badges": [
+                    {
+                        "label": "VPIP",
+                        "value": "49.9%",
+                        "highlight": false
+                    },
+                    {
+                        "label": "OR 3BBs",
+                        "value": "50%",
+                        "highlight": true
+                    }
+                ],
+                "bars": [
+                    {
+                        "label": "F",
+                        "pct": 61,
+                        "color": "#ef4444"
+                    },
+                    {
+                        "label": "C",
+                        "pct": 20,
+                        "color": "#eab308"
+                    },
+                    {
+                        "label": "R",
+                        "pct": 19,
+                        "color": "#67e8f9"
+                    }
+                ]
+            }
+        },
+        {
+            "group_label": "vs OR",
+            "group_order": 2,
+            "row_label": "MP",
+            "row_order": 0,
+            "button_label": "vs EP",
+            "button_order": 0,
+            "is_default": false,
+            "legend": [
+                {
+                    "key": "fold",
+                    "label": "Fold",
+                    "color": "#ef4444"
+                },
+                {
+                    "key": "raise",
+                    "label": "Raise",
+                    "color": "#a855f7"
+                },
+                {
+                    "key": "call",
+                    "label": "Call",
+                    "color": "#3b82f6"
+                }
+            ],
+            "combos": {
+                "AA": "raise",
+                "AKs": "raise",
+                "AKo": "raise",
+                "KK": "raise",
+                "AQs": "call",
+                "QQ": "call",
+                "JJ": "call",
+                "AJs": "fold",
+                "ATs": "fold",
+                "A9s": "fold",
+                "A5s": "fold",
+                "A4s": "fold",
+                "KQs": "fold",
+                "KJs": "fold",
+                "KTs": "fold",
+                "AQo": "fold",
+                "KQo": "fold"
+            },
+            "stats": {
+                "badges": [
+                    {
+                        "label": "3bet 7.5BBs",
+                        "value": "8%",
+                        "highlight": true
+                    },
+                    {
+                        "label": "vs 4bet 20bb",
+                        "value": "",
+                        "highlight": false
+                    }
+                ],
+                "bars": [
+                    {
+                        "label": "F",
+                        "pct": 56,
+                        "color": "#ef4444"
+                    },
+                    {
+                        "label": "C",
+                        "pct": 16,
+                        "color": "#eab308"
+                    },
+                    {
+                        "label": "AI",
+                        "pct": 28,
+                        "color": "#22d3ee"
+                    }
+                ]
+            }
+        },
+        {
+            "group_label": "vs OR",
+            "group_order": 2,
+            "row_label": "CO",
+            "row_order": 1,
+            "button_label": "vs EP-MP",
+            "button_order": 0,
+            "is_default": false,
+            "legend": [
+                {
+                    "key": "fold",
+                    "label": "Fold",
+                    "color": "#ef4444"
+                },
+                {
+                    "key": "raise",
+                    "label": "Raise",
+                    "color": "#a855f7"
+                },
+                {
+                    "key": "call",
+                    "label": "Call",
+                    "color": "#3b82f6"
+                }
+            ],
+            "combos": {
+                "AA": "raise",
+                "AKs": "raise",
+                "AKo": "raise",
+                "KK": "raise",
+                "KQo": "fold",
+                "QQ": "raise",
+                "AQs": "call",
+                "JJ": "call",
+                "AJs": "fold",
+                "ATs": "fold",
+                "A9s": "fold",
+                "A5s": "fold",
+                "A4s": "fold",
+                "KQs": "fold",
+                "KJs": "fold",
+                "KTs": "fold",
+                "AQo": "fold",
+                "QJs": "fold",
+                "TT": "fold"
+            },
+            "stats": {
+                "badges": [
+                    {
+                        "label": "3bet 7.5BBs",
+                        "value": "8%",
+                        "highlight": true
+                    }
+                ],
+                "bars": [
+                    {
+                        "label": "F",
+                        "pct": 60,
+                        "color": "#ef4444"
+                    },
+                    {
+                        "label": "C",
+                        "pct": 9,
+                        "color": "#eab308"
+                    },
+                    {
+                        "label": "AI",
+                        "pct": 31,
+                        "color": "#22d3ee"
+                    }
+                ]
+            }
+        },
+        {
+            "group_label": "vs OR",
+            "group_order": 2,
+            "row_label": "BTN",
+            "row_order": 2,
+            "button_label": "vs EP-MP",
+            "button_order": 0,
+            "is_default": false,
+            "legend": [
+                {
+                    "key": "fold",
+                    "label": "Fold",
+                    "color": "#ef4444"
+                },
+                {
+                    "key": "raise",
+                    "label": "Raise",
+                    "color": "#a855f7"
+                },
+                {
+                    "key": "call",
+                    "label": "Call",
+                    "color": "#3b82f6"
+                }
+            ],
+            "combos": {
+                "AA": "raise",
+                "AKs": "raise",
+                "AKo": "raise",
+                "KK": "raise",
+                "KQo": "raise",
+                "QQ": "raise",
+                "AQs": "call",
+                "JJ": "call",
+                "AJs": "fold",
+                "ATs": "fold",
+                "A9s": "fold",
+                "A5s": "fold",
+                "A4s": "fold",
+                "KQs": "fold",
+                "KJs": "fold",
+                "KTs": "fold",
+                "AQo": "fold",
+                "QJs": "fold",
+                "TT": "fold"
+            },
+            "stats": {
+                "badges": [
+                    {
+                        "label": "3bet 7.5BBs",
+                        "value": "8%",
+                        "highlight": true
+                    }
+                ],
+                "bars": [
+                    {
+                        "label": "F",
+                        "pct": 60,
+                        "color": "#ef4444"
+                    },
+                    {
+                        "label": "C",
+                        "pct": 9,
+                        "color": "#eab308"
+                    },
+                    {
+                        "label": "AI",
+                        "pct": 31,
+                        "color": "#22d3ee"
+                    }
+                ]
+            }
+        },
+        {
+            "group_label": "vs OR",
+            "group_order": 2,
+            "row_label": "BTN",
+            "row_order": 2,
+            "button_label": "vs CO",
+            "button_order": 1,
+            "is_default": false,
+            "legend": [
+                {
+                    "key": "fold",
+                    "label": "Fold",
+                    "color": "#ef4444"
+                },
+                {
+                    "key": "raise",
+                    "label": "Raise",
+                    "color": "#a855f7"
+                },
+                {
+                    "key": "call",
+                    "label": "Call",
+                    "color": "#3b82f6"
+                }
+            ],
+            "combos": {
+                "AA": "raise",
+                "AKs": "raise",
+                "AKo": "raise",
+                "KK": "raise",
+                "A5s": "raise",
+                "QQ": "raise",
+                "QJs": "fold",
+                "JJ": "raise",
+                "AQs": "call",
+                "AJs": "call",
+                "ATs": "call",
+                "KQs": "call",
+                "KJs": "call",
+                "QTs": "fold",
+                "JTs": "call",
+                "TT": "call",
+                "99": "call",
+                "88": "call",
+                "A9s": "fold",
+                "A8s": "fold",
+                "A7s": "fold",
+                "A4s": "fold",
+                "A3s": "fold",
+                "KTs": "fold",
+                "K9s": "fold",
+                "AQo": "fold",
+                "KQo": "fold",
+                "AJo": "fold",
+                "KJo": "fold",
+                "ATo": "fold"
+            },
+            "stats": {
+                "badges": [
+                    {
+                        "label": "3bet 7.5BBs",
+                        "value": "14%",
+                        "highlight": true
+                    }
+                ],
+                "bars": [
+                    {
+                        "label": "F",
+                        "pct": 53,
+                        "color": "#ef4444"
+                    },
+                    {
+                        "label": "C",
+                        "pct": 23,
+                        "color": "#eab308"
+                    },
+                    {
+                        "label": "AI",
+                        "pct": 24,
+                        "color": "#22d3ee"
+                    }
+                ]
+            }
+        },
+        {
+            "group_label": "vs OR",
+            "group_order": 2,
+            "row_label": "SB",
+            "row_order": 3,
+            "button_label": "vs EP-MP",
+            "button_order": 0,
+            "is_default": false,
+            "legend": [
+                {
+                    "key": "fold",
+                    "label": "Fold",
+                    "color": "#ef4444"
+                },
+                {
+                    "key": "raise",
+                    "label": "Raise",
+                    "color": "#a855f7"
+                },
+                {
+                    "key": "call",
+                    "label": "Call",
+                    "color": "#3b82f6"
+                }
+            ],
+            "combos": {
+                "AA": "raise",
+                "AKs": "raise",
+                "AKo": "raise",
+                "KK": "raise",
+                "QQ": "raise",
+                "AQs": "call",
+                "JJ": "call",
+                "AJs": "fold",
+                "ATs": "fold",
+                "A5s": "fold",
+                "A4s": "fold",
+                "KQs": "fold",
+                "KJs": "fold",
+                "KTs": "fold",
+                "AQo": "fold",
+                "KQo": "fold"
+            },
+            "stats": {
+                "badges": [
+                    {
+                        "label": "3bet 7.5BBs",
+                        "value": "7%",
+                        "highlight": true
+                    }
+                ],
+                "bars": [
+                    {
+                        "label": "F",
+                        "pct": 54,
+                        "color": "#ef4444"
+                    },
+                    {
+                        "label": "C",
+                        "pct": 10,
+                        "color": "#eab308"
+                    },
+                    {
+                        "label": "AI",
+                        "pct": 35,
+                        "color": "#22d3ee"
+                    }
+                ]
+            }
+        },
+        {
+            "group_label": "vs OR",
+            "group_order": 2,
+            "row_label": "SB",
+            "row_order": 3,
+            "button_label": "vs CO",
+            "button_order": 1,
+            "is_default": false,
+            "legend": [
+                {
+                    "key": "fold",
+                    "label": "Fold",
+                    "color": "#ef4444"
+                },
+                {
+                    "key": "raise",
+                    "label": "Raise",
+                    "color": "#a855f7"
+                },
+                {
+                    "key": "call",
+                    "label": "Call",
+                    "color": "#3b82f6"
+                }
+            ],
+            "combos": {
+                "AA": "raise",
+                "AKs": "raise",
+                "AKo": "raise",
+                "KK": "raise",
+                "KQs": "fold",
+                "QQ": "raise",
+                "QJs": "fold",
+                "JJ": "raise",
+                "AQs": "call",
+                "AJs": "call",
+                "TT": "call",
+                "ATs": "fold",
+                "A9s": "fold",
+                "A5s": "fold",
+                "A4s": "fold",
+                "KJs": "fold",
+                "KTs": "fold",
+                "AQo": "fold",
+                "KQo": "fold",
+                "AJo": "fold",
+                "KJo": "fold"
+            },
+            "stats": {
+                "badges": [
+                    {
+                        "label": "3bet 10.5BBs",
+                        "value": "10%",
+                        "highlight": true
+                    }
+                ],
+                "bars": [
+                    {
+                        "label": "F",
+                        "pct": 60,
+                        "color": "#ef4444"
+                    },
+                    {
+                        "label": "C",
+                        "pct": 10,
+                        "color": "#eab308"
+                    },
+                    {
+                        "label": "AI",
+                        "pct": 30,
+                        "color": "#22d3ee"
+                    }
+                ]
+            }
+        },
+        {
+            "group_label": "vs OR",
+            "group_order": 2,
+            "row_label": "SB",
+            "row_order": 3,
+            "button_label": "vs BTN",
+            "button_order": 2,
+            "is_default": false,
+            "legend": [
+                {
+                    "key": "fold",
+                    "label": "Fold",
+                    "color": "#ef4444"
+                },
+                {
+                    "key": "raise",
+                    "label": "Raise",
+                    "color": "#a855f7"
+                },
+                {
+                    "key": "call",
+                    "label": "Call",
+                    "color": "#3b82f6"
+                }
+            ],
+            "combos": {
+                "AA": "raise",
+                "AKs": "raise",
+                "AQs": "raise",
+                "ATs": "raise",
+                "AKo": "raise",
+                "KK": "raise",
+                "KTs": "fold",
+                "AQo": "raise",
+                "QQ": "raise",
+                "JJ": "raise",
+                "JTs": "fold",
+                "TT": "raise",
+                "99": "raise",
+                "AJs": "call",
+                "KQs": "call",
+                "KJs": "call",
+                "88": "call",
+                "A9s": "fold",
+                "A8s": "fold",
+                "A7s": "fold",
+                "A5s": "fold",
+                "A4s": "fold",
+                "A3s": "fold",
+                "K9s": "fold",
+                "K8s": "fold",
+                "KQo": "fold",
+                "QJs": "fold",
+                "QTs": "fold",
+                "AJo": "fold",
+                "KJo": "fold",
+                "ATo": "fold",
+                "77": "fold"
+            },
+            "stats": {
+                "badges": [
+                    {
+                        "label": "3bet 10.5BBs",
+                        "value": "15%",
+                        "highlight": true
+                    }
+                ],
+                "bars": [
+                    {
+                        "label": "F",
+                        "pct": 53,
+                        "color": "#ef4444"
+                    },
+                    {
+                        "label": "C",
+                        "pct": 9,
+                        "color": "#eab308"
+                    },
+                    {
+                        "label": "AI",
+                        "pct": 38,
+                        "color": "#22d3ee"
+                    }
+                ]
+            }
+        },
+        {
+            "group_label": "vs OR",
+            "group_order": 2,
+            "row_label": "BB",
+            "row_order": 4,
+            "button_label": "vs EP-MP",
+            "button_order": 0,
+            "is_default": false,
+            "legend": [
+                {
+                    "key": "fold",
+                    "label": "Fold",
+                    "color": "#ef4444"
+                },
+                {
+                    "key": "raise",
+                    "label": "Raise",
+                    "color": "#a855f7"
+                },
+                {
+                    "key": "call",
+                    "label": "Call",
+                    "color": "#fbbf24"
+                },
+                {
+                    "key": "call2",
+                    "label": "Call/Raise",
+                    "color": "#3b82f6"
+                }
+            ],
+            "combos": {
+                "AA": "raise",
+                "AKs": "raise",
+                "AKo": "raise",
+                "KK": "raise",
+                "AQs": "call",
+                "AJs": "call",
+                "ATs": "call",
+                "A9s": "call",
+                "A8s": "call",
+                "A7s": "call",
+                "A5s": "call",
+                "A4s": "call",
+                "A3s": "call",
+                "KQs": "call",
+                "KJs": "call",
+                "KTs": "call",
+                "K9s": "call",
+                "K8s": "call",
+                "K7s": "call",
+                "K4s": "call",
+                "K2s": "call",
+                "AQo": "call",
+                "KQo": "call",
+                "QQ": "call2",
+                "QJs": "call",
+                "QTs": "call",
+                "Q9s": "call",
+                "Q8s": "call",
+                "Q7s": "call",
+                "Q6s": "call",
+                "AJo": "call",
+                "QJo": "call",
+                "JJ": "call",
+                "JTs": "call",
+                "J9s": "call",
+                "J8s": "call",
+                "ATo": "call",
+                "KTo": "call",
+                "TT": "call",
+                "T9s": "call",
+                "T8s": "call",
+                "T7s": "call",
+                "A9o": "call",
+                "99": "call",
+                "98s": "call",
+                "97s": "call",
+                "96s": "call",
+                "88": "call",
+                "87s": "call",
+                "86s": "call",
+                "85s": "call",
+                "77": "call",
+                "76s": "call",
+                "75s": "call",
+                "74s": "call",
+                "66": "call",
+                "65s": "call",
+                "64s": "call",
+                "63s": "call",
+                "55": "call",
+                "54s": "call",
+                "53s": "call",
+                "52s": "call",
+                "44": "call",
+                "43s": "call",
+                "42s": "call",
+                "33": "call",
+                "22": "call",
+                "A6s": "fold",
+                "A2s": "fold",
+                "K6s": "fold",
+                "K5s": "fold",
+                "K3s": "fold",
+                "KJo": "fold",
+                "A5o": "fold"
+            },
+            "stats": {
+                "badges": [
+                    {
+                        "label": "Call 2.2BBs",
+                        "value": "25%",
+                        "highlight": true
+                    },
+                    {
+                        "label": "3bet 12BBs",
+                        "value": "6%",
+                        "highlight": true
+                    }
+                ],
+                "bars": [
+                    {
+                        "label": "F",
+                        "pct": 56,
+                        "color": "#ef4444"
+                    },
+                    {
+                        "label": "C",
+                        "pct": 8,
+                        "color": "#eab308"
+                    },
+                    {
+                        "label": "AI",
+                        "pct": 36,
+                        "color": "#22d3ee"
+                    }
+                ]
+            }
+        },
+        {
+            "group_label": "vs OR",
+            "group_order": 2,
+            "row_label": "BB",
+            "row_order": 4,
+            "button_label": "vs CO",
+            "button_order": 1,
+            "is_default": false,
+            "legend": [
+                {
+                    "key": "fold",
+                    "label": "Fold",
+                    "color": "#ef4444"
+                },
+                {
+                    "key": "raise",
+                    "label": "Raise",
+                    "color": "#a855f7"
+                },
+                {
+                    "key": "call",
+                    "label": "Call",
+                    "color": "#fbbf24"
+                },
+                {
+                    "key": "call2",
+                    "label": "Call/Raise",
+                    "color": "#3b82f6"
+                }
+            ],
+            "combos": {
+                "AA": "raise",
+                "AKs": "raise",
+                "AKo": "raise",
+                "KK": "raise",
+                "QQ": "raise",
+                "JJ": "raise",
+                "AQs": "call2",
+                "KQs": "call2",
+                "TT": "call2",
+                "76s": "call2",
+                "A2s": "fold",
+                "K6s": "fold",
+                "K5s": "fold",
+                "K3s": "fold",
+                "K2s": "fold",
+                "Q6s": "fold",
+                "Q2s": "fold",
+                "QJo": "fold",
+                "A7o": "fold",
+                "A5o": "fold",
+                "K9o": "fold",
+                "AJs": "call",
+                "ATs": "call",
+                "A9s": "call",
+                "A8s": "call",
+                "A7s": "call",
+                "A6s": "call",
+                "A5s": "call",
+                "A4s": "call",
+                "A3s": "call",
+                "KJs": "call",
+                "KTs": "call",
+                "K9s": "call",
+                "K8s": "call",
+                "K7s": "call",
+                "K4s": "call",
+                "AQo": "call",
+                "KQo": "call",
+                "QJs": "call",
+                "QTs": "call",
+                "Q9s": "call",
+                "Q8s": "call",
+                "Q7s": "call",
+                "Q5s": "call",
+                "Q4s": "call",
+                "Q3s": "call",
+                "AJo": "call",
+                "KJo": "call",
+                "JTs": "call",
+                "J9s": "call",
+                "J8s": "call",
+                "J7s": "call",
+                "J6s": "call",
+                "J5s": "call",
+                "J4s": "call",
+                "ATo": "call",
+                "KTo": "call",
+                "QTo": "call",
+                "JTo": "call",
+                "T9s": "call",
+                "T8s": "call",
+                "T7s": "call",
+                "T6s": "call",
+                "A9o": "call",
+                "T9o": "call",
+                "99": "call",
+                "98s": "call",
+                "97s": "call",
+                "96s": "call",
+                "A8o": "call",
+                "88": "call",
+                "87s": "call",
+                "86s": "call",
+                "85s": "call",
+                "77": "call",
+                "75s": "call",
+                "74s": "call",
+                "66": "call",
+                "65s": "call",
+                "64s": "call",
+                "63s": "call",
+                "55": "call",
+                "54s": "call",
+                "53s": "call",
+                "52s": "call",
+                "44": "call",
+                "43s": "call",
+                "42s": "call",
+                "33": "call",
+                "22": "call"
+            },
+            "stats": {
+                "badges": [
+                    {
+                        "label": "Call 2.2BBs",
+                        "value": "29%",
+                        "highlight": true
+                    },
+                    {
+                        "label": "3bet 12BBs",
+                        "value": "10%",
+                        "highlight": true
+                    }
+                ],
+                "bars": [
+                    {
+                        "label": "F",
+                        "pct": 57,
+                        "color": "#ef4444"
+                    },
+                    {
+                        "label": "C",
+                        "pct": 13,
+                        "color": "#eab308"
+                    },
+                    {
+                        "label": "AI",
+                        "pct": 30,
+                        "color": "#22d3ee"
+                    }
+                ]
+            }
+        },
+        {
+            "group_label": "vs OR",
+            "group_order": 2,
+            "row_label": "BB",
+            "row_order": 4,
+            "button_label": "vs BTN",
+            "button_order": 2,
+            "is_default": false,
+            "legend": [
+                {
+                    "key": "fold",
+                    "label": "Fold",
+                    "color": "#ef4444"
+                },
+                {
+                    "key": "raise",
+                    "label": "Raise",
+                    "color": "#a855f7"
+                },
+                {
+                    "key": "call",
+                    "label": "Call",
+                    "color": "#fbbf24"
+                },
+                {
+                    "key": "call2",
+                    "label": "Call/Raise",
+                    "color": "#3b82f6"
+                }
+            ],
+            "combos": {
+                "AA": "raise",
+                "AKs": "raise",
+                "AKo": "raise",
+                "KK": "raise",
+                "A5s": "raise",
+                "QQ": "raise",
+                "JJ": "raise",
+                "TT": "raise",
+                "99": "raise",
+                "AQs": "call2",
+                "AJs": "call2",
+                "KQs": "call2",
+                "KJs": "call2",
+                "AQo": "call2",
+                "JTs": "call2",
+                "76s": "call2",
+                "65s": "call2",
+                "K3s": "fold",
+                "K2s": "fold",
+                "Q2s": "fold",
+                "J5s": "fold",
+                "J4s": "fold",
+                "ATo": "call",
+                "KTo": "fold",
+                "QTo": "fold",
+                "A5o": "fold",
+                "A4o": "fold",
+                "ATs": "call",
+                "A9s": "call",
+                "A8s": "call",
+                "A7s": "call",
+                "A6s": "call",
+                "A4s": "call",
+                "A3s": "call",
+                "A2s": "call",
+                "KTs": "call",
+                "K9s": "call",
+                "K8s": "call",
+                "K7s": "call",
+                "K6s": "call",
+                "K5s": "call",
+                "K4s": "call",
+                "KQo": "call",
+                "QJs": "call",
+                "QTs": "call",
+                "Q9s": "call",
+                "Q8s": "call",
+                "Q7s": "call",
+                "Q6s": "call",
+                "Q5s": "call",
+                "Q4s": "call",
+                "Q3s": "call",
+                "AJo": "call",
+                "KJo": "call",
+                "QJo": "call",
+                "J9s": "call",
+                "J8s": "call",
+                "J7s": "call",
+                "J6s": "call",
+                "T9s": "call",
+                "T8s": "call",
+                "T7s": "call",
+                "T6s": "call",
+                "A9o": "call",
+                "K9o": "call",
+                "T9o": "call",
+                "98s": "call",
+                "97s": "call",
+                "96s": "call",
+                "A8o": "call",
+                "88": "call",
+                "87s": "call",
+                "86s": "call",
+                "85s": "call",
+                "A7o": "call",
+                "77": "call",
+                "75s": "call",
+                "74s": "call",
+                "66": "call",
+                "64s": "call",
+                "55": "call",
+                "54s": "call",
+                "53s": "call",
+                "52s": "call",
+                "44": "call",
+                "43s": "call",
+                "33": "call",
+                "22": "call"
+            },
+            "stats": {
+                "badges": [
+                    {
+                        "label": "Call 2.2BBs",
+                        "value": "27%",
+                        "highlight": true
+                    },
+                    {
+                        "label": "3bet 12BBs",
+                        "value": "12%",
+                        "highlight": true
+                    }
+                ],
+                "bars": [
+                    {
+                        "label": "F",
+                        "pct": 43,
+                        "color": "#ef4444"
+                    },
+                    {
+                        "label": "C",
+                        "pct": 23,
+                        "color": "#eab308"
+                    },
+                    {
+                        "label": "AI",
+                        "pct": 35,
+                        "color": "#22d3ee"
+                    }
+                ]
+            }
+        },
+        {
+            "group_label": "vs OR",
+            "group_order": 2,
+            "row_label": "BB",
+            "row_order": 4,
+            "button_label": "vs SB",
+            "button_order": 3,
+            "is_default": false,
+            "legend": [
+                {
+                    "key": "fold",
+                    "label": "Fold",
+                    "color": "#ef4444"
+                },
+                {
+                    "key": "raise",
+                    "label": "Raise",
+                    "color": "#a855f7"
+                },
+                {
+                    "key": "call",
+                    "label": "Call",
+                    "color": "#fbbf24"
+                },
+                {
+                    "key": "call2",
+                    "label": "Call/Raise",
+                    "color": "#3b82f6"
+                }
+            ],
+            "combos": {
+                "AKs": "raise",
+                "A5s": "raise",
+                "AKo": "raise",
+                "KK": "raise",
+                "QQ": "raise",
+                "JJ": "raise",
+                "TT": "raise",
+                "99": "raise",
+                "AA": "call2",
+                "AQs": "call2",
+                "AJs": "call2",
+                "KQs": "call2",
+                "KJs": "call2",
+                "AQo": "call2",
+                "QJs": "call2",
+                "JTs": "call2",
+                "88": "call2",
+                "Q3s": "fold",
+                "Q2s": "fold",
+                "J6s": "fold",
+                "J5s": "fold",
+                "J4s": "fold",
+                "J3s": "fold",
+                "J2s": "fold",
+                "T5s": "fold",
+                "T4s": "fold",
+                "Q9o": "fold",
+                "K8o": "fold",
+                "T8o": "fold",
+                "A7o": "fold",
+                "K7o": "fold",
+                "A4o": "fold",
+                "A3o": "fold",
+                "ATs": "call",
+                "A9s": "call",
+                "A8s": "call",
+                "A7s": "call",
+                "A6s": "call",
+                "A4s": "call",
+                "A3s": "call",
+                "A2s": "call",
+                "KTs": "call",
+                "K9s": "call",
+                "K8s": "call",
+                "K7s": "call",
+                "K6s": "call",
+                "K5s": "call",
+                "K4s": "call",
+                "K3s": "call",
+                "K2s": "call",
+                "KQo": "call",
+                "QTs": "call",
+                "Q9s": "call",
+                "Q8s": "call",
+                "Q7s": "call",
+                "Q6s": "call",
+                "Q5s": "call",
+                "Q4s": "call",
+                "AJo": "call",
+                "KJo": "call",
+                "QJo": "call",
+                "J9s": "call",
+                "J8s": "call",
+                "J7s": "call",
+                "ATo": "call",
+                "KTo": "call",
+                "QTo": "call",
+                "JTo": "call",
+                "T9s": "call",
+                "T8s": "call",
+                "T7s": "call",
+                "T6s": "call",
+                "A9o": "call",
+                "K9o": "call",
+                "J9o": "call",
+                "T9o": "call",
+                "98s": "call",
+                "97s": "call",
+                "96s": "call",
+                "A8o": "call",
+                "98o": "call",
+                "87s": "call",
+                "86s": "call",
+                "85s": "call",
+                "77": "call",
+                "76s": "call",
+                "75s": "call",
+                "74s": "call",
+                "A6o": "fold",
+                "66": "call",
+                "65s": "call",
+                "64s": "call",
+                "63s": "call",
+                "A5o": "call",
+                "55": "call",
+                "54s": "call",
+                "53s": "call",
+                "52s": "call",
+                "44": "call",
+                "43s": "call",
+                "33": "call",
+                "A2o": "fold",
+                "22": "call"
+            },
+            "stats": {
+                "badges": [
+                    {
+                        "label": "Call 3BBs",
+                        "value": "31%",
+                        "highlight": true
+                    },
+                    {
+                        "label": "3bet 9BBs",
+                        "value": "18%",
+                        "highlight": true
+                    }
+                ],
+                "bars": [
+                    {
+                        "label": "F",
+                        "pct": 60,
+                        "color": "#ef4444"
+                    },
+                    {
+                        "label": "C",
+                        "pct": 18,
+                        "color": "#eab308"
+                    },
+                    {
+                        "label": "AI",
+                        "pct": 22,
+                        "color": "#22d3ee"
+                    }
+                ]
+            }
+        },
+        {
+            "group_label": "Rol",
+            "group_order": 3,
+            "row_label": "MP",
+            "row_order": 0,
+            "button_label": "Base",
+            "button_order": 0,
+            "is_default": false,
+            "legend": [
+                {
+                    "key": "unfav",
+                    "label": "Desfavorable",
+                    "color": "#3b82f6"
+                },
+                {
+                    "key": "fav",
+                    "label": "Favorable",
+                    "color": "#fbbf24"
+                }
+            ],
+            "combos": {
+                "AA": "unfav",
+                "AKs": "unfav",
+                "AQs": "unfav",
+                "AJs": "unfav",
+                "ATs": "unfav",
+                "AKo": "unfav",
+                "KK": "unfav",
+                "KQs": "unfav",
+                "KJs": "unfav",
+                "AQo": "unfav",
+                "KQo": "unfav",
+                "QQ": "unfav",
+                "QJs": "unfav",
+                "JJ": "unfav",
+                "JTs": "unfav",
+                "TT": "unfav",
+                "99": "unfav",
+                "98s": "fav",
+                "88": "unfav",
+                "A9s": "fav",
+                "A8s": "fav",
+                "KTs": "fav",
+                "K9s": "fav",
+                "QTs": "fav",
+                "Q9s": "fav",
+                "AJo": "fav",
+                "KJo": "fav",
+                "J9s": "fav",
+                "T9s": "fav",
+                "T8s": "fav",
+                "77": "fav",
+                "66": "fav",
+                "55": "fav"
+            },
+            "stats": {
+                "badges": [
+                    {
+                        "label": "VPIP",
+                        "value": "14.5%",
+                        "highlight": false
+                    },
+                    {
+                        "label": "Desfavorable",
+                        "value": "8%",
+                        "highlight": true
+                    },
+                    {
+                        "label": "Favorable",
+                        "value": "6%",
+                        "highlight": true
+                    }
+                ],
+                "bars": []
+            }
+        },
+        {
+            "group_label": "Rol",
+            "group_order": 3,
+            "row_label": "CO",
+            "row_order": 1,
+            "button_label": "Base",
+            "button_order": 0,
+            "is_default": false,
+            "legend": [
+                {
+                    "key": "unfav",
+                    "label": "Desfavorable",
+                    "color": "#3b82f6"
+                },
+                {
+                    "key": "fav",
+                    "label": "Favorable",
+                    "color": "#fbbf24"
+                }
+            ],
+            "combos": {
+                "AA": "unfav",
+                "AKs": "unfav",
+                "AQs": "unfav",
+                "AJs": "unfav",
+                "ATs": "unfav",
+                "AKo": "unfav",
+                "KK": "unfav",
+                "KQs": "unfav",
+                "KJs": "unfav",
+                "KTs": "unfav",
+                "AQo": "unfav",
+                "KQo": "unfav",
+                "QQ": "unfav",
+                "QJs": "unfav",
+                "QTs": "unfav",
+                "AJo": "unfav",
+                "KJo": "unfav",
+                "JJ": "unfav",
+                "JTs": "unfav",
+                "ATo": "unfav",
+                "TT": "unfav",
+                "T9s": "unfav",
+                "99": "unfav",
+                "98s": "unfav",
+                "88": "unfav",
+                "77": "unfav",
+                "66": "unfav",
+                "A9s": "unfav",
+                "A8s": "fav",
+                "A7s": "fav",
+                "A5s": "fav",
+                "K9s": "unfav",
+                "K8s": "fav",
+                "Q9s": "fav",
+                "QJo": "fav",
+                "J9s": "unfav",
+                "KTo": "fav",
+                "JTo": "fav",
+                "T8s": "fav",
+                "A9o": "fav",
+                "87s": "fav",
+                "76s": "fav",
+                "65s": "fav",
+                "55": "fav",
+                "44": "fav"
+            },
+            "stats": {
+                "badges": [
+                    {
+                        "label": "VPIP",
+                        "value": "21.3%",
+                        "highlight": false
+                    },
+                    {
+                        "label": "Desfavorable",
+                        "value": "14%",
+                        "highlight": true
+                    },
+                    {
+                        "label": "Favorable",
+                        "value": "7%",
+                        "highlight": true
+                    }
+                ],
+                "bars": []
+            }
+        },
+        {
+            "group_label": "Rol",
+            "group_order": 3,
+            "row_label": "BTN",
+            "row_order": 2,
+            "button_label": "Base",
+            "button_order": 0,
+            "is_default": false,
+            "legend": [
+                {
+                    "key": "unfav",
+                    "label": "Desfavorable",
+                    "color": "#3b82f6"
+                },
+                {
+                    "key": "fav",
+                    "label": "Favorable",
+                    "color": "#fbbf24"
+                }
+            ],
+            "combos": {
+                "AA": "unfav",
+                "AKs": "unfav",
+                "AQs": "unfav",
+                "AJs": "unfav",
+                "ATs": "unfav",
+                "A9s": "unfav",
+                "A8s": "unfav",
+                "A7s": "unfav",
+                "A6s": "unfav",
+                "A5s": "unfav",
+                "A4s": "unfav",
+                "A3s": "fav",
+                "A2s": "fav",
+                "AKo": "unfav",
+                "KK": "unfav",
+                "KQs": "unfav",
+                "KJs": "unfav",
+                "KTs": "unfav",
+                "K9s": "unfav",
+                "K8s": "unfav",
+                "K7s": "unfav",
+                "K6s": "unfav",
+                "AQo": "unfav",
+                "KQo": "unfav",
+                "QQ": "unfav",
+                "QJs": "unfav",
+                "QTs": "unfav",
+                "Q9s": "unfav",
+                "Q8s": "unfav",
+                "AJo": "unfav",
+                "KJo": "unfav",
+                "QJo": "unfav",
+                "JJ": "unfav",
+                "JTs": "unfav",
+                "J9s": "unfav",
+                "J8s": "unfav",
+                "ATo": "unfav",
+                "KTo": "unfav",
+                "QTo": "unfav",
+                "JTo": "unfav",
+                "TT": "unfav",
+                "T9s": "unfav",
+                "T8s": "unfav",
+                "T9o": "unfav",
+                "99": "unfav",
+                "98s": "unfav",
+                "97s": "unfav",
+                "88": "unfav",
+                "87s": "unfav",
+                "86s": "unfav",
+                "77": "unfav",
+                "76s": "unfav",
+                "66": "unfav",
+                "65s": "unfav",
+                "55": "unfav",
+                "44": "unfav",
+                "K5s": "fav",
+                "K4s": "fav",
+                "K3s": "fav",
+                "K2s": "fav",
+                "Q7s": "fav",
+                "Q6s": "fav",
+                "Q5s": "fav",
+                "Q4s": "fav",
+                "J7s": "fav",
+                "J6s": "fav",
+                "J5s": "fav",
+                "T7s": "fav",
+                "T6s": "fav",
+                "A9o": "unfav",
+                "K9o": "fav",
+                "Q9o": "fav",
+                "J9o": "fav",
+                "96s": "fav",
+                "A8o": "fav",
+                "K8o": "fav",
+                "T8o": "fav",
+                "98o": "fav",
+                "85s": "fav",
+                "A7o": "fav",
+                "75s": "fav",
+                "A6o": "fav",
+                "64s": "fav",
+                "A5o": "fav",
+                "54s": "fav",
+                "A4o": "fav",
+                "33": "fav",
+                "22": "fav"
+            },
+            "stats": {
+                "badges": [
+                    {
+                        "label": "VPIP",
+                        "value": "42.4%",
+                        "highlight": false
+                    },
+                    {
+                        "label": "Desfavorable",
+                        "value": "25%",
+                        "highlight": true
+                    },
+                    {
+                        "label": "Favorable",
+                        "value": "18%",
+                        "highlight": true
+                    }
+                ],
+                "bars": []
+            }
+        },
+        {
+            "group_label": "Rol",
+            "group_order": 3,
+            "row_label": "SB-BB",
+            "row_order": 3,
+            "button_label": "Base",
+            "button_order": 0,
+            "is_default": false,
+            "legend": [
+                {
+                    "key": "unfav",
+                    "label": "Desfavorable",
+                    "color": "#3b82f6"
+                },
+                {
+                    "key": "fav",
+                    "label": "Favorable",
+                    "color": "#fbbf24"
+                }
+            ],
+            "combos": {
+                "AA": "unfav",
+                "AKs": "unfav",
+                "AQs": "unfav",
+                "AJs": "unfav",
+                "ATs": "unfav",
+                "A9s": "unfav",
+                "A8s": "unfav",
+                "A7s": "unfav",
+                "A6s": "unfav",
+                "A5s": "unfav",
+                "A4s": "unfav",
+                "AKo": "unfav",
+                "KK": "unfav",
+                "KQs": "unfav",
+                "KJs": "unfav",
+                "KTs": "unfav",
+                "K9s": "unfav",
+                "K8s": "unfav",
+                "K7s": "unfav",
+                "AQo": "unfav",
+                "KQo": "unfav",
+                "QQ": "unfav",
+                "QJs": "unfav",
+                "QTs": "unfav",
+                "Q9s": "unfav",
+                "AJo": "unfav",
+                "KJo": "unfav",
+                "QJo": "unfav",
+                "JJ": "unfav",
+                "JTs": "unfav",
+                "J9s": "unfav",
+                "J8s": "unfav",
+                "ATo": "unfav",
+                "KTo": "unfav",
+                "JTo": "unfav",
+                "TT": "unfav",
+                "T9s": "unfav",
+                "T8s": "unfav",
+                "A9o": "unfav",
+                "K9o": "fav",
+                "99": "unfav",
+                "98s": "unfav",
+                "97s": "unfav",
+                "88": "unfav",
+                "87s": "unfav",
+                "86s": "unfav",
+                "77": "unfav",
+                "76s": "unfav",
+                "66": "unfav",
+                "65s": "unfav",
+                "55": "unfav",
+                "A3s": "fav",
+                "A2s": "fav",
+                "K6s": "fav",
+                "K5s": "fav",
+                "K4s": "fav",
+                "K3s": "fav",
+                "K2s": "fav",
+                "Q8s": "fav",
+                "Q7s": "fav",
+                "Q6s": "fav",
+                "J7s": "fav",
+                "QTo": "fav",
+                "T7s": "fav",
+                "Q9o": "fav",
+                "J9o": "fav",
+                "T9o": "fav",
+                "96s": "fav",
+                "A8o": "fav",
+                "A7o": "fav",
+                "75s": "fav",
+                "A6o": "fav",
+                "64s": "fav",
+                "A5o": "fav",
+                "54s": "fav",
+                "44": "fav",
+                "33": "fav",
+                "22": "fav"
+            },
+            "stats": {
+                "badges": [
+                    {
+                        "label": "VPIP",
+                        "value": "37%",
+                        "highlight": false
+                    },
+                    {
+                        "label": "Desfavorable",
+                        "value": "22%",
+                        "highlight": true
+                    },
+                    {
+                        "label": "Favorable",
+                        "value": "15%",
+                        "highlight": true
+                    }
+                ],
+                "bars": []
+            }
+        }
+    ]
+}
