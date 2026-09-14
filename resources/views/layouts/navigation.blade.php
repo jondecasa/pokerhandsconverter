@@ -2,6 +2,7 @@
     $nav = [
         ['route' => 'dashboard',          'active' => request()->routeIs('dashboard'),                                        'label' => 'Dashboard', 'icon' => 'M3 12l9-9 9 9M5 10v10a1 1 0 001 1h4v-6h4v6h4a1 1 0 001-1V10'],
         ['route' => 'convert.create',     'active' => request()->routeIs('convert.*') || request()->routeIs('conversions.*'), 'label' => 'Convert',   'icon' => 'M4 4v6h6M20 20v-6h-6M4 10a8 8 0 0114-5.3M20 14a8 8 0 01-14 5.3'],
+        ['route' => 'ranges.index',       'active' => request()->routeIs('ranges.*'),                                         'label' => 'Ranges',    'icon' => 'M4 4h16v16H4zM4 9.333h16M4 14.667h16M9.333 4v16M14.667 4v16'],
         ['route' => 'subscription.plans', 'active' => request()->routeIs('subscription.plans'),                               'label' => 'Plans',     'icon' => 'M3 7h18M3 12h18M3 17h18'],
     ];
 
@@ -32,12 +33,19 @@
         @if (auth()->user()?->isAdmin())
             <div class="px-3 pb-1 pt-4 text-[11px] font-semibold uppercase tracking-wider text-slate-500">Admin</div>
             <a href="{{ route('admin.plans.index') }}"
-               @class(['pc-navlink', 'pc-navlink-active' => request()->routeIs('admin.*')])>
+               @class(['pc-navlink', 'pc-navlink-active' => request()->routeIs('admin.plans.*')])>
                 <svg class="h-5 w-5 shrink-0 opacity-80" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
                     <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
                 </svg>
                 Packages
+            </a>
+            <a href="{{ route('admin.range-studies.index') }}"
+               @class(['pc-navlink', 'pc-navlink-active' => request()->routeIs('admin.range-studies.*') || request()->routeIs('admin.range-scenarios.*')])>
+                <svg class="h-5 w-5 shrink-0 opacity-80" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 4h16v16H4zM4 9.333h16M4 14.667h16M9.333 4v16M14.667 4v16"/>
+                </svg>
+                Range studies
             </a>
         @endif
     </nav>

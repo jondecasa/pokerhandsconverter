@@ -1,11 +1,14 @@
 <?php
 
 use App\Http\Controllers\Admin\PlanController as AdminPlanController;
+use App\Http\Controllers\Admin\RangeScenarioController as AdminRangeScenarioController;
+use App\Http\Controllers\Admin\RangeStudyController as AdminRangeStudyController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\ConverterController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\MarketingController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\RangeController;
 use App\Http\Controllers\SubscriptionController;
 use Illuminate\Support\Facades\Route;
 
@@ -47,12 +50,33 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('/conversions/{conversion}/feedback', [ConverterController::class, 'feedback'])
             ->middleware('throttle:5,1')
             ->name('conversions.feedback');
+
+        // Preflop range charts
+        Route::get('/ranges', [RangeController::class, 'index'])->name('ranges.index');
+        Route::get('/ranges/{rangeStudy}', [RangeController::class, 'show'])->name('ranges.show');
     });
 
     // Admin — package / pricing maintenance
     Route::middleware('admin')->prefix('admin')->name('admin.')->group(function () {
         Route::redirect('/', '/admin/plans');
         Route::resource('plans', AdminPlanController::class)->except('show');
+
+        Route::prefix('range-studies')->name('range-studies.')->group(function () {
+            Route::get('/', [AdminRangeStudyController::class, 'index'])->name('index');
+            Route::get('/create', [AdminRangeStudyController::class, 'create'])->name('create');
+            Route::post('/', [AdminRangeStudyController::class, 'store'])->name('store');
+            Route::get('/{rangeStudy}/edit', [AdminRangeStudyController::class, 'edit'])->name('edit');
+            Route::put('/{rangeStudy}', [AdminRangeStudyController::class, 'update'])->name('update');
+            Route::delete('/{rangeStudy}', [AdminRangeStudyController::class, 'destroy'])->name('destroy');
+
+            Route::get('/{rangeStudy}/scenarios/create', [AdminRangeScenarioController::class, 'create'])->name('scenarios.create');
+            Route::post('/{rangeStudy}/scenarios', [AdminRangeScenarioController::class, 'store'])->name('scenarios.store');
+        });
+        Route::prefix('range-scenarios')->name('range-scenarios.')->group(function () {
+            Route::get('/{rangeScenario}/edit', [AdminRangeScenarioController::class, 'edit'])->name('edit');
+            Route::put('/{rangeScenario}', [AdminRangeScenarioController::class, 'update'])->name('update');
+            Route::delete('/{rangeScenario}', [AdminRangeScenarioController::class, 'destroy'])->name('destroy');
+        });
     });
 });
 
