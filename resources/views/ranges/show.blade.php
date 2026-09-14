@@ -74,7 +74,6 @@
                     {{-- Navigation --}}
                     <div class="space-y-3">
                         <div class="pc-card p-4">
-                            <h3 class="text-xs font-semibold uppercase tracking-wide text-gray-500">{{ $study->name }}</h3>
                             @foreach ($navigation as $groupLabel => $rows)
                                 <div class="mt-3 rounded-lg border border-gray-200 p-3">
                                     <h4 class="text-[11px] font-semibold uppercase tracking-wide text-gray-400">{{ $groupLabel }}</h4>
