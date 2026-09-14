@@ -31,7 +31,7 @@
                             <p class="mb-3 text-sm font-semibold text-gray-700" x-text="active?.button_label"></p>
                             <div style="display:grid; grid-template-columns: repeat(13, minmax(0,1fr)); gap:2px;">
                                 <template x-for="cell in (active?.grid || [])" :key="cell.hand">
-                                    <div class="aspect-square flex items-center justify-center rounded-sm text-[9px] font-semibold text-gray-800"
+                                    <div class="aspect-square flex items-center justify-center rounded-sm text-[9px] font-bold text-gray-800"
                                          :style="{ backgroundColor: cell.color || '#f8fafc' }"
                                          :title="cell.hand" x-text="cell.hand"></div>
                                 </template>

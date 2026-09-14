@@ -101,7 +101,7 @@
                             @click="paint('{{ $hand }}')"
                             @contextmenu.prevent="delete combos['{{ $hand }}']"
                             :style="{ backgroundColor: colorFor(combos['{{ $hand }}']) }"
-                            class="aspect-square rounded-sm border border-gray-200 text-[9px] font-semibold text-gray-800 hover:opacity-80"
+                            class="aspect-square rounded-sm border border-gray-200 text-[9px] font-bold text-gray-800 hover:opacity-80"
                             title="{{ $hand }}">{{ $hand }}</button>
                     <input type="hidden" name="combos[{{ $hand }}]" x-model="combos['{{ $hand }}']">
                 @endforeach
