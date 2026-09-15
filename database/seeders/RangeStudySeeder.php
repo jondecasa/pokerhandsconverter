@@ -23,7 +23,7 @@ class RangeStudySeeder extends Seeder
     {
         $study = RangeStudy::updateOrCreate(
             ['slug' => $data['slug']],
-            ['name' => $data['name'], 'sort_order' => $data['sort_order']],
+            ['name' => $data['name'], 'sort_order' => $data['sort_order'], 'row_colors' => $data['row_colors'] ?? null],
         );
 
         foreach ($data['scenarios'] as $scenario) {

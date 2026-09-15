@@ -22,6 +22,24 @@
     </div>
 </div>
 
+@if ($study->exists && $study->rowLabels()->isNotEmpty())
+    <div class="mt-8">
+        <label class="block text-sm font-medium text-gray-700">Row colors</label>
+        <p class="mt-1 text-xs text-gray-500">Background color for each position's buttons (EP, MP, CO...) — used everywhere that row appears in the navigation.</p>
+        <div class="mt-3 flex flex-wrap gap-4">
+            @foreach ($study->rowLabels()->sort() as $rowLabel)
+                <label class="flex items-center gap-2 text-sm text-gray-700">
+                    <input type="color" name="row_colors[{{ $rowLabel }}]"
+                           value="{{ old('row_colors.'.$rowLabel, $study->rowColor($rowLabel)) }}"
+                           class="h-8 w-10 rounded border-gray-300 p-0">
+                    {{ $rowLabel }}
+                </label>
+            @endforeach
+        </div>
+        <x-input-error :messages="$errors->get('row_colors.*')" class="mt-1" />
+    </div>
+@endif
+
 <div class="mt-8 flex items-center gap-3">
     <button class="inline-flex items-center px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-md hover:bg-indigo-500">
         {{ $submitLabel }}

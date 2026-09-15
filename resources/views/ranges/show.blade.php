@@ -42,10 +42,11 @@
                     @foreach ($navigation as $groupLabel => $rows)
                         <div class="mt-2 flex flex-wrap gap-1.5 rounded-lg border border-gray-200 bg-white p-3" x-show="activeGroup === @js($groupLabel)" x-cloak>
                             @foreach ($rows as $rowLabel => $rowScenarios)
+                                @php($rowColor = $study->rowColor($rowLabel))
                                 @foreach ($rowScenarios as $scenario)
                                     <button type="button" @click="activeId = {{ $scenario->id }}; activeGroup = null"
-                                            :class="activeId === {{ $scenario->id }} ? 'bg-indigo-600 text-white' : 'bg-gray-100 text-gray-700'"
-                                            class="rounded px-2 py-1 text-xs font-medium">
+                                            :style="activeId === {{ $scenario->id }} ? 'background-color:{{ $rowColor }}; color:#fff' : 'background-color:{{ $rowColor }}26'"
+                                            class="rounded px-2 py-1 text-xs font-medium text-gray-700">
                                         {{ $rowLabel }} {{ $scenario->button_label }}
                                     </button>
                                 @endforeach
@@ -115,12 +116,13 @@
                                 </button>
                                 <div class="space-y-1.5 rounded-b-lg border-x border-b border-gray-200 p-3" x-show="openGroups[@js($groupLabel)]">
                                     @foreach ($rows as $rowLabel => $rowScenarios)
+                                        @php($rowColor = $study->rowColor($rowLabel))
                                         <div class="flex flex-wrap items-center gap-1.5 text-xs">
                                             <span class="w-9 shrink-0 font-medium text-gray-500">{{ $rowLabel }}</span>
                                             @foreach ($rowScenarios as $scenario)
                                                 <button type="button" @click="activeId = {{ $scenario->id }}"
-                                                        :class="activeId === {{ $scenario->id }} ? 'bg-indigo-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'"
-                                                        class="rounded px-2 py-1 font-medium">
+                                                        :style="activeId === {{ $scenario->id }} ? 'background-color:{{ $rowColor }}; color:#fff' : 'background-color:{{ $rowColor }}26'"
+                                                        class="rounded px-2 py-1 font-medium text-gray-700">
                                                     {{ $scenario->button_label }}
                                                 </button>
                                             @endforeach

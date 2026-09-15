@@ -14,12 +14,16 @@ class RangeStudy extends Model
     /** @use HasFactory<RangeStudyFactory> */
     use HasFactory;
 
-    protected $fillable = ['name', 'slug', 'sort_order'];
+    protected $fillable = ['name', 'slug', 'sort_order', 'row_colors'];
+
+    /** Fallback background color for a row that has none configured yet. */
+    private const DEFAULT_ROW_COLOR = '#94a3b8';
 
     protected function casts(): array
     {
         return [
             'sort_order' => 'integer',
+            'row_colors' => 'array',
         ];
     }
 
@@ -58,5 +62,17 @@ class RangeStudy extends Model
     public function defaultScenario(): ?RangeScenario
     {
         return $this->scenarios->firstWhere('is_default', true) ?? $this->scenarios->first();
+    }
+
+    /** The configured background color for a row (position), or a neutral default. */
+    public function rowColor(string $rowLabel): string
+    {
+        return $this->row_colors[$rowLabel] ?? self::DEFAULT_ROW_COLOR;
+    }
+
+    /** Every distinct row label currently used by this study's scenarios, in nav order. */
+    public function rowLabels(): Collection
+    {
+        return $this->scenarios->pluck('row_label')->unique();
     }
 }

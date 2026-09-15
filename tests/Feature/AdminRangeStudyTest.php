@@ -76,6 +76,23 @@ class AdminRangeStudyTest extends TestCase
     }
 
     #[Test]
+    public function an_admin_can_set_a_background_color_per_row(): void
+    {
+        $study = RangeStudy::factory()->create();
+        RangeScenario::factory()->for($study, 'study')->create(['row_label' => 'EP']);
+
+        $this->actingAs($this->admin())->put("/admin/range-studies/{$study->slug}", [
+            'name' => $study->name,
+            'slug' => $study->slug,
+            'sort_order' => '0',
+            'row_colors' => ['EP' => '#ff0000'],
+        ])->assertRedirect(route('admin.range-studies.edit', $study));
+
+        $this->assertSame('#ff0000', $study->fresh()->rowColor('EP'));
+        $this->assertSame('#94a3b8', $study->fresh()->rowColor('MP'));
+    }
+
+    #[Test]
     public function an_admin_can_add_a_scenario_with_a_painted_grid_and_stats(): void
     {
         $study = RangeStudy::factory()->create();

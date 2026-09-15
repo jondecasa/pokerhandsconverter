@@ -2,6 +2,16 @@
     "name": "Cash-6MAX 100BB",
     "slug": "cash-6max-100bb",
     "sort_order": 0,
+    "row_colors": {
+        "BB": "#ea580c",
+        "BTN": "#dc2626",
+        "CO": "#16a34a",
+        "EP": "#7c3aed",
+        "EP-MP": "#0891b2",
+        "MP": "#0d9488",
+        "SB": "#ca8a04",
+        "SB-BB": "#c026d3"
+    },
     "scenarios": [
         {
             "group_label": "OR",
