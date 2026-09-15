@@ -163,6 +163,34 @@ class CoinPokerConverterTest extends TestCase
     }
 
     #[Test]
+    public function a_splash_fee_is_folded_into_the_rake_pokertracker_understands(): void
+    {
+        // Real CoinPoker hands sometimes tack on a "Splash Fee" alongside the
+        // rake. PokerTracker has no concept of it — left in place it stops PT4
+        // from reading the rake at all, so pot != collected + rake and the hand
+        // is rejected with "Invalid pot size".
+        $hand = "CoinPoker Hand #1: NLH (₮0.10/₮0.25) 2026/01/02 03:04:05 CET\n"
+            ."Table 'x' 6-max Seat #1 is the button\n"
+            ."Seat 1: a (₮10 in chips)\n"
+            ."Seat 2: b (₮10 in chips)\n"
+            ."a: posts small blind ₮0.10\n"
+            ."b: posts big blind ₮0.25\n"
+            ."*** HOLE CARDS ***\n"
+            ."a: calls ₮0.15\n"
+            ."b: checks\n"
+            ."*** SHOWDOWN ***\n"
+            ."b collected ₮0.47 from pot\n"
+            ."*** SUMMARY ***\n"
+            ."Total pot ₮0.50 | Rake ₮0.02 | Splash Fee ₮0.01\n"
+            .'Board [ ]';
+
+        $out = (new CoinPokerConverter)->convert($hand)->output;
+
+        $this->assertStringContainsString('Total pot $0.50 | Rake $0.03', $out);
+        $this->assertStringNotContainsString('Splash Fee', $out);
+    }
+
+    #[Test]
     public function it_warns_about_run_it_twice_and_keeps_coinpokers_native_markers(): void
     {
         $hand = "CoinPoker Hand #7: NLH (₮1/₮2) 2026/01/02 03:04:05 CET\n"

@@ -658,6 +658,16 @@ class CoinPokerConverter
                 $inSummary = true;
             }
 
+            // "Total pot X | Rake Y | Splash Fee Z" — PokerTracker has no concept
+            // of a splash fee, and its presence stops PT4 from reading the "Rake"
+            // figure at all (it then computes rake as 0 and rejects the pot as
+            // invalid). Fold it into the rake PT4 does understand and drop the
+            // segment, so pot = collected + rake still balances.
+            if (preg_match('/^(Total pot\s+\D*?[\d.]+)(?:\s*\|\s*Rake\s+\D*?([\d.]+))?\s*\|\s*Splash Fee\s+\D*?([\d.]+)/i', $line, $m)) {
+                $rake = (float) ($m[2] ?? 0) + (float) $m[3];
+                $line = $m[1].' | Rake '.$sym.$this->fmtMoney($rake);
+            }
+
             // Seat summary line: add position tag, fix "won" -> "collected".
             if ($inSummary && preg_match('/^Seat\s+(\d+):\s+(.+)$/', $line, $m)) {
                 $line = 'Seat '.$m[1].': '.$this->rewriteSeatSummary((int) $m[1], $m[2], $positions);
