@@ -11,7 +11,7 @@
             </p>
         </div>
 
-        <div class="mx-auto mt-14 grid max-w-3xl gap-6 sm:grid-cols-2">
+        <div class="mx-auto mt-14 grid max-w-5xl gap-6 sm:grid-cols-2 lg:grid-cols-3">
             @forelse ($plans as $plan)
                 <div class="flex flex-col rounded-2xl border bg-white p-8 {{ $plan->is_highlighted ? 'border-indigo-600 ring-1 ring-indigo-600' : 'border-slate-200' }}">
                     @if ($plan->is_highlighted)
