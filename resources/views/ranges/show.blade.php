@@ -44,7 +44,7 @@
                             @foreach ($rows as $rowLabel => $rowScenarios)
                                 @php($rowColor = $study->rowColor($rowLabel))
                                 @foreach ($rowScenarios as $scenario)
-                                    <button type="button" @click="activeId = {{ $scenario->id }}; activeGroup = null"
+                                    <button type="button" @click="activeId = {{ $scenario->id }}"
                                             :style="activeId === {{ $scenario->id }} ? 'background-color:{{ $rowColor }}; color:#fff' : 'background-color:{{ $rowColor }}26'"
                                             class="rounded px-2 py-1 text-xs font-medium text-gray-700">
                                         {{ $rowLabel }} {{ $scenario->button_label }}
