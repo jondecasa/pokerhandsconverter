@@ -5,15 +5,33 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PostRequest;
 use App\Models\Post;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class PostController extends Controller
 {
-    public function index(): View
+    public function index(Request $request): View
     {
+        $search = trim((string) $request->query('q'));
+
+        $posts = Post::query()
+            ->when($search !== '', function (Builder $query) use ($search) {
+                $like = '%'.$search.'%';
+
+                $query->where(fn (Builder $query) => $query
+                    ->where('title', 'like', $like)
+                    ->orWhere('slug', 'like', $like)
+                    ->orWhere('excerpt', 'like', $like));
+            })
+            ->orderByDesc('created_at')
+            ->get();
+
         return view('admin.posts.index', [
-            'posts' => Post::query()->orderByDesc('created_at')->get(),
+            'posts' => $posts,
+            'search' => $search,
+            'total' => Post::count(),
         ]);
     }
 

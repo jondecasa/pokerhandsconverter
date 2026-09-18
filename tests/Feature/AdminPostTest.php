@@ -43,6 +43,40 @@ class AdminPostTest extends TestCase
     }
 
     #[Test]
+    public function the_posts_list_can_be_searched_by_title_slug_or_excerpt(): void
+    {
+        Post::factory()->create(['title' => 'Understanding rakeback', 'slug' => 'rakeback-basics', 'excerpt' => 'Cash back on rake.']);
+        Post::factory()->create(['title' => 'Bankroll rules', 'slug' => 'bankroll-rules', 'excerpt' => 'Sizing your roll.']);
+        Post::factory()->create(['title' => 'HUD stats', 'slug' => 'hud-stats', 'excerpt' => 'Reading VPIP and PFR.']);
+        $admin = $this->admin();
+
+        $this->actingAs($admin)->get('/admin/posts?q=rakeback')
+            ->assertOk()
+            ->assertSee('Understanding rakeback')
+            ->assertDontSee('Bankroll rules')
+            ->assertDontSee('HUD stats')
+            ->assertSee('1 of 3 posts match');
+
+        $this->actingAs($admin)->get('/admin/posts?q=bankroll-rules')->assertSee('Bankroll rules')->assertDontSee('HUD stats');
+        $this->actingAs($admin)->get('/admin/posts?q=VPIP')->assertSee('HUD stats')->assertDontSee('Bankroll rules');
+        $this->actingAs($admin)->get('/admin/posts?q=nothing-matches')->assertOk()->assertSee('No posts match');
+        $this->actingAs($admin)->get('/admin/posts')->assertSee('Understanding rakeback')->assertSee('Bankroll rules')->assertSee('HUD stats');
+    }
+
+    #[Test]
+    public function each_row_has_an_edit_link_and_a_delete_button_that_opens_the_confirm_modal(): void
+    {
+        $post = Post::factory()->create(['title' => 'Row actions']);
+
+        $this->actingAs($this->admin())->get('/admin/posts')
+            ->assertOk()
+            ->assertSee('href="'.route('admin.posts.edit', $post).'"', false)
+            ->assertSee('confirm-delete', false)
+            ->assertSee('Delete this post?', false)
+            ->assertDontSee('confirm(', false);
+    }
+
+    #[Test]
     public function an_admin_can_create_a_published_post(): void
     {
         $response = $this->actingAs($this->admin())->post('/admin/posts', [
