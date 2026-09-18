@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\PlanController as AdminPlanController;
 use App\Http\Controllers\Admin\RangeScenarioController as AdminRangeScenarioController;
 use App\Http\Controllers\Admin\RangeStudyController as AdminRangeStudyController;
+use App\Http\Controllers\Admin\SubscriberController as AdminSubscriberController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\ConverterController;
 use App\Http\Controllers\DashboardController;
@@ -60,6 +61,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::middleware('admin')->prefix('admin')->name('admin.')->group(function () {
         Route::redirect('/', '/admin/plans');
         Route::resource('plans', AdminPlanController::class)->except('show');
+        Route::get('subscribers', [AdminSubscriberController::class, 'index'])->name('subscribers.index');
 
         Route::prefix('range-studies')->name('range-studies.')->group(function () {
             Route::get('/', [AdminRangeStudyController::class, 'index'])->name('index');
