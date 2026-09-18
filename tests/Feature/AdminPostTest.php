@@ -43,6 +43,32 @@ class AdminPostTest extends TestCase
     }
 
     #[Test]
+    public function the_posts_list_can_be_filtered_by_language_alone_or_with_a_search(): void
+    {
+        Post::factory()->create(['title' => 'English rake guide', 'slug' => 'rake', 'locale' => 'en']);
+        Post::factory()->create(['title' => '抽水指南', 'slug' => 'rake', 'locale' => 'zh-Hant', 'translation_of' => 'rake']);
+        Post::factory()->create(['title' => '資金管理', 'slug' => 'bankroll', 'locale' => 'zh-Hant']);
+        $admin = $this->admin();
+
+        $this->actingAs($admin)->get('/admin/posts')
+            ->assertSee('English rake guide')->assertSee('抽水指南')->assertSee('資金管理');
+
+        $this->actingAs($admin)->get('/admin/posts?locale=zh-Hant')
+            ->assertSee('抽水指南')->assertSee('資金管理')->assertDontSee('English rake guide')
+            ->assertSee('2 of 3 posts')
+            ->assertSee('in 繁體中文');
+
+        $this->actingAs($admin)->get('/admin/posts?locale=en')
+            ->assertSee('English rake guide')->assertDontSee('抽水指南');
+
+        $this->actingAs($admin)->get('/admin/posts?locale=zh-Hant&q=rake')
+            ->assertSee('抽水指南')->assertDontSee('資金管理')->assertDontSee('English rake guide');
+
+        $this->actingAs($admin)->get('/admin/posts?locale=xx')
+            ->assertOk()->assertSee('English rake guide')->assertSee('資金管理');
+    }
+
+    #[Test]
     public function the_posts_list_can_be_searched_by_title_slug_or_excerpt(): void
     {
         Post::factory()->create(['title' => 'Understanding rakeback', 'slug' => 'rakeback-basics', 'excerpt' => 'Cash back on rake.']);

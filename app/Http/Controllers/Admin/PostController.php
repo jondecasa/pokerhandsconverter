@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PostRequest;
 use App\Models\Post;
+use App\Support\Locales;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -15,8 +16,11 @@ class PostController extends Controller
     public function index(Request $request): View
     {
         $search = trim((string) $request->query('q'));
+        $locale = (string) $request->query('locale');
+        $locale = in_array($locale, Locales::codes(), true) ? $locale : '';
 
         $posts = Post::query()
+            ->when($locale !== '', fn (Builder $query) => $query->where('locale', $locale))
             ->when($search !== '', function (Builder $query) use ($search) {
                 $like = '%'.$search.'%';
 
@@ -31,6 +35,7 @@ class PostController extends Controller
         return view('admin.posts.index', [
             'posts' => $posts,
             'search' => $search,
+            'locale' => $locale,
             'total' => Post::count(),
         ]);
     }
