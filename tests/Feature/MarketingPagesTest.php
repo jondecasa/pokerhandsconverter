@@ -6,6 +6,7 @@ use App\Models\Plan;
 use App\Models\Post;
 use Database\Seeders\PlanSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\File;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -61,6 +62,41 @@ class MarketingPagesTest extends TestCase
 
         foreach (['home', 'pricing', 'contact', 'terms', 'privacy'] as $routeName) {
             $response->assertSee(route($routeName), false);
+        }
+    }
+
+    #[Test]
+    public function the_sitemap_is_well_formed_xml_that_includes_published_posts(): void
+    {
+        $post = Post::factory()->published()->create(['slug' => 'a-live-post']);
+        Post::factory()->create(['slug' => 'a-draft-post']);
+
+        $content = $this->get('/sitemap.xml')->assertOk()->getContent();
+
+        $this->assertStringStartsWith('<?xml version="1.0" encoding="UTF-8"?>', $content);
+
+        $xml = simplexml_load_string($content);
+        $this->assertNotFalse($xml);
+
+        $locs = array_map(fn ($url) => (string) $url->loc, iterator_to_array($xml->url, false));
+
+        $this->assertContains(route('blog.show', $post), $locs);
+        $this->assertNotContains(route('blog.show', 'a-draft-post'), $locs);
+        $this->assertNotEmpty((string) $xml->url[count($xml->url) - 1]->lastmod);
+    }
+
+    #[Test]
+    public function no_blade_view_contains_a_literal_php_open_tag_other_than_php(): void
+    {
+        // Blade tokenizes views with PHP's tokenizer, so on a server with
+        // short_open_tag enabled a literal "<?xml" or "<?=" in a view is parsed
+        // as PHP and breaks the page. That setting is off locally, so guard it.
+        foreach (File::allFiles(resource_path('views')) as $file) {
+            $this->assertDoesNotMatchRegularExpression(
+                '/<\?(?!php\b)/',
+                $file->getContents(),
+                "{$file->getRelativePathname()} contains a literal \"<?\" that is not \"<?php\"."
+            );
         }
     }
 
