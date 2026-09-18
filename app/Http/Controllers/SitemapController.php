@@ -2,13 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Post;
+use App\Support\PublicUrls;
 use Illuminate\Http\Response;
 
 /**
- * Sitemap of the public marketing pages plus every published blog post —
- * anything behind auth (dashboard, converter, ranges, admin) isn't meant
- * to be indexed.
+ * Sitemap of the public marketing pages plus every published blog post
+ * (see PublicUrls).
  *
  * The XML is built here rather than in a Blade view on purpose: Blade
  * tokenizes templates with PHP's own tokenizer, so on servers with
@@ -19,23 +18,7 @@ class SitemapController extends Controller
 {
     public function index(): Response
     {
-        $urls = [
-            ['loc' => route('home'), 'priority' => '1.0', 'changefreq' => 'weekly'],
-            ['loc' => route('pricing'), 'priority' => '0.9', 'changefreq' => 'weekly'],
-            ['loc' => route('blog.index'), 'priority' => '0.7', 'changefreq' => 'weekly'],
-            ['loc' => route('contact'), 'priority' => '0.5', 'changefreq' => 'monthly'],
-            ['loc' => route('terms'), 'priority' => '0.3', 'changefreq' => 'yearly'],
-            ['loc' => route('privacy'), 'priority' => '0.3', 'changefreq' => 'yearly'],
-        ];
-
-        foreach (Post::published()->latestFirst()->get() as $post) {
-            $urls[] = [
-                'loc' => route('blog.show', $post),
-                'priority' => '0.6',
-                'changefreq' => 'monthly',
-                'lastmod' => $post->updated_at->toAtomString(),
-            ];
-        }
+        $urls = PublicUrls::all();
 
         $xml = '<?xml version="1.0" encoding="UTF-8"?>'."\n"
             .'<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'."\n";

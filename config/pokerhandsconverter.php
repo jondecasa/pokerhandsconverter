@@ -82,4 +82,20 @@ return [
         'token' => env('BLOG_API_TOKEN'),
         'url' => env('BLOG_API_URL'),
     ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | IndexNow
+    |--------------------------------------------------------------------------
+    |
+    | Tells Bing, Yandex, Naver, Seznam and Yep about new/changed posts right
+    | away. The key (8-128 letters, digits or dashes) is public by design: it is
+    | served at /<key>.txt so the engines can verify the site. Only active when
+    | APP_ENV=production and a key is set.
+    |
+    */
+
+    'indexnow' => [
+        'key' => env('INDEXNOW_KEY'),
+    ],
 ];
