@@ -17,6 +17,7 @@ class DatabaseSeeder extends Seeder
     {
         $this->call(PlanSeeder::class);
         $this->call(RangeStudySeeder::class);
+        $this->call(PostSeeder::class);
 
         User::factory()->create([
             'name' => 'Test User',
