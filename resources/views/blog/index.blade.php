@@ -25,7 +25,7 @@
         </div>
 
         @if ($posts->hasPages())
-            <div class="mt-10">{{ $posts->links() }}</div>
+            <div class="mt-10">{{ $posts->links('pagination.brand') }}</div>
         @endif
     </section>
 

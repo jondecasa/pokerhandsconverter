@@ -40,6 +40,23 @@ class BlogTest extends TestCase
     }
 
     #[Test]
+    public function the_blog_pagination_uses_the_brand_buttons_with_no_dark_mode_variants(): void
+    {
+        Post::factory()->published()->count(11)->create();
+
+        $html = $this->get('/blog')->assertOk()
+            ->assertSee('aria-label="Pagination"', false)
+            ->assertSee('aria-current="page"', false)
+            ->assertSee('bg-indigo-600', false)
+            ->getContent();
+
+        preg_match('#<nav role="navigation" aria-label="Pagination".*?</nav>#s', $html, $nav);
+
+        $this->assertNotEmpty($nav);
+        $this->assertStringNotContainsString('dark:', $nav[0]);
+    }
+
+    #[Test]
     public function a_published_post_renders_with_its_markdown_body_and_structured_data(): void
     {
         $post = Post::factory()->published()->create([
