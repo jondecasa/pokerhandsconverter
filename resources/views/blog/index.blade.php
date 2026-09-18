@@ -5,7 +5,6 @@
     <section class="mx-auto max-w-5xl px-6 py-20">
         <div class="mx-auto max-w-2xl text-center">
             <h1 class="text-4xl font-extrabold tracking-tight text-slate-900">Blog</h1>
-            <p class="mt-4 text-lg text-slate-600">Guides and notes on getting CoinPoker hands into your tracker.</p>
         </div>
 
         <div class="mx-auto mt-14 grid max-w-4xl gap-6 sm:grid-cols-2">

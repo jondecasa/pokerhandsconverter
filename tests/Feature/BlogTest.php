@@ -27,6 +27,19 @@ class BlogTest extends TestCase
     }
 
     #[Test]
+    public function the_blog_index_shows_ten_posts_per_page_and_no_intro_line(): void
+    {
+        Post::factory()->published()->count(11)->create();
+
+        $this->get('/blog')
+            ->assertOk()
+            ->assertDontSee('Guides and notes on getting');
+
+        $this->assertSame(10, substr_count($this->get('/blog')->getContent(), 'Read more'));
+        $this->assertSame(1, substr_count($this->get('/blog?page=2')->getContent(), 'Read more'));
+    }
+
+    #[Test]
     public function a_published_post_renders_with_its_markdown_body_and_structured_data(): void
     {
         $post = Post::factory()->published()->create([
