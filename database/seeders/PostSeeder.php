@@ -6,9 +6,9 @@ use App\Models\Post;
 use Illuminate\Database\Seeder;
 
 /**
- * The initial blog content — SEO guides on converting/tracking CoinPoker
- * hands, cross-linked with each other. Fixture lives in seeders/data/
- * since the post bodies are long-form Markdown.
+ * The initial blog content — a cross-linked cluster mixing CoinPoker/tracker
+ * guides with general poker strategy (rake, bankroll, HUD stats). Fixture
+ * lives in seeders/data/ since the post bodies are long-form Markdown.
  */
 class PostSeeder extends Seeder
 {
