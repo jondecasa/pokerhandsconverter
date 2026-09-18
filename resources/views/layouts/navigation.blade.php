@@ -40,6 +40,14 @@
                 </svg>
                 Packages
             </a>
+            <a href="{{ route('admin.posts.index') }}"
+               @class(['pc-navlink', 'pc-navlink-active' => request()->routeIs('admin.posts.*')])>
+                <svg class="h-5 w-5 shrink-0 opacity-80" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 5a2 2 0 012-2h9l5 5v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5z"/>
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M14 3v5h5M8 13h8M8 17h5"/>
+                </svg>
+                Posts
+            </a>
             <a href="{{ route('admin.subscribers.index') }}"
                @class(['pc-navlink', 'pc-navlink-active' => request()->routeIs('admin.subscribers.*')])>
                 <svg class="h-5 w-5 shrink-0 opacity-80" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">

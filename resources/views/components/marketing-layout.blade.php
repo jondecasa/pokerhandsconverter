@@ -22,11 +22,13 @@
     <meta property="og:type" content="website">
     <meta property="og:url" content="{{ $canonicalUrl }}">
     <meta property="og:site_name" content="PokerHandsConverter">
-    <meta property="og:image" content="{{ asset('images/icons/icon-512.png') }}">
-    <meta name="twitter:card" content="summary">
+    <meta property="og:image" content="{{ asset('images/og-image.png') }}">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="{{ $title }}">
     <meta name="twitter:description" content="{{ $description }}">
-    <meta name="twitter:image" content="{{ asset('images/icons/icon-512.png') }}">
+    <meta name="twitter:image" content="{{ asset('images/og-image.png') }}">
 
     <link rel="icon" type="image/svg+xml" href="{{ asset('favicon.svg') }}">
     <link rel="apple-touch-icon" href="{{ asset('images/icons/icon-192.png') }}">
@@ -67,6 +69,7 @@
                 <a href="{{ route('home') }}#features" class="text-sm font-medium text-slate-600 hover:text-slate-900">Features</a>
                 <a href="{{ route('pricing') }}" class="text-sm font-medium text-slate-600 hover:text-slate-900">Pricing</a>
                 <a href="{{ route('home') }}#faq" class="text-sm font-medium text-slate-600 hover:text-slate-900">FAQ</a>
+                <a href="{{ route('blog.index') }}" class="text-sm font-medium text-slate-600 hover:text-slate-900">Blog</a>
                 <a href="{{ route('contact') }}" class="text-sm font-medium text-slate-600 hover:text-slate-900">Contact</a>
             </div>
 
@@ -97,6 +100,7 @@
                 <a href="{{ route('home') }}#features" class="text-sm font-medium text-slate-700">Features</a>
                 <a href="{{ route('pricing') }}" class="text-sm font-medium text-slate-700">Pricing</a>
                 <a href="{{ route('home') }}#faq" class="text-sm font-medium text-slate-700">FAQ</a>
+                <a href="{{ route('blog.index') }}" class="text-sm font-medium text-slate-700">Blog</a>
                 <a href="{{ route('contact') }}" class="text-sm font-medium text-slate-700">Contact</a>
                 <hr class="border-slate-200">
                 @auth
@@ -132,6 +136,7 @@
                             <li><a href="{{ route('home') }}#features" class="text-slate-500 hover:text-slate-900">Features</a></li>
                             <li><a href="{{ route('home') }}#how" class="text-slate-500 hover:text-slate-900">How it works</a></li>
                             <li><a href="{{ route('pricing') }}" class="text-slate-500 hover:text-slate-900">Pricing</a></li>
+                            <li><a href="{{ route('blog.index') }}" class="text-slate-500 hover:text-slate-900">Blog</a></li>
                         </ul>
                     </div>
                     <div>

@@ -1,9 +1,11 @@
 <?php
 
 use App\Http\Controllers\Admin\PlanController as AdminPlanController;
+use App\Http\Controllers\Admin\PostController as AdminPostController;
 use App\Http\Controllers\Admin\RangeScenarioController as AdminRangeScenarioController;
 use App\Http\Controllers\Admin\RangeStudyController as AdminRangeStudyController;
 use App\Http\Controllers\Admin\SubscriberController as AdminSubscriberController;
+use App\Http\Controllers\BlogController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\ConverterController;
 use App\Http\Controllers\DashboardController;
@@ -20,6 +22,8 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [MarketingController::class, 'home'])->name('home');
 Route::get('/pricing', [MarketingController::class, 'pricing'])->name('pricing');
 Route::get('/sitemap.xml', [SitemapController::class, 'index'])->name('sitemap');
+Route::get('/blog', [BlogController::class, 'index'])->name('blog.index');
+Route::get('/blog/{post}', [BlogController::class, 'show'])->name('blog.show');
 Route::view('/terms', 'marketing.terms')->name('terms');
 Route::view('/privacy', 'marketing.privacy')->name('privacy');
 Route::get('/contact', [ContactController::class, 'show'])->name('contact');
@@ -63,6 +67,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::middleware('admin')->prefix('admin')->name('admin.')->group(function () {
         Route::redirect('/', '/admin/plans');
         Route::resource('plans', AdminPlanController::class)->except('show');
+        Route::resource('posts', AdminPostController::class)->except('show');
         Route::get('subscribers', [AdminSubscriberController::class, 'index'])->name('subscribers.index');
 
         Route::prefix('range-studies')->name('range-studies.')->group(function () {

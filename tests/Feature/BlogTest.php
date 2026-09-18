@@ -1,0 +1,64 @@
+<?php
+
+namespace Tests\Feature;
+
+use App\Models\Post;
+use App\Models\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use PHPUnit\Framework\Attributes\Test;
+use Tests\TestCase;
+
+class BlogTest extends TestCase
+{
+    use RefreshDatabase;
+
+    #[Test]
+    public function the_blog_index_lists_only_published_posts(): void
+    {
+        Post::factory()->published()->create(['title' => 'Live Post']);
+        Post::factory()->create(['title' => 'Draft Post']);
+        Post::factory()->create(['title' => 'Future Post', 'is_published' => true, 'published_at' => now()->addWeek()]);
+
+        $this->get('/blog')
+            ->assertOk()
+            ->assertSee('Live Post')
+            ->assertDontSee('Draft Post')
+            ->assertDontSee('Future Post');
+    }
+
+    #[Test]
+    public function a_published_post_renders_with_its_markdown_body_and_structured_data(): void
+    {
+        $post = Post::factory()->published()->create([
+            'title' => 'Importing CoinPoker Hands',
+            'body' => "## Step one\n\nDo the thing.",
+        ]);
+
+        $this->get(route('blog.show', $post))
+            ->assertOk()
+            ->assertSee('Importing CoinPoker Hands')
+            ->assertSee('<h2>Step one</h2>', false)
+            ->assertSee('BlogPosting', false)
+            ->assertSee('<link rel="canonical" href="'.route('blog.show', $post).'">', false);
+    }
+
+    #[Test]
+    public function guests_get_a_404_for_an_unpublished_post(): void
+    {
+        $post = Post::factory()->create(['is_published' => false]);
+
+        $this->get(route('blog.show', $post))->assertNotFound();
+    }
+
+    #[Test]
+    public function an_admin_can_preview_an_unpublished_post(): void
+    {
+        $admin = User::factory()->create(['email_verified_at' => now(), 'is_admin' => true]);
+        $post = Post::factory()->create(['is_published' => false, 'title' => 'Draft Preview']);
+
+        $this->actingAs($admin)->get(route('blog.show', $post))
+            ->assertOk()
+            ->assertSee('Draft Preview')
+            ->assertSee('Preview only');
+    }
+}
