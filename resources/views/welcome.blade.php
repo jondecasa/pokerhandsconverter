@@ -1,6 +1,49 @@
 @php($trialDays = $plans->max(fn ($p) => $p->effectiveTrialDays()) ?? 0)
+@php($faqs = [
+    ['Does this work with PokerTracker 4 (and Hold\'em Manager 3)?', 'Yes. The output is the standard hand-history text these trackers bulk-import. Point PokerTracker 4\'s import at the converted file.'],
+    ['Cash games and tournaments both?', 'Both. Each hand is detected individually. Cash hands get dollar amounts added; tournament hands keep bare chip counts, the way the tracker expects a tourney.'],
+    ['What about the timezone / my time-based stats?', 'You pick per upload: keep the local time and add the "[… ET]" stamp (default), output a single Eastern-time stamp, or leave CoinPoker\'s time untouched. Nothing changes without you choosing it.'],
+    ['Is my hand history data safe?', 'Files are converted for your account only and are never shared or sold. You can re-download or ignore past conversions. Payment details are handled entirely by Stripe.'],
+    ['Can I cancel?', 'Anytime, from your dashboard. You keep access until the end of the period you already paid for.'],
+    ['A hand didn\'t import cleanly. Now what?', 'The converter flags anything unusual (like run-it-twice boards) as a warning on the result page. Send us the flagged hand and we\'ll tune the rules.'],
+])
 
 <x-marketing-layout>
+
+    @push('schema')
+        <script type="application/ld+json">
+            {!! json_encode([
+                '@context' => 'https://schema.org',
+                '@type' => 'SoftwareApplication',
+                'name' => 'PokerHandsConverter',
+                'url' => route('home'),
+                'applicationCategory' => 'UtilitiesApplication',
+                'operatingSystem' => 'Web',
+                'description' => 'Converts CoinPoker hand-history files into a format PokerTracker 4 and Hold\'em Manager 3 import cleanly.',
+                'offers' => $plans->map(fn ($plan) => [
+                    '@type' => 'Offer',
+                    'name' => $plan->name,
+                    'price' => (string) $plan->price,
+                    'priceCurrency' => $plan->currency,
+                    'url' => route('pricing'),
+                ])->values()->all(),
+            ], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) !!}
+        </script>
+        <script type="application/ld+json">
+            {!! json_encode([
+                '@context' => 'https://schema.org',
+                '@type' => 'FAQPage',
+                'mainEntity' => collect($faqs)->map(fn ($faq) => [
+                    '@type' => 'Question',
+                    'name' => $faq[0],
+                    'acceptedAnswer' => [
+                        '@type' => 'Answer',
+                        'text' => $faq[1],
+                    ],
+                ])->all(),
+            ], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) !!}
+        </script>
+    @endpush
 
     {{-- ============================ HERO ============================ --}}
     <section class="relative overflow-hidden bg-slate-950 text-white">
@@ -226,14 +269,7 @@
     <section id="faq" class="mx-auto max-w-3xl px-6 py-20">
         <h2 class="text-center text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">Questions</h2>
         <div class="mt-10 divide-y divide-slate-200 border-y border-slate-200">
-            @foreach ([
-                ['Does this work with PokerTracker 4 (and Hold\'em Manager 3)?', 'Yes. The output is the standard hand-history text these trackers bulk-import. Point PokerTracker 4\'s import at the converted file.'],
-                ['Cash games and tournaments both?', 'Both. Each hand is detected individually. Cash hands get dollar amounts added; tournament hands keep bare chip counts, the way the tracker expects a tourney.'],
-                ['What about the timezone / my time-based stats?', 'You pick per upload: keep the local time and add the "[… ET]" stamp (default), output a single Eastern-time stamp, or leave CoinPoker\'s time untouched. Nothing changes without you choosing it.'],
-                ['Is my hand history data safe?', 'Files are converted for your account only and are never shared or sold. You can re-download or ignore past conversions. Payment details are handled entirely by Stripe.'],
-                ['Can I cancel?', 'Anytime, from your dashboard. You keep access until the end of the period you already paid for.'],
-                ['A hand didn\'t import cleanly. Now what?', 'The converter flags anything unusual (like run-it-twice boards) as a warning on the result page. Send us the flagged hand and we\'ll tune the rules.'],
-            ] as [$q, $a])
+            @foreach ($faqs as [$q, $a])
                 <details class="group py-5" x-data>
                     <summary class="flex cursor-pointer list-none items-center justify-between text-left font-semibold text-slate-900">
                         {{ $q }}

@@ -1,4 +1,6 @@
-<x-marketing-layout title="Privacy Policy — PokerHandsConverter">
+<x-marketing-layout
+    title="Privacy Policy — PokerHandsConverter"
+    description="How PokerHandsConverter collects, stores and protects your account data and uploaded hand histories.">
     <section class="mx-auto max-w-3xl px-6 py-16">
         <h1 class="text-3xl font-extrabold tracking-tight text-slate-900">Privacy Policy</h1>
         <p class="mt-2 text-sm text-slate-400">Last updated {{ date('F Y') }}</p>

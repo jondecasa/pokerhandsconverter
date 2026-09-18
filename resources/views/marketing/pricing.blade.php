@@ -1,6 +1,32 @@
 @php($trialDays = $plans->max(fn ($p) => $p->effectiveTrialDays()) ?? 0)
+@php($billingFaqs = [
+    ['How does the free trial work?', ($trialDays > 0 ? "You get $trialDays days of full access. You won't be charged until the trial ends, and you can cancel before then at no cost." : 'There is currently no free trial — your subscription starts immediately.')],
+    ['Which payment methods do you accept?', 'All major cards, processed securely by Stripe. PokerHandsConverter never stores or sees your card details.'],
+    ['Can I switch between monthly and yearly?', 'Yes. Change your plan any time from the billing portal linked in your dashboard; Stripe prorates the difference.'],
+    ['What happens if I cancel?', 'You keep access until the end of the period you already paid for, then the account reverts to no active subscription. Your conversion history is preserved.'],
+    ['Do you offer refunds?', 'Contact us within 14 days of a charge if the converter did not work for your files and we could not fix it — see our Terms.'],
+])
 
-<x-marketing-layout title="Pricing — PokerHandsConverter">
+<x-marketing-layout
+    title="Pricing — PokerHandsConverter"
+    description="Unlimited CoinPoker → PokerTracker 4 conversions on every package. Simple monthly and yearly pricing, cancel anytime.">
+
+    @push('schema')
+        <script type="application/ld+json">
+            {!! json_encode([
+                '@context' => 'https://schema.org',
+                '@type' => 'FAQPage',
+                'mainEntity' => collect($billingFaqs)->map(fn ($faq) => [
+                    '@type' => 'Question',
+                    'name' => $faq[0],
+                    'acceptedAnswer' => [
+                        '@type' => 'Answer',
+                        'text' => $faq[1],
+                    ],
+                ])->all(),
+            ], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) !!}
+        </script>
+    @endpush
 
     <section class="mx-auto max-w-5xl px-6 py-20">
         <div class="mx-auto max-w-2xl text-center">
@@ -60,13 +86,7 @@
         <div class="mx-auto mt-16 max-w-2xl">
             <h2 class="text-xl font-bold text-slate-900">Billing questions</h2>
             <div class="mt-6 divide-y divide-slate-200 border-y border-slate-200">
-                @foreach ([
-                    ['How does the free trial work?', ($trialDays > 0 ? "You get $trialDays days of full access. You won't be charged until the trial ends, and you can cancel before then at no cost." : 'There is currently no free trial — your subscription starts immediately.')],
-                    ['Which payment methods do you accept?', 'All major cards, processed securely by Stripe. PokerHandsConverter never stores or sees your card details.'],
-                    ['Can I switch between monthly and yearly?', 'Yes. Change your plan any time from the billing portal linked in your dashboard; Stripe prorates the difference.'],
-                    ['What happens if I cancel?', 'You keep access until the end of the period you already paid for, then the account reverts to no active subscription. Your conversion history is preserved.'],
-                    ['Do you offer refunds?', 'Contact us within 14 days of a charge if the converter did not work for your files and we could not fix it — see our Terms.'],
-                ] as [$q, $a])
+                @foreach ($billingFaqs as [$q, $a])
                     <details class="group py-5" x-data>
                         <summary class="flex cursor-pointer list-none items-center justify-between font-semibold text-slate-900">
                             {{ $q }}

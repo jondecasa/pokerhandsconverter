@@ -1,7 +1,10 @@
 @props([
     'title' => 'PokerHandsConverter — Convert CoinPoker hand histories for PokerTracker 4',
     'description' => 'PokerHandsConverter turns your CoinPoker hand-history files into a format PokerTracker 4 imports cleanly. Cash games and tournaments.',
+    'canonical' => null,
 ])
+
+@php($canonicalUrl = $canonical ?? url()->current())
 
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="scroll-smooth">
@@ -12,12 +15,18 @@
 
     <title>{{ $title }}</title>
     <meta name="description" content="{{ $description }}">
+    <link rel="canonical" href="{{ $canonicalUrl }}">
 
     <meta property="og:title" content="{{ $title }}">
     <meta property="og:description" content="{{ $description }}">
     <meta property="og:type" content="website">
-    <meta property="og:image" content="{{ asset('logo.svg') }}">
+    <meta property="og:url" content="{{ $canonicalUrl }}">
+    <meta property="og:site_name" content="PokerHandsConverter">
+    <meta property="og:image" content="{{ asset('images/icons/icon-512.png') }}">
     <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="{{ $title }}">
+    <meta name="twitter:description" content="{{ $description }}">
+    <meta name="twitter:image" content="{{ asset('images/icons/icon-512.png') }}">
 
     <link rel="icon" type="image/svg+xml" href="{{ asset('favicon.svg') }}">
     <link rel="apple-touch-icon" href="{{ asset('images/icons/icon-192.png') }}">
@@ -26,6 +35,17 @@
 
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600,700,800&display=swap" rel="stylesheet" />
+
+    <script type="application/ld+json">
+        {!! json_encode([
+            '@context' => 'https://schema.org',
+            '@type' => 'Organization',
+            'name' => 'PokerHandsConverter',
+            'url' => route('home'),
+            'logo' => asset('images/icons/icon-512.png'),
+        ], JSON_UNESCAPED_SLASHES) !!}
+    </script>
+    @stack('schema')
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>

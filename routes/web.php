@@ -10,6 +10,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\MarketingController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RangeController;
+use App\Http\Controllers\SitemapController;
 use App\Http\Controllers\SubscriptionController;
 use Illuminate\Support\Facades\Route;
 
@@ -18,6 +19,7 @@ use Illuminate\Support\Facades\Route;
 */
 Route::get('/', [MarketingController::class, 'home'])->name('home');
 Route::get('/pricing', [MarketingController::class, 'pricing'])->name('pricing');
+Route::get('/sitemap.xml', [SitemapController::class, 'index'])->name('sitemap');
 Route::view('/terms', 'marketing.terms')->name('terms');
 Route::view('/privacy', 'marketing.privacy')->name('privacy');
 Route::get('/contact', [ContactController::class, 'show'])->name('contact');

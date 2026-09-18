@@ -1,4 +1,6 @@
-<x-marketing-layout title="Terms of Service — PokerHandsConverter">
+<x-marketing-layout
+    title="Terms of Service — PokerHandsConverter"
+    description="The terms governing use of PokerHandsConverter's CoinPoker hand-history conversion service.">
     <section class="mx-auto max-w-3xl px-6 py-16">
         <h1 class="text-3xl font-extrabold tracking-tight text-slate-900">Terms of Service</h1>
         <p class="mt-2 text-sm text-slate-400">Last updated {{ date('F Y') }}</p>

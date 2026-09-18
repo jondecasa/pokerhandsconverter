@@ -50,4 +50,32 @@ class MarketingPagesTest extends TestCase
         $this->get('/terms')->assertOk()->assertSee('Terms of Service');
         $this->get('/privacy')->assertOk()->assertSee('Privacy Policy');
     }
+
+    #[Test]
+    public function the_sitemap_lists_the_public_pages(): void
+    {
+        $response = $this->get('/sitemap.xml');
+
+        $response->assertOk()->assertHeader('Content-Type', 'application/xml');
+
+        foreach (['home', 'pricing', 'contact', 'terms', 'privacy'] as $routeName) {
+            $response->assertSee(route($routeName), false);
+        }
+    }
+
+    #[Test]
+    public function marketing_pages_expose_a_canonical_link_and_structured_data(): void
+    {
+        $this->get('/')
+            ->assertOk()
+            ->assertSee('<link rel="canonical" href="'.url('/').'">', false)
+            ->assertSee('application/ld+json', false)
+            ->assertSee('FAQPage', false)
+            ->assertSee('SoftwareApplication', false);
+
+        $this->get('/pricing')
+            ->assertOk()
+            ->assertSee('<link rel="canonical" href="'.url('/pricing').'">', false)
+            ->assertSee('FAQPage', false);
+    }
 }
