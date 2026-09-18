@@ -134,6 +134,33 @@ php artisan serve
 > Tests do not touch MySQL — `phpunit.xml` forces `DB_CONNECTION=sqlite` /
 > `DB_DATABASE=:memory:`.
 
+### Test user (local development only)
+
+A ready-to-use account exists in the local database:
+
+| Field | Value |
+|---|---|
+| Email | `preview-admin@example.com` |
+| Password | `password` |
+
+It is an **admin** and has a fake active subscription, so it can open the
+converter, the ranges and `/admin/*` without going through Stripe.
+
+This user is not created by `php artisan db:seed` (that only makes
+`test@example.com` / `password`, with no subscription and no admin rights), so
+on a fresh database create it in `php artisan tinker`:
+
+```php
+$u = App\Models\User::create(['name' => 'Preview Admin', 'email' => 'preview-admin@example.com', 'password' => bcrypt('password'), 'email_verified_at' => now()]);
+$u->forceFill(['is_admin' => true])->save();
+$s = $u->subscriptions()->create(['type' => 'default', 'stripe_id' => 'sub_preview', 'stripe_status' => 'active', 'stripe_price' => 'price_monthly', 'quantity' => 1]);
+$s->items()->create(['stripe_id' => 'si_preview', 'stripe_product' => 'prod_preview', 'stripe_price' => 'price_monthly', 'quantity' => 1]);
+```
+
+> ⚠️ Local development only. Never create these users on production — the
+> password is public. There, run `php artisan db:seed --class=PlanSeeder` (or
+> the specific seeder you need) instead of a bare `db:seed`.
+
 ### Stripe / Cashier configuration
 
 1. In the Stripe dashboard create a **product** with two recurring **prices**
