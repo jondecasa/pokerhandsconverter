@@ -3,22 +3,19 @@
     :description="$post->metaDescription()">
 
     @push('schema')
-        <script type="application/ld+json">
-            {!! json_encode([
-                '@context' => 'https://schema.org',
-                '@type' => 'BlogPosting',
-                'headline' => $post->title,
-                'description' => $post->metaDescription(),
-                'datePublished' => $post->published_at?->toAtomString(),
-                'dateModified' => $post->updated_at->toAtomString(),
-                'mainEntityOfPage' => route('blog.show', $post),
-                'publisher' => [
-                    '@type' => 'Organization',
-                    'name' => 'PokerHandsConverter',
-                    'logo' => asset('images/icons/icon-512.png'),
-                ],
-            ], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_AMP) !!}
-        </script>
+        {{ \App\Support\JsonLd::script([
+            '@type' => 'BlogPosting',
+            'headline' => $post->title,
+            'description' => $post->metaDescription(),
+            'datePublished' => $post->published_at?->toAtomString(),
+            'dateModified' => $post->updated_at->toAtomString(),
+            'mainEntityOfPage' => route('blog.show', $post),
+            'publisher' => [
+                '@type' => 'Organization',
+                'name' => 'PokerHandsConverter',
+                'logo' => asset('images/icons/icon-512.png'),
+            ],
+        ]) }}
     @endpush
 
     <article class="mx-auto max-w-3xl px-6 py-16">

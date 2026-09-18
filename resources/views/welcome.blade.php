@@ -11,38 +11,32 @@
 <x-marketing-layout>
 
     @push('schema')
-        <script type="application/ld+json">
-            {!! json_encode([
-                '@context' => 'https://schema.org',
-                '@type' => 'SoftwareApplication',
-                'name' => 'PokerHandsConverter',
-                'url' => route('home'),
-                'applicationCategory' => 'UtilitiesApplication',
-                'operatingSystem' => 'Web',
-                'description' => 'Converts CoinPoker hand-history files into a format PokerTracker 4 and Hold\'em Manager 3 import cleanly.',
-                'offers' => $plans->map(fn ($plan) => [
-                    '@type' => 'Offer',
-                    'name' => $plan->name,
-                    'price' => (string) $plan->price,
-                    'priceCurrency' => $plan->currency,
-                    'url' => route('pricing'),
-                ])->values()->all(),
-            ], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) !!}
-        </script>
-        <script type="application/ld+json">
-            {!! json_encode([
-                '@context' => 'https://schema.org',
-                '@type' => 'FAQPage',
-                'mainEntity' => collect($faqs)->map(fn ($faq) => [
-                    '@type' => 'Question',
-                    'name' => $faq[0],
-                    'acceptedAnswer' => [
-                        '@type' => 'Answer',
-                        'text' => $faq[1],
-                    ],
-                ])->all(),
-            ], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) !!}
-        </script>
+        {{ \App\Support\JsonLd::script([
+            '@type' => 'SoftwareApplication',
+            'name' => 'PokerHandsConverter',
+            'url' => route('home'),
+            'applicationCategory' => 'UtilitiesApplication',
+            'operatingSystem' => 'Web',
+            'description' => 'Converts CoinPoker hand-history files into a format PokerTracker 4 and Hold\'em Manager 3 import cleanly.',
+            'offers' => $plans->map(fn ($plan) => [
+                '@type' => 'Offer',
+                'name' => $plan->name,
+                'price' => (string) $plan->price,
+                'priceCurrency' => $plan->currency,
+                'url' => route('pricing'),
+            ])->values()->all(),
+        ]) }}
+        {{ \App\Support\JsonLd::script([
+            '@type' => 'FAQPage',
+            'mainEntity' => collect($faqs)->map(fn ($faq) => [
+                '@type' => 'Question',
+                'name' => $faq[0],
+                'acceptedAnswer' => [
+                    '@type' => 'Answer',
+                    'text' => $faq[1],
+                ],
+            ])->all(),
+        ]) }}
     @endpush
 
     {{-- ============================ HERO ============================ --}}

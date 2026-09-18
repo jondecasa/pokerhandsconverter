@@ -38,15 +38,12 @@
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600,700,800&display=swap" rel="stylesheet" />
 
-    <script type="application/ld+json">
-        {!! json_encode([
-            '@context' => 'https://schema.org',
-            '@type' => 'Organization',
-            'name' => 'PokerHandsConverter',
-            'url' => route('home'),
-            'logo' => asset('images/icons/icon-512.png'),
-        ], JSON_UNESCAPED_SLASHES) !!}
-    </script>
+    {{ \App\Support\JsonLd::script([
+        '@type' => 'Organization',
+        'name' => 'PokerHandsConverter',
+        'url' => route('home'),
+        'logo' => asset('images/icons/icon-512.png'),
+    ]) }}
     @stack('schema')
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])

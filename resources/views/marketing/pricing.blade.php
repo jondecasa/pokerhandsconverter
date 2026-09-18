@@ -12,20 +12,17 @@
     description="Unlimited CoinPoker → PokerTracker 4 conversions on every package. Simple monthly and yearly pricing, cancel anytime.">
 
     @push('schema')
-        <script type="application/ld+json">
-            {!! json_encode([
-                '@context' => 'https://schema.org',
-                '@type' => 'FAQPage',
-                'mainEntity' => collect($billingFaqs)->map(fn ($faq) => [
-                    '@type' => 'Question',
-                    'name' => $faq[0],
-                    'acceptedAnswer' => [
-                        '@type' => 'Answer',
-                        'text' => $faq[1],
-                    ],
-                ])->all(),
-            ], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) !!}
-        </script>
+        {{ \App\Support\JsonLd::script([
+            '@type' => 'FAQPage',
+            'mainEntity' => collect($billingFaqs)->map(fn ($faq) => [
+                '@type' => 'Question',
+                'name' => $faq[0],
+                'acceptedAnswer' => [
+                    '@type' => 'Answer',
+                    'text' => $faq[1],
+                ],
+            ])->all(),
+        ]) }}
     @endpush
 
     <section class="mx-auto max-w-5xl px-6 py-20">

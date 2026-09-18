@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\Plan;
+use App\Models\Post;
 use Database\Seeders\PlanSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
@@ -60,6 +61,26 @@ class MarketingPagesTest extends TestCase
 
         foreach (['home', 'pricing', 'contact', 'terms', 'privacy'] as $routeName) {
             $response->assertSee(route($routeName), false);
+        }
+    }
+
+    #[Test]
+    public function every_structured_data_block_is_valid_schema_org_json(): void
+    {
+        $post = Post::factory()->published()->create(['title' => 'A </script> title']);
+
+        foreach (['/', '/pricing', route('blog.show', $post)] as $url) {
+            $html = $this->get($url)->assertOk()->getContent();
+            preg_match_all('#<script type="application/ld\+json">(.*?)</script>#s', $html, $blocks);
+
+            $this->assertNotEmpty($blocks[1], "No JSON-LD found on {$url}");
+
+            foreach ($blocks[1] as $raw) {
+                $data = json_decode($raw, true, flags: JSON_THROW_ON_ERROR);
+
+                $this->assertSame('https://schema.org', $data['@context'] ?? null, "Bad @context on {$url}: ".substr($raw, 0, 80));
+                $this->assertNotEmpty($data['@type'] ?? null, "Missing @type on {$url}");
+            }
         }
     }
 
