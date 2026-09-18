@@ -11,6 +11,9 @@ class SubscriberController extends Controller
 {
     public function index(): View
     {
+        $plans = Plan::ordered()->get();
+        $plansByPriceKey = $plans->keyBy(fn (Plan $plan) => $plan->priceKey());
+
         // toBase(): groupBy() on an Eloquent Collection keeps its class, and
         // except() on the grouped result then assumes each group is a single
         // model (calls getKey() on it) instead of a group of models.
@@ -19,10 +22,9 @@ class SubscriberController extends Controller
             ->with('user')
             ->latest()
             ->get()
+            ->each(fn (Subscription $subscription) => $subscription->package = $plansByPriceKey->get($subscription->stripe_price))
             ->toBase()
             ->groupBy('stripe_price');
-
-        $plans = Plan::ordered()->get();
 
         $tabs = $plans->map(fn (Plan $plan) => [
             'plan' => $plan,

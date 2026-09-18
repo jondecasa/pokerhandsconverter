@@ -3,6 +3,8 @@
         <thead class="bg-gray-50 text-left text-xs uppercase tracking-wide text-gray-500">
             <tr>
                 <th class="px-4 py-3">User</th>
+                <th class="px-4 py-3">Package</th>
+                <th class="px-4 py-3">Price</th>
                 <th class="px-4 py-3">Status</th>
                 <th class="px-4 py-3">Started</th>
                 <th class="px-4 py-3">Trial ends</th>
@@ -16,6 +18,22 @@
                     <td class="px-4 py-3">
                         <div class="font-medium text-gray-900">{{ $subscription->user?->name ?? 'Unknown user' }}</div>
                         <div class="text-xs text-gray-400">{{ $subscription->user?->email ?? '—' }}</div>
+                    </td>
+                    <td class="px-4 py-3 text-gray-700">
+                        @if ($subscription->package)
+                            {{ $subscription->package->name }}
+                        @else
+                            <span class="text-amber-600">Unmatched</span>
+                            <div class="font-mono text-xs text-gray-400">{{ $subscription->stripe_price ?? '—' }}</div>
+                        @endif
+                    </td>
+                    <td class="px-4 py-3 text-gray-700">
+                        @if ($subscription->package)
+                            {{ $subscription->package->priceLabel() }}
+                            @unless ($subscription->package->isFree())<span class="text-gray-400">/ {{ $subscription->package->interval }}</span>@endunless
+                        @else
+                            —
+                        @endif
                     </td>
                     <td class="px-4 py-3">
                         @if ($subscription->onTrial())
@@ -36,7 +54,7 @@
                     <td class="px-4 py-3 font-mono text-xs text-gray-400">{{ $subscription->stripe_id }}</td>
                 </tr>
             @empty
-                <tr><td colspan="6" class="px-4 py-6 text-center text-gray-500">No subscribers on this package yet.</td></tr>
+                <tr><td colspan="8" class="px-4 py-6 text-center text-gray-500">No subscribers on this package yet.</td></tr>
             @endforelse
         </tbody>
     </table>

@@ -35,8 +35,8 @@ class AdminSubscribersTest extends TestCase
     #[Test]
     public function an_admin_sees_subscribers_grouped_by_their_package(): void
     {
-        $monthly = Plan::factory()->create(['name' => 'Monthly', 'slug' => 'monthly', 'stripe_price_id' => 'price_monthly123']);
-        $yearly = Plan::factory()->create(['name' => 'Yearly', 'slug' => 'yearly', 'stripe_price_id' => 'price_yearly123']);
+        $monthly = Plan::factory()->create(['name' => 'Monthly', 'slug' => 'monthly', 'stripe_price_id' => 'price_monthly123', 'price' => 9, 'currency' => 'USD', 'interval' => 'month']);
+        $yearly = Plan::factory()->create(['name' => 'Yearly', 'slug' => 'yearly', 'stripe_price_id' => 'price_yearly123', 'price' => 90, 'currency' => 'USD', 'interval' => 'year']);
 
         $monthlySubscriber = User::factory()->create(['name' => 'Monthly Mo', 'email' => 'mo@example.com']);
         $yearlySubscriber = User::factory()->create(['name' => 'Yearly Yara', 'email' => 'yara@example.com']);
@@ -54,9 +54,13 @@ class AdminSubscribersTest extends TestCase
         $response->assertOk()
             ->assertSee('Monthly Mo')
             ->assertSee('mo@example.com')
+            ->assertSee('$9')
             ->assertSee('Yearly Yara')
             ->assertSee('yara@example.com')
+            ->assertSee('$90')
             ->assertSee('Orphan Oli')
-            ->assertSee('Other');
+            ->assertSee('Other')
+            ->assertSee('Unmatched')
+            ->assertSee('price_no_longer_configured');
     }
 }
