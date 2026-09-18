@@ -68,6 +68,29 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Languages of the public site
+    |--------------------------------------------------------------------------
+    |
+    | The default language lives at the site root; every other one under its
+    | URL prefix (e.g. /zh-hant/pricing). Text is translated through
+    | lang/<locale>.json, with the English string as the key, so a missing
+    | translation just shows English. Only the pages in `localized_pages` (plus
+    | blog posts that have a translation) exist in the other languages; the
+    | authenticated app stays in English.
+    |
+    */
+
+    'default_locale' => 'en',
+
+    'locales' => [
+        'en' => ['native' => 'English', 'prefix' => '', 'hreflang' => 'en', 'html' => 'en', 'og' => 'en_US', 'carbon' => 'en'],
+        'zh-Hant' => ['native' => '繁體中文', 'prefix' => 'zh-hant', 'hreflang' => 'zh-Hant', 'html' => 'zh-Hant', 'og' => 'zh_TW', 'carbon' => 'zh_TW'],
+    ],
+
+    'localized_pages' => ['home', 'pricing', 'contact', 'blog.index'],
+
+    /*
+    |--------------------------------------------------------------------------
     | Blog publishing API
     |--------------------------------------------------------------------------
     |
@@ -97,5 +120,25 @@ return [
 
     'indexnow' => [
         'key' => env('INDEXNOW_KEY'),
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Baidu
+    |--------------------------------------------------------------------------
+    |
+    | Baidu's webmaster platform (ziyuan.baidu.com) needs the site to be
+    | verified and gives an API token for pushing new URLs. `verification` is
+    | the content of the <meta name="baidu-site-verification"> tag it shows
+    | you; `site` is the site exactly as registered there (defaults to the
+    | home URL). Only the non-default-language URLs are pushed, and only in
+    | production with a token set.
+    |
+    */
+
+    'baidu' => [
+        'verification' => env('BAIDU_SITE_VERIFICATION'),
+        'token' => env('BAIDU_PUSH_TOKEN'),
+        'site' => env('BAIDU_PUSH_SITE'),
     ],
 ];

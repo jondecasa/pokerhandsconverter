@@ -18,8 +18,9 @@ class PostSeeder extends Seeder
 
         foreach ($posts as $index => $data) {
             Post::updateOrCreate(
-                ['slug' => $data['slug']],
+                ['slug' => $data['slug'], 'locale' => $data['locale'] ?? 'en'],
                 [
+                    'translation_of' => $data['translation_of'] ?? null,
                     'title' => $data['title'],
                     'excerpt' => $data['excerpt'],
                     'body' => $data['body'],

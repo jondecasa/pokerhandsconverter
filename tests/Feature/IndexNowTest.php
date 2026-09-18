@@ -60,6 +60,17 @@ class IndexNowTest extends TestCase
     }
 
     #[Test]
+    public function a_chinese_post_notifies_indexnow_with_its_chinese_urls(): void
+    {
+        $this->enable();
+
+        $post = Post::factory()->published()->create(['slug' => 'zh-live', 'locale' => 'zh-Hant']);
+
+        Http::assertSent(fn (Request $request) => $request['urlList'] === [route('zh-hant.blog.show', 'zh-live'), route('zh-hant.blog.index')]);
+        $this->assertSame(route('zh-hant.blog.show', 'zh-live'), $post->url());
+    }
+
+    #[Test]
     public function drafts_do_not_notify_anyone(): void
     {
         $this->enable();

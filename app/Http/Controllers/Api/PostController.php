@@ -17,13 +17,13 @@ class PostController extends Controller
     }
 
     /**
-     * Create-or-update by slug. Deliberately POST-only and with no delete:
+     * Create-or-update by language + slug. Deliberately POST-only and with no delete:
      * some hosts' WAFs reject PUT/DELETE, and a post is retired by sending
      * is_published=false rather than being destroyed remotely.
      */
     public function upsert(PostApiRequest $request): JsonResponse
     {
-        $post = Post::firstOrNew(['slug' => $request->validated('slug')]);
+        $post = Post::firstOrNew(['locale' => $request->locale(), 'slug' => $request->validated('slug')]);
         $created = ! $post->exists;
 
         $post->fill($request->postAttributes($post))->save();
@@ -36,11 +36,12 @@ class PostController extends Controller
     {
         return [
             'slug' => $post->slug,
+            'locale' => $post->locale,
             'title' => $post->title,
             'status' => $post->isPublished() ? 'published' : ($post->is_published ? 'scheduled' : 'draft'),
             'published_at' => $post->published_at?->toIso8601String(),
             'updated_at' => $post->updated_at->toIso8601String(),
-            'url' => route('blog.show', $post),
+            'url' => $post->url(),
         ];
     }
 }

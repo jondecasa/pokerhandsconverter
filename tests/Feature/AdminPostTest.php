@@ -136,7 +136,7 @@ class AdminPostTest extends TestCase
         $post = Post::factory()->published()->create(['published_at' => now()->subDay()->startOfMinute()]);
         $originalPublishedAt = $post->published_at;
 
-        $this->actingAs($this->admin())->put("/admin/posts/{$post->slug}", [
+        $this->actingAs($this->admin())->put("/admin/posts/{$post->id}", [
             'title' => 'Updated title',
             'slug' => $post->slug,
             'body' => $post->body,
@@ -153,7 +153,7 @@ class AdminPostTest extends TestCase
     {
         $post = Post::factory()->create();
 
-        $this->actingAs($this->admin())->delete("/admin/posts/{$post->slug}")
+        $this->actingAs($this->admin())->delete("/admin/posts/{$post->id}")
             ->assertRedirect(route('admin.posts.index'));
 
         $this->assertModelMissing($post);

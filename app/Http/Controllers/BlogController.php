@@ -11,7 +11,7 @@ class BlogController extends Controller
     public function index(): View
     {
         return view('blog.index', [
-            'posts' => Post::published()->latestFirst()->paginate(10),
+            'posts' => Post::published()->inLocale(app()->getLocale())->latestFirst()->paginate(10),
         ]);
     }
 
@@ -22,6 +22,7 @@ class BlogController extends Controller
         return view('blog.show', [
             'post' => $post,
             'related' => Post::published()
+                ->inLocale($post->locale)
                 ->whereKeyNot($post->id)
                 ->latestFirst()
                 ->limit(3)

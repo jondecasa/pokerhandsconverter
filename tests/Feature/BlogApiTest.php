@@ -142,4 +142,45 @@ class BlogApiTest extends TestCase
             ->assertJsonFragment(['slug' => 'one', 'status' => 'published', 'url' => route('blog.show', 'one')])
             ->assertJsonFragment(['slug' => 'two', 'status' => 'draft']);
     }
+
+    #[Test]
+    public function a_post_is_identified_by_language_and_slug_so_translations_do_not_collide(): void
+    {
+        Post::factory()->published()->create(['slug' => 'rake', 'title' => 'English rake']);
+
+        $this->authed()->postJson('/api/posts', [
+            'slug' => 'rake', 'locale' => 'zh-Hant', 'translation_of' => 'rake',
+            'title' => '什麼是抽水', 'body' => '內文', 'is_published' => true,
+        ])
+            ->assertCreated()
+            ->assertJsonPath('created', true)
+            ->assertJsonPath('data.locale', 'zh-Hant')
+            ->assertJsonPath('data.url', route('zh-hant.blog.show', 'rake'));
+
+        $this->authed()->postJson('/api/posts', ['slug' => 'rake', 'locale' => 'zh-Hant', 'title' => '新標題'])
+            ->assertOk()->assertJsonPath('created', false);
+
+        $this->assertSame(2, Post::where('slug', 'rake')->count());
+        $this->assertSame('English rake', Post::where('slug', 'rake')->where('locale', 'en')->value('title'));
+        $this->assertSame('新標題', Post::where('slug', 'rake')->where('locale', 'zh-Hant')->value('title'));
+        $this->assertSame('rake', Post::where('locale', 'zh-Hant')->value('translation_of'));
+    }
+
+    #[Test]
+    public function an_unknown_language_is_rejected(): void
+    {
+        $this->authed()->postJson('/api/posts', ['slug' => 'x', 'locale' => 'fr', 'title' => 'T', 'body' => 'B'])
+            ->assertUnprocessable()
+            ->assertJsonValidationErrors('locale');
+    }
+
+    #[Test]
+    public function the_index_reports_each_posts_language(): void
+    {
+        Post::factory()->published()->create(['slug' => 'a']);
+        Post::factory()->published()->create(['slug' => 'a', 'locale' => 'zh-Hant']);
+
+        $this->authed()->getJson('/api/posts')->assertOk()->assertJsonCount(2, 'data')
+            ->assertJsonFragment(['slug' => 'a', 'locale' => 'zh-Hant']);
+    }
 }

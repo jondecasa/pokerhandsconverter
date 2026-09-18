@@ -45,12 +45,12 @@ class BlogTest extends TestCase
         Post::factory()->published()->count(11)->create();
 
         $html = $this->get('/blog')->assertOk()
-            ->assertSee('aria-label="Pagination"', false)
+            ->assertSee('aria-label="Pagination navigation"', false)
             ->assertSee('aria-current="page"', false)
             ->assertSee('bg-indigo-600', false)
             ->getContent();
 
-        preg_match('#<nav role="navigation" aria-label="Pagination".*?</nav>#s', $html, $nav);
+        preg_match('#<nav role="navigation" aria-label="Pagination navigation".*?</nav>#s', $html, $nav);
 
         $this->assertNotEmpty($nav);
         $this->assertStringNotContainsString('dark:', $nav[0]);

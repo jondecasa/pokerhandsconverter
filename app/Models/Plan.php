@@ -62,7 +62,7 @@ class Plan extends Model
     public function priceLabel(): string
     {
         if ((float) $this->price <= 0) {
-            return 'Free';
+            return __('Free');
         }
 
         $symbol = $this->currency === 'USD' ? '$' : '';
@@ -77,7 +77,7 @@ class Plan extends Model
             return $this->stakes_label;
         }
 
-        return filled($this->stakes_cap) ? 'Covers up to '.$this->stakes_cap : null;
+        return filled($this->stakes_cap) ? __('Covers up to :stake', ['stake' => $this->stakes_cap]) : null;
     }
 
     /** Highest big blind this package allows ("NL50" -> 0.50); null = unlimited. */

@@ -85,6 +85,19 @@ YAML);
     }
 
     #[Test]
+    public function the_language_and_translation_link_are_sent_with_the_post(): void
+    {
+        $this->fakeSuccess();
+        $file = $this->markdownPost('zh-rake.md', "title: 什麼是抽水\nslug: what-is-rake\nlocale: zh-Hant\ntranslation_of: what-is-rake");
+
+        $this->artisan('blog:push', ['path' => $file, '--url' => 'https://site.test'])->assertSuccessful();
+
+        Http::assertSent(fn (Request $request) => $request['locale'] === 'zh-Hant'
+            && $request['translation_of'] === 'what-is-rake'
+            && $request['title'] === '什麼是抽水');
+    }
+
+    #[Test]
     public function a_directory_pushes_every_markdown_file_in_it(): void
     {
         $this->fakeSuccess();

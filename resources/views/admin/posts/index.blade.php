@@ -50,7 +50,7 @@
                             <tr>
                                 <td class="px-4 py-3">
                                     <div class="font-medium text-gray-900">{{ $post->title }}</div>
-                                    <div class="text-xs text-gray-400 font-mono">{{ $post->slug }}</div>
+                                    <div class="text-xs text-gray-400 font-mono">{{ $post->slug }} <span class="ml-1 rounded bg-slate-100 px-1.5 py-0.5 font-sans text-[10px] font-semibold uppercase text-slate-500">{{ $post->locale }}</span></div>
                                 </td>
                                 <td class="px-4 py-3">
                                     @if ($post->isPublished())

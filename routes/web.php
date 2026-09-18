@@ -15,21 +15,36 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RangeController;
 use App\Http\Controllers\SitemapController;
 use App\Http\Controllers\SubscriptionController;
+use App\Support\Locales;
 use Illuminate\Support\Facades\Route;
 
 /*
 | Public marketing site
 */
-Route::get('/', [MarketingController::class, 'home'])->name('home');
-Route::get('/pricing', [MarketingController::class, 'pricing'])->name('pricing');
+// One copy of these pages per language: the default one at the root
+// ("pricing"), the others under their prefix ("zh-hant.pricing" at
+// /zh-hant/pricing). See App\Support\Locales.
+foreach (Locales::codes() as $locale) {
+    $prefix = Locales::prefix($locale);
+
+    Route::prefix($prefix)
+        ->as($prefix === '' ? '' : $prefix.'.')
+        ->middleware("locale:{$locale}")
+        ->group(function () {
+            Route::get('/', [MarketingController::class, 'home'])->name('home');
+            Route::get('/pricing', [MarketingController::class, 'pricing'])->name('pricing');
+            Route::get('/blog', [BlogController::class, 'index'])->name('blog.index');
+            Route::get('/blog/{post}', [BlogController::class, 'show'])->name('blog.show');
+            Route::get('/contact', [ContactController::class, 'show'])->name('contact');
+            Route::post('/contact', [ContactController::class, 'submit'])->middleware('throttle:5,1')->name('contact.submit');
+        });
+}
+
 Route::get('/sitemap.xml', [SitemapController::class, 'index'])->name('sitemap');
 Route::get('/{key}.txt', IndexNowKeyController::class)->where('key', '[A-Za-z0-9-]{8,128}')->name('indexnow.key');
-Route::get('/blog', [BlogController::class, 'index'])->name('blog.index');
-Route::get('/blog/{post}', [BlogController::class, 'show'])->name('blog.show');
+// Legal pages stay in English only.
 Route::view('/terms', 'marketing.terms')->name('terms');
 Route::view('/privacy', 'marketing.privacy')->name('privacy');
-Route::get('/contact', [ContactController::class, 'show'])->name('contact');
-Route::post('/contact', [ContactController::class, 'submit'])->middleware('throttle:5,1')->name('contact.submit');
 
 /*
 | Authenticated app ("the back")
@@ -69,7 +84,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::middleware('admin')->prefix('admin')->name('admin.')->group(function () {
         Route::redirect('/', '/admin/plans');
         Route::resource('plans', AdminPlanController::class)->except('show');
-        Route::resource('posts', AdminPostController::class)->except('show');
+        Route::resource('posts', AdminPostController::class)->except('show')->parameters(['posts' => 'post:id']);
         Route::get('subscribers', [AdminSubscriberController::class, 'index'])->name('subscribers.index');
 
         Route::prefix('range-studies')->name('range-studies.')->group(function () {

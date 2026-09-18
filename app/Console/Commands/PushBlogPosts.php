@@ -150,7 +150,7 @@ class PushBlogPosts extends Command
             'body' => $body,
         ];
 
-        foreach (['excerpt', 'meta_title', 'meta_description'] as $key) {
+        foreach (['locale', 'translation_of', 'excerpt', 'meta_title', 'meta_description'] as $key) {
             if (isset($meta[$key])) {
                 $payload[$key] = (string) $meta[$key];
             }

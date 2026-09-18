@@ -3,7 +3,7 @@
         <div class="flex items-center justify-between">
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">Edit post — {{ $post->title }}</h2>
             @if ($post->isPublished())
-                <a href="{{ route('blog.show', $post) }}" target="_blank" class="text-sm text-indigo-600 hover:underline">View live &rarr;</a>
+                <a href="{{ $post->url() }}" target="_blank" class="text-sm text-indigo-600 hover:underline">View live &rarr;</a>
             @endif
         </div>
     </x-slot>

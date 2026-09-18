@@ -8,15 +8,15 @@
         $chevronRight = 'M9 5l7 7-7 7';
     @endphp
 
-    <nav role="navigation" aria-label="Pagination" class="flex justify-center">
+    <nav role="navigation" aria-label="{{ __('Pagination navigation') }}" class="flex justify-center">
         <ul class="inline-flex flex-wrap items-center justify-center gap-1.5">
             <li>
                 @if ($paginator->onFirstPage())
-                    <span aria-disabled="true" aria-label="Previous page" class="{{ $disabled }}">
+                    <span aria-disabled="true" aria-label="{{ __('Previous page') }}" class="{{ $disabled }}">
                         <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="{{ $chevronLeft }}"/></svg>
                     </span>
                 @else
-                    <a href="{{ $paginator->previousPageUrl() }}" rel="prev" aria-label="Previous page" class="{{ $link }}">
+                    <a href="{{ $paginator->previousPageUrl() }}" rel="prev" aria-label="{{ __('Previous page') }}" class="{{ $link }}">
                         <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="{{ $chevronLeft }}"/></svg>
                     </a>
                 @endif
@@ -33,7 +33,7 @@
                             @if ($page == $paginator->currentPage())
                                 <span aria-current="page" class="{{ $active }}">{{ $page }}</span>
                             @else
-                                <a href="{{ $url }}" aria-label="Go to page {{ $page }}" class="{{ $link }}">{{ $page }}</a>
+                                <a href="{{ $url }}" aria-label="{{ __('Go to page :page', ['page' => $page]) }}" class="{{ $link }}">{{ $page }}</a>
                             @endif
                         </li>
                     @endforeach
@@ -42,11 +42,11 @@
 
             <li>
                 @if ($paginator->hasMorePages())
-                    <a href="{{ $paginator->nextPageUrl() }}" rel="next" aria-label="Next page" class="{{ $link }}">
+                    <a href="{{ $paginator->nextPageUrl() }}" rel="next" aria-label="{{ __('Next page') }}" class="{{ $link }}">
                         <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="{{ $chevronRight }}"/></svg>
                     </a>
                 @else
-                    <span aria-disabled="true" aria-label="Next page" class="{{ $disabled }}">
+                    <span aria-disabled="true" aria-label="{{ __('Next page') }}" class="{{ $disabled }}">
                         <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="{{ $chevronRight }}"/></svg>
                     </span>
                 @endif

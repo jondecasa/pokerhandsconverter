@@ -15,6 +15,23 @@
         <x-input-error :messages="$errors->get('slug')" class="mt-1" />
     </div>
 
+    <div>
+        <label class="block text-sm font-medium text-gray-700">Language</label>
+        <select name="locale" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm text-sm">
+            @foreach (\App\Support\Locales::all() as $code => $settings)
+                <option value="{{ $code }}" @selected(old('locale', $post->locale ?? \App\Support\Locales::default()) === $code)>{{ $settings['native'] }} ({{ $code }})</option>
+            @endforeach
+        </select>
+        <x-input-error :messages="$errors->get('locale')" class="mt-1" />
+    </div>
+
+    <div>
+        <label class="block text-sm font-medium text-gray-700">Translation of <span class="text-gray-400">(slug of the English post — leave blank for English posts)</span></label>
+        <input name="translation_of" value="{{ old('translation_of', $post->translation_of) }}"
+               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm text-sm font-mono">
+        <x-input-error :messages="$errors->get('translation_of')" class="mt-1" />
+    </div>
+
     <div class="sm:col-span-2">
         <label class="block text-sm font-medium text-gray-700">Excerpt <span class="text-gray-400">(shown on the blog list; falls back to the meta description)</span></label>
         <textarea name="excerpt" rows="2" maxlength="300"
