@@ -17,7 +17,7 @@
                     'name' => 'PokerHandsConverter',
                     'logo' => asset('images/icons/icon-512.png'),
                 ],
-            ], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) !!}
+            ], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_AMP) !!}
         </script>
     @endpush
 

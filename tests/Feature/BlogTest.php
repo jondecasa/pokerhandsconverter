@@ -43,6 +43,17 @@ class BlogTest extends TestCase
     }
 
     #[Test]
+    public function a_script_closing_tag_in_a_title_cannot_break_out_of_the_structured_data(): void
+    {
+        $post = Post::factory()->published()->create(['title' => '</script><script>alert(1)</script>']);
+
+        $this->get(route('blog.show', $post))
+            ->assertOk()
+            ->assertDontSee('</script><script>alert(1)', false)
+            ->assertSee('</script>', false);
+    }
+
+    #[Test]
     public function guests_get_a_404_for_an_unpublished_post(): void
     {
         $post = Post::factory()->create(['is_published' => false]);

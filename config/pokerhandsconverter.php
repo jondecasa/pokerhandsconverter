@@ -65,4 +65,21 @@ return [
 
     // Hard limit for uploaded files (kilobytes).
     'max_upload_kb' => (int) env('CONVERTER_MAX_UPLOAD_KB', 20480),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Blog publishing API
+    |--------------------------------------------------------------------------
+    |
+    | /api/posts lets a trusted client (the `blog:push` artisan command run from
+    | a dev machine) create and update posts on this site. With no token set the
+    | API is switched off entirely. `url` is only used by the client side, to
+    | know which site to push to.
+    |
+    */
+
+    'blog_api' => [
+        'token' => env('BLOG_API_TOKEN'),
+        'url' => env('BLOG_API_URL'),
+    ],
 ];
