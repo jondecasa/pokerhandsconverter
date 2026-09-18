@@ -10,6 +10,12 @@
             'datePublished' => $post->published_at?->toAtomString(),
             'dateModified' => $post->updated_at->toAtomString(),
             'mainEntityOfPage' => route('blog.show', $post),
+            'image' => [asset('images/og-image.png')],
+            'author' => [
+                '@type' => 'Organization',
+                'name' => 'PokerHandsConverter',
+                'url' => route('home'),
+            ],
             'publisher' => [
                 '@type' => 'Organization',
                 'name' => 'PokerHandsConverter',

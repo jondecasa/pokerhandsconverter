@@ -116,6 +116,11 @@ class MarketingPagesTest extends TestCase
 
                 $this->assertSame('https://schema.org', $data['@context'] ?? null, "Bad @context on {$url}: ".substr($raw, 0, 80));
                 $this->assertNotEmpty($data['@type'] ?? null, "Missing @type on {$url}");
+
+                if ($data['@type'] === 'BlogPosting') {
+                    $this->assertSame('PokerHandsConverter', $data['author']['name'] ?? null);
+                    $this->assertSame([asset('images/og-image.png')], $data['image'] ?? null);
+                }
             }
         }
     }
