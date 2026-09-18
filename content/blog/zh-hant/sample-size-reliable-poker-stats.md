@@ -36,4 +36,4 @@ published: true
 
 ## 帶著這個觀念來看你的 HUD
 
-如果你還不太熟悉 VPIP、PFR 與 3-bet%，可以先讀 [認識 VPIP、PFR 與 3-Bet%（英文）](/blog/understanding-vpip-pfr-3bet-hud-stats)，了解每個數據實際衡量什麼，再去解讀小樣本中的它們。
+如果你還不太熟悉 VPIP、PFR 與 3-bet%，可以先讀 [認識 VPIP、PFR 與 3-Bet%](/zh-hant/blog/understanding-vpip-pfr-3bet-hud-stats)，了解每個數據實際衡量什麼，再去解讀小樣本中的它們。
