@@ -4,7 +4,7 @@ slug: pokertracker-4-vs-holdem-manager-3-coinpoker
 locale: zh-Hant
 translation_of: pokertracker-4-vs-holdem-manager-3-coinpoker
 excerpt: "兩款追蹤軟體在轉換後都能正常處理 CoinPoker 手牌——以下說明兩者實際的差異，幫助你做出選擇。"
-meta_title: "CoinPoker 該用 PokerTracker 4 還是 Hold'em Manager 3？ — PokerHandsConverter"
+meta_title: "CoinPoker 該用 PokerTracker 4 還是 Hold'em Manager 3？"
 meta_description: "比較 PokerTracker 4 與 Hold'em Manager 3 用於追蹤 CoinPoker 手牌的差異——報表深度、HUD 設定，以及哪一款適合你的工作流程。"
 published: true
 ---

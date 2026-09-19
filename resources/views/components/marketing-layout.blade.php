@@ -1,6 +1,6 @@
 @use('App\Support\Locales')
 @props([
-    'title' => __('PokerHandsConverter — Convert CoinPoker hand histories for PokerTracker 4'),
+    'title' => __('PokerHandsConverter — Convert CoinPoker hands for PokerTracker 4'),
     'description' => __('PokerHandsConverter turns your CoinPoker hand-history files into a format PokerTracker 4 imports cleanly. Cash games and tournaments.'),
     'canonical' => null,
     // Versions of this page in other languages (locale => URL). null = work it

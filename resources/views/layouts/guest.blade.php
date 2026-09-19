@@ -5,7 +5,14 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>{{ ($title ?? null) ? $title.' · ' : '' }}{{ config('app.name', 'PokerHandsConverter') }}</title>
+        @php
+            $appName = config('app.name', 'PokerHandsConverter');
+            $pageTitle = trim(strip_tags((string) ($title ?? ($heading ?? ''))));
+            $fullTitle = $pageTitle === '' ? $appName : (str_contains($pageTitle, $appName) ? $pageTitle : $pageTitle.' · '.$appName);
+            $metaDescription = trim(strip_tags((string) ($description ?? ''))) ?: 'Log in or create your account to convert CoinPoker hand histories into a format PokerTracker 4 imports cleanly.';
+        @endphp
+        <title>{{ $fullTitle }}</title>
+        <meta name="description" content="{{ $metaDescription }}">
 
         <link rel="icon" type="image/svg+xml" href="{{ asset('favicon.svg') }}">
         <link rel="apple-touch-icon" href="{{ asset('images/icons/icon-192.png') }}">

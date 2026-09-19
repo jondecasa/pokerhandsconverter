@@ -1,5 +1,6 @@
 <x-guest-layout>
     <x-slot name="heading">Create your PokerHandsConverter account</x-slot>
+    <x-slot name="description">Create a PokerHandsConverter account to convert CoinPoker hand histories into a format PokerTracker 4 imports cleanly.</x-slot>
 
     @include('auth.partials.google-button')
 

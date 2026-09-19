@@ -1,5 +1,6 @@
 <x-guest-layout>
     <x-slot name="heading">Log in to PokerHandsConverter</x-slot>
+    <x-slot name="description">Log in to PokerHandsConverter to convert CoinPoker hand histories for PokerTracker 4 and manage your subscription.</x-slot>
 
     <x-auth-session-status class="mb-4" :status="session('status')" />
 

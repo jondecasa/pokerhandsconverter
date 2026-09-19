@@ -1,4 +1,4 @@
 User-agent: *
-Disallow:
+Disallow: /cdn-cgi/
 
 Sitemap: https://pokerhandsconverter.com/sitemap.xml
