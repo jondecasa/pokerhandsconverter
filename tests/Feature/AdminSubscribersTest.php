@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\Conversion;
 use App\Models\Plan;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -42,6 +43,8 @@ class AdminSubscribersTest extends TestCase
         $yearlySubscriber = User::factory()->create(['name' => 'Yearly Yara', 'email' => 'yara@example.com']);
         $orphanSubscriber = User::factory()->create(['name' => 'Orphan Oli', 'email' => 'oli@example.com']);
 
+        Conversion::factory()->for($monthlySubscriber)->count(3)->create();
+
         Subscription::factory()->for($monthlySubscriber, 'user')
             ->create(['type' => 'default', 'stripe_price' => $monthly->priceKey(), 'stripe_status' => 'active']);
         Subscription::factory()->for($yearlySubscriber, 'user')
@@ -61,6 +64,8 @@ class AdminSubscribersTest extends TestCase
             ->assertSee('Orphan Oli')
             ->assertSee('Other')
             ->assertSee('Unmatched')
-            ->assertSee('price_no_longer_configured');
+            ->assertSee('price_no_longer_configured')
+            ->assertSee('Files imported')
+            ->assertSeeInOrder(['Monthly Mo', 'mo@example.com', '3']);
     }
 }

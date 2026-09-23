@@ -19,7 +19,7 @@ class SubscriberController extends Controller
         // model (calls getKey() on it) instead of a group of models.
         $subscriptions = Subscription::query()
             ->where('type', config('pokerhandsconverter.subscription_name', 'default'))
-            ->with('user')
+            ->with(['user' => fn ($query) => $query->withCount('conversions')])
             ->latest()
             ->get()
             ->each(fn (Subscription $subscription) => $subscription->package = $plansByPriceKey->get($subscription->stripe_price))

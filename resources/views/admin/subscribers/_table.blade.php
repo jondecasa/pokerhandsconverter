@@ -4,6 +4,7 @@
             <tr>
                 <th class="px-4 py-3">User</th>
                 <th class="px-4 py-3">Package</th>
+                <th class="px-4 py-3">Files imported</th>
                 <th class="px-4 py-3">Price</th>
                 <th class="px-4 py-3">Status</th>
                 <th class="px-4 py-3">Started</th>
@@ -27,6 +28,7 @@
                             <div class="font-mono text-xs text-gray-400">{{ $subscription->stripe_price ?? '—' }}</div>
                         @endif
                     </td>
+                    <td class="px-4 py-3 text-gray-700">{{ $subscription->user?->conversions_count ?? 0 }}</td>
                     <td class="px-4 py-3 text-gray-700">
                         @if ($subscription->package)
                             {{ $subscription->package->priceLabel() }}
@@ -54,7 +56,7 @@
                     <td class="px-4 py-3 font-mono text-xs text-gray-400">{{ $subscription->stripe_id }}</td>
                 </tr>
             @empty
-                <tr><td colspan="8" class="px-4 py-6 text-center text-gray-500">No subscribers on this package yet.</td></tr>
+                <tr><td colspan="9" class="px-4 py-6 text-center text-gray-500">No subscribers on this package yet.</td></tr>
             @endforelse
         </tbody>
     </table>
