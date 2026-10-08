@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\EmailController as AdminEmailController;
 use App\Http\Controllers\Admin\PlanController as AdminPlanController;
 use App\Http\Controllers\Admin\PostController as AdminPostController;
 use App\Http\Controllers\Admin\RangeScenarioController as AdminRangeScenarioController;
@@ -86,6 +87,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::resource('plans', AdminPlanController::class)->except('show');
         Route::resource('posts', AdminPostController::class)->except('show')->parameters(['posts' => 'post:id']);
         Route::get('subscribers', [AdminSubscriberController::class, 'index'])->name('subscribers.index');
+
+        Route::get('emails/create', [AdminEmailController::class, 'create'])->name('emails.create');
+        Route::post('emails', [AdminEmailController::class, 'store'])->name('emails.store');
+        Route::post('emails/preview', [AdminEmailController::class, 'preview'])->name('emails.preview');
 
         Route::prefix('range-studies')->name('range-studies.')->group(function () {
             Route::get('/', [AdminRangeStudyController::class, 'index'])->name('index');

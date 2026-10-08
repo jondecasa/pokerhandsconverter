@@ -55,6 +55,13 @@
                 </svg>
                 Subscribers
             </a>
+            <a href="{{ route('admin.emails.create') }}"
+               @class(['pc-navlink', 'pc-navlink-active' => request()->routeIs('admin.emails.*')])>
+                <svg class="h-5 w-5 shrink-0 opacity-80" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M3 8l9 6 9-6M5 5h14a2 2 0 012 2v10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2z"/>
+                </svg>
+                Send email
+            </a>
             <a href="{{ route('admin.range-studies.index') }}"
                @class(['pc-navlink', 'pc-navlink-active' => request()->routeIs('admin.range-studies.*') || request()->routeIs('admin.range-scenarios.*')])>
                 <svg class="h-5 w-5 shrink-0 opacity-80" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">

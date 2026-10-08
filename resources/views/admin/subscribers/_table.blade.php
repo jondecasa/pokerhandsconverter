@@ -19,6 +19,9 @@
                     <td class="px-4 py-3">
                         <div class="font-medium text-gray-900">{{ $subscription->user?->name ?? 'Unknown user' }}</div>
                         <div class="text-xs text-gray-400">{{ $subscription->user?->email ?? '—' }}</div>
+                        @if ($subscription->user && ($subscription->ended() || $subscription->onGracePeriod()))
+                            <a href="{{ route('admin.emails.create', ['to' => $subscription->user->email]) }}" class="text-xs text-indigo-600 hover:underline">Email this user</a>
+                        @endif
                     </td>
                     <td class="px-4 py-3 text-gray-700">
                         @if ($subscription->package)
