@@ -4,9 +4,11 @@ use App\Http\Middleware\EnsureAdmin;
 use App\Http\Middleware\EnsureBlogApiToken;
 use App\Http\Middleware\EnsureSubscribed;
 use App\Http\Middleware\SetLocale;
+use App\Support\CloudflareIps;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use Illuminate\Http\Request;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 
 return Application::configure(basePath: dirname(__DIR__))
@@ -17,6 +19,10 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
+        // Behind Cloudflare the connecting address is Cloudflare's; the visitor's
+        // is in X-Forwarded-For. Rate limits and logs need the visitor's.
+        $middleware->trustProxies(at: CloudflareIps::ranges(), headers: Request::HEADER_X_FORWARDED_FOR);
+
         $middleware->alias([
             'subscribed' => EnsureSubscribed::class,
             'admin' => EnsureAdmin::class,
