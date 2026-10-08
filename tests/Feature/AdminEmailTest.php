@@ -82,6 +82,7 @@ class AdminEmailTest extends TestCase
         $this->assertStringContainsString('We miss you', $html);
         $this->assertStringContainsString('Come back soon.', $html);
         $this->assertStringContainsString('See the plans', $html);
+        $this->assertMatchesRegularExpression('#<table[^>]*align="center"[^>]*margin:28px auto 8px#', $html);
         $this->assertStringContainsString(route('pricing'), $html);
         $this->assertStringContainsString("if you'd rather not hear from us again", $html);
     }

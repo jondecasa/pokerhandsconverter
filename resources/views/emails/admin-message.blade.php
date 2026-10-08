@@ -39,7 +39,7 @@
                         @endforeach
 
                         @if ($withButton)
-                            <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="margin:28px 0 8px;">
+                            <table role="presentation" align="center" cellpadding="0" cellspacing="0" border="0" style="margin:28px auto 8px;">
                                 <tr>
                                     <td style="background-color:#4f46e5; border-radius:10px;">
                                         <a href="{{ $buttonUrl }}" style="display:inline-block; padding:13px 28px; font-size:16px; font-weight:600; color:#ffffff; text-decoration:none;">See the plans</a>
