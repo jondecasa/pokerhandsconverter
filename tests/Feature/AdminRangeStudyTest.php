@@ -137,6 +137,36 @@ class AdminRangeStudyTest extends TestCase
     }
 
     #[Test]
+    public function the_quiz_switch_is_saved_when_adding_and_editing_a_scenario(): void
+    {
+        $study = RangeStudy::factory()->create();
+        $admin = $this->admin();
+        $payload = [
+            'group_label' => 'Rol', 'row_label' => 'MP', 'button_label' => 'Base',
+            'legend' => [['key' => 'fav', 'label' => 'Favorable', 'color' => '#fbbf24']],
+            'combos' => ['AA' => 'fav'],
+        ];
+
+        $this->actingAs($admin)->post(route('admin.range-studies.scenarios.store', $study), $payload + ['quiz_enabled' => '0']);
+        $scenario = $study->scenarios()->firstOrFail();
+        $this->assertFalse($scenario->quiz_enabled);
+
+        $this->actingAs($admin)->put(route('admin.range-scenarios.update', $scenario), $payload + ['quiz_enabled' => '1']);
+        $this->assertTrue($scenario->fresh()->quiz_enabled);
+    }
+
+    #[Test]
+    public function the_scenario_form_offers_the_quiz_switch_on_by_default(): void
+    {
+        $study = RangeStudy::factory()->create();
+
+        $this->actingAs($this->admin())->get(route('admin.range-studies.scenarios.create', $study))
+            ->assertOk()
+            ->assertSee('Include in the Quiz')
+            ->assertSeeInOrder(['name="quiz_enabled"', 'value="1"', 'checked'], false);
+    }
+
+    #[Test]
     public function an_admin_can_update_and_delete_a_scenario(): void
     {
         $study = RangeStudy::factory()->create();

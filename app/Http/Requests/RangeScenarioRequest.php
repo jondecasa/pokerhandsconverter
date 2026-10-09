@@ -21,6 +21,7 @@ class RangeScenarioRequest extends FormRequest
             'button_label' => ['required', 'string', 'max:60'],
             'button_order' => ['nullable', 'integer', 'min:0', 'max:65535'],
             'is_default' => ['boolean'],
+            'quiz_enabled' => ['boolean'],
 
             'legend' => ['required', 'array', 'min:1'],
             'legend.*.key' => ['required', 'string', 'max:40'],
@@ -76,6 +77,7 @@ class RangeScenarioRequest extends FormRequest
 
         $this->merge([
             'is_default' => $this->boolean('is_default'),
+            'quiz_enabled' => $this->boolean('quiz_enabled'),
             'legend' => $legend,
             'combos' => $combos,
             'stats' => ($badges || $bars) ? ['badges' => $badges, 'bars' => $bars] : null,
@@ -87,7 +89,7 @@ class RangeScenarioRequest extends FormRequest
     {
         $data = $this->safe()->only([
             'group_label', 'group_order', 'row_label', 'row_order',
-            'button_label', 'button_order', 'is_default', 'legend', 'combos', 'stats',
+            'button_label', 'button_order', 'is_default', 'quiz_enabled', 'legend', 'combos', 'stats',
         ]);
 
         $data['group_order'] ??= 0;

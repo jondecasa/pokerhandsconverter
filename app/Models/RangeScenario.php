@@ -18,7 +18,7 @@ class RangeScenario extends Model
         'group_label', 'group_order',
         'row_label', 'row_order',
         'button_label', 'button_order',
-        'is_default',
+        'is_default', 'quiz_enabled',
         'legend', 'combos', 'stats',
     ];
 
@@ -29,6 +29,7 @@ class RangeScenario extends Model
             'row_order' => 'integer',
             'button_order' => 'integer',
             'is_default' => 'boolean',
+            'quiz_enabled' => 'boolean',
             'legend' => 'array',
             'combos' => 'array',
             'stats' => 'array',

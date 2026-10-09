@@ -2583,7 +2583,8 @@
                     }
                 ],
                 "bars": []
-            }
+            },
+            "quiz_enabled": false
         },
         {
             "group_label": "Rol",
@@ -2671,7 +2672,8 @@
                     }
                 ],
                 "bars": []
-            }
+            },
+            "quiz_enabled": false
         },
         {
             "group_label": "Rol",
@@ -2802,7 +2804,8 @@
                     }
                 ],
                 "bars": []
-            }
+            },
+            "quiz_enabled": false
         },
         {
             "group_label": "Rol",
@@ -2923,7 +2926,8 @@
                     }
                 ],
                 "bars": []
-            }
+            },
+            "quiz_enabled": false
         }
     ]
 }

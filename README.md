@@ -250,6 +250,7 @@ Marketing pages render through the `<x-marketing-layout>` anonymous component
 | `/billing` | Redirect to the Stripe customer portal |
 | `/convert` | Upload a CoinPoker `.txt`, get a PokerTracker 4-ready `.txt` — **requires an active subscription** |
 | `/conversions/{id}` | Result screen: hands / splash pots / bomb pots counts, warnings, preview, download |
+| `/quiz`, `/quiz/{study}` | **Quiz Ranges** (subscribers) — 20 random spots from a range study; pick the action (the scenario's own buttons, hands left unpainted are a fold), then see the score and the situation you miss most. Scenarios opt out with "Include in the Quiz" in the admin (the favourable/unfavourable "Rol" charts do) |
 | `/admin/plans` | Package & pricing maintenance — **admins only** (`users.is_admin`) |
 
 The `subscribed` middleware (`App\Http\Middleware\EnsureSubscribed`) protects the

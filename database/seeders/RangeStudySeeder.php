@@ -15,7 +15,12 @@ class RangeStudySeeder extends Seeder
     public function run(): void
     {
         foreach (glob(__DIR__.'/data/*.json') as $file) {
-            $this->seedStudy(json_decode(file_get_contents($file), true));
+            $data = json_decode(file_get_contents($file), true);
+
+            // The folder also holds other seeders' fixtures (posts.json).
+            if (is_array($data) && isset($data['scenarios'])) {
+                $this->seedStudy($data);
+            }
         }
     }
 
@@ -41,7 +46,7 @@ class RangeStudySeeder extends Seeder
                     'legend' => $scenario['legend'],
                     'combos' => $scenario['combos'],
                     'stats' => $scenario['stats'],
-                ]
+                ] + (isset($scenario['quiz_enabled']) ? ['quiz_enabled' => $scenario['quiz_enabled']] : [])
             );
         }
     }

@@ -3,7 +3,8 @@
         ['route' => 'dashboard',          'active' => request()->routeIs('dashboard'),                                        'label' => 'Dashboard', 'icon' => 'M3 12l9-9 9 9M5 10v10a1 1 0 001 1h4v-6h4v6h4a1 1 0 001-1V10'],
         ['route' => 'convert.create',     'active' => request()->routeIs('convert.*') || request()->routeIs('conversions.*'), 'label' => 'Convert',   'icon' => 'M4 4v6h6M20 20v-6h-6M4 10a8 8 0 0114-5.3M20 14a8 8 0 01-14 5.3'],
         ['route' => 'ranges.index',       'active' => request()->routeIs('ranges.*'),                                         'label' => 'Ranges',    'icon' => 'M4 4h16v16H4zM4 9.333h16M4 14.667h16M9.333 4v16M14.667 4v16'],
-        ['route' => 'subscription.plans', 'active' => request()->routeIs('subscription.plans'),                               'label' => 'Plans',     'icon' => 'M3 7h18M3 12h18M3 17h18'],
+        ['route' => 'quiz.index',         'active' => request()->routeIs('quiz.*'),                                           'label' => 'Quiz Ranges', 'icon' => 'M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z'],
+        ['route' => 'subscription.plans', 'active' => request()->routeIs('subscription.plans'),                               'label' => 'Plans',    'icon' => 'M3 7h18M3 12h18M3 17h18'],
     ];
 
     $initials = collect(explode(' ', trim(Auth::user()->name)))

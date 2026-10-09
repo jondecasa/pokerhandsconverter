@@ -13,6 +13,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\IndexNowKeyController;
 use App\Http\Controllers\MarketingController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\QuizController;
 use App\Http\Controllers\RangeController;
 use App\Http\Controllers\SitemapController;
 use App\Http\Controllers\SubscriptionController;
@@ -79,6 +80,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
         // Preflop range charts
         Route::get('/ranges', [RangeController::class, 'index'])->name('ranges.index');
         Route::get('/ranges/{rangeStudy}', [RangeController::class, 'show'])->name('ranges.show');
+
+        // Range quiz
+        Route::get('/quiz', [QuizController::class, 'index'])->name('quiz.index');
+        Route::get('/quiz/{rangeStudy}', [QuizController::class, 'show'])->name('quiz.show');
     });
 
     // Admin — package / pricing maintenance

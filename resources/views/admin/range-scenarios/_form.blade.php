@@ -63,6 +63,13 @@
         Default scenario <span class="text-gray-400">— shown when the study page first opens</span>
     </label>
 
+    <label class="mt-2 flex items-center gap-2 text-sm text-gray-700">
+        <input type="hidden" name="quiz_enabled" value="0">
+        <input type="checkbox" name="quiz_enabled" value="1" @checked(old('quiz_enabled', $scenario->quiz_enabled ?? true))
+               class="rounded border-gray-300 text-indigo-600">
+        Include in the Quiz <span class="text-gray-400">— untick for charts that don't prescribe an action</span>
+    </label>
+
     {{-- Actions / legend --}}
     <div class="mt-8">
         <h4 class="text-sm font-semibold text-gray-900">Actions</h4>
