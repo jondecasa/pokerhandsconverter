@@ -188,13 +188,18 @@ class CoinPokerConverterTest extends TestCase
     }
 
     #[Test]
-    public function the_hero_rename_still_applies_to_a_current_format_tournament(): void
+    public function the_coinpoker_id_rename_is_not_applied_to_a_current_format_tournament(): void
     {
-        $out = (new CoinPokerConverter(new ConverterOptions(heroName: 'batu157')))
-            ->convert($this->fixture('coinpoker-tournament-2026.txt'))->output;
+        $input = $this->fixture('coinpoker-tournament-2026.txt');
+        $out = (new CoinPokerConverter(new ConverterOptions(heroName: 'batu157')))->convert($input)->output;
 
-        $this->assertStringContainsString('Seat 7: batu157 (10,000 in chips)', $out);
-        $this->assertStringNotContainsString('Hero', $out);
+        // PokerTracker identifies the hero by the exported "Hero"; renaming turns the hero into "Player 7".
+        $this->assertStringContainsString('Seat 7: Hero (10,000 in chips)', $out);
+        $this->assertStringContainsString('Dealt to Hero [Js 9s]', $out);
+        $this->assertStringNotContainsString('batu157', $out);
+
+        $blocks = fn (string $text) => array_map('trim', preg_split('/\n[ \t]*\n+/', trim($text)));
+        $this->assertSame($blocks($input), $blocks($out));
     }
 
     #[Test]

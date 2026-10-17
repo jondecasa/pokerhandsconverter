@@ -435,8 +435,10 @@ class CoinPokerConverter
     }
 
     /**
-     * Keep a native tournament hand exactly as exported (only the optional
-     * Hero rename applies) and describe it for the stats.
+     * Keep a native tournament hand exactly as exported and describe it for the
+     * stats. Not even the CoinPoker ID rename applies: PokerTracker identifies
+     * the hero by the exported "Hero", and renaming it makes the importer treat
+     * the hero as one more anonymous seat ("Player 7").
      *
      * @param  array<int, string>  $lines
      * @return array{0: string, 1: HandSummary|null, 2: array<int, string>}
@@ -446,10 +448,6 @@ class CoinPokerConverter
         $summary = $this->summarise($lines, true);
         if ($summary !== null) {
             $summary->keptAsExported = true;
-        }
-
-        if ($this->options->heroName !== 'Hero' && $this->options->heroName !== '') {
-            $hand = preg_replace('/\bHero\b/', $this->options->heroName, $hand) ?? $hand;
         }
 
         return [$hand, $summary, []];
