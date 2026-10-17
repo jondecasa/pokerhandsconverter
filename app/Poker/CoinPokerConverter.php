@@ -413,11 +413,70 @@ class CoinPokerConverter
     }
 
     /**
+     * A tournament hand in CoinPoker's own layout: the header is just
+     * "NLH (60/120/15) <date>" and the table line starts with
+     * "Tournament 'name' 'id' 7-max ...".
+     *
+     * @param  array<int, string>  $lines
+     */
+    private function isNativeTournament(array $lines): bool
+    {
+        if (str_contains($lines[0], 'Tournament #')) {
+            return false;
+        }
+
+        foreach (array_slice($lines, 1, 3) as $line) {
+            if (preg_match('/^Tournament\s+\'[^\']*\'\s+\'[^\']*\'/', $line)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Keep a native tournament hand exactly as exported (only the optional
+     * Hero rename applies) and describe it for the stats.
+     *
+     * @param  array<int, string>  $lines
+     * @return array{0: string, 1: HandSummary|null, 2: array<int, string>}
+     */
+    private function keepNativeTournament(array $lines, string $hand): array
+    {
+        $summary = $this->summarise($lines, true);
+        if ($summary !== null) {
+            $summary->keptAsExported = true;
+        }
+
+        if ($this->options->heroName !== 'Hero' && $this->options->heroName !== '') {
+            $hand = preg_replace('/\bHero\b/', $this->options->heroName, $hand) ?? $hand;
+        }
+
+        return [$hand, $summary, []];
+    }
+
+    /** Remove thousands separators from amounts ("20,641.57" -> "20641.57"). */
+    private function stripThousandsSeparators(string $text): string
+    {
+        return preg_replace('/(?<=\d),(?=\d{3}(?!\d))/', '', $text) ?? $text;
+    }
+
+    /**
      * @return array{0: string, 1: HandSummary|null, 2: array<int, string>}
      */
     private function convertHand(string $hand, int $index): array
     {
         $warnings = [];
+        $lines = explode("\n", $hand);
+
+        // CoinPoker's current tournament export is read natively by PokerTracker 4,
+        // so rewriting it into a cash-like or PokerStars-like layout only breaks it.
+        if ($this->isNativeTournament($lines)) {
+            return $this->keepNativeTournament($lines, $hand);
+        }
+
+        // "1,234.50" -> "1234.50": amounts are parsed as plain numbers below.
+        $hand = $this->stripThousandsSeparators($hand);
         $lines = explode("\n", $hand);
 
         $isTournament = str_contains($lines[0], 'Tournament #');
@@ -1198,6 +1257,9 @@ class CoinPokerConverter
         if (isset($lines[1]) && preg_match('/^Table\s+\'(.+)\'\s+(?:(\d+)-max)?/', $lines[1], $tm)) {
             $table = $tm[1];
             $maxSeats = isset($tm[2]) && $tm[2] !== '' ? (int) $tm[2] : null;
+        } elseif (isset($lines[1]) && preg_match('/^Tournament\s+\'(.*?)\'\s+\'(.*?)\'\s+(?:(\d+)-max)?/', $lines[1], $tm)) {
+            $table = $tm[1].' ('.$tm[2].')';
+            $maxSeats = isset($tm[3]) && $tm[3] !== '' ? (int) $tm[3] : null;
         }
 
         $hero = null;

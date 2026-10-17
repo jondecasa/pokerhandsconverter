@@ -69,6 +69,14 @@ tags the game code `NLH BombPot` in the header; failing that, no blinds + everyo
 antes + straight to a flop). `NLH BombPot` is normalised to `Hold'em No Limit`
 (the bomb pot is expressed by the antes/no-blinds structure, as trackers expect).
 
+**Tournaments** — CoinPoker's current export writes a tournament hand as
+`NLH (60/120/15) <date>` followed by `Tournament '<name>' '<id>' 7-max Seat #3 is the button`,
+with chip amounts such as `20,641.57`. PokerTracker 4 reads that layout natively (since 4.18.21),
+so those hands are **kept exactly as exported** (still counted as tournaments, never stake-gated)
+and shown as "Tournament (kept as exported)". The older `Tournament #id, … Level V` layout is
+still converted to bare-chip PokerStars style. Amounts with thousands separators are read as plain
+numbers in the cash and legacy paths.
+
 **Stake gate** — each package can set a **stake cap** (`stakes_cap`, e.g. `NL50`).
 On upload the file's highest cash big blind is compared to the cap
 (`NL50` → `$0.50`); anything above it is refused with a "upgrade your package"

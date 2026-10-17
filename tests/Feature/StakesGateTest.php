@@ -84,6 +84,23 @@ class StakesGateTest extends TestCase
     }
 
     #[Test]
+    public function tournaments_are_never_gated_even_when_the_blinds_look_big_as_chips(): void
+    {
+        Storage::fake('local');
+        $user = $this->subscriberOnPlan('NL2');
+
+        $this->actingAs($user)->post('/convert', ['file' => UploadedFile::fake()->createWithContent(
+            'tournament.txt',
+            file_get_contents(base_path('tests/Fixtures/coinpoker-tournament-2026.txt'))
+        )])->assertSessionHasNoErrors();
+
+        $conversion = $user->conversions()->firstOrFail();
+        $this->assertSame(3, $conversion->hand_count);
+        $this->assertSame(['Tournament (kept as exported)' => 3], $conversion->format_breakdown);
+        $this->assertSame(0, $conversion->warning_count);
+    }
+
+    #[Test]
     public function the_users_coinpoker_id_replaces_hero_in_the_output(): void
     {
         Storage::fake('local');

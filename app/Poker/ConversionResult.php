@@ -29,7 +29,8 @@ class ConversionResult
     {
         $out = [];
         foreach ($this->hands as $h) {
-            $out[$h->format] = ($out[$h->format] ?? 0) + 1;
+            $label = $h->format.($h->keptAsExported ? ' (kept as exported)' : '');
+            $out[$label] = ($out[$label] ?? 0) + 1;
         }
 
         return $out;

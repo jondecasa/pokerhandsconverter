@@ -19,6 +19,7 @@ class HandSummary
         public ?string $hero,    // hero screen name, if detectable
         public bool $splashPot = false,
         public bool $bombPot = false,
+        public bool $keptAsExported = false, // hand left exactly as CoinPoker wrote it
     ) {}
 
     /** Big blind in currency units for a cash hand ("$0.02/$0.05" -> 0.05). */

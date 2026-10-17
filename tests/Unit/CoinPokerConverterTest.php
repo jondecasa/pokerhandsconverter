@@ -149,6 +149,85 @@ class CoinPokerConverterTest extends TestCase
     }
 
     #[Test]
+    public function coinpokers_current_tournament_format_is_detected_as_a_tournament_and_kept_as_exported(): void
+    {
+        $input = $this->fixture('coinpoker-tournament-2026.txt');
+        $result = (new CoinPokerConverter)->convert($input);
+
+        $this->assertSame(3, $result->handCount);
+        $this->assertSame(['Tournament (kept as exported)' => 3], $result->formatBreakdown());
+        $this->assertSame([], $result->warnings);
+
+        // Every hand comes back word for word: PokerTracker 4 reads this layout natively.
+        $blocks = fn (string $text) => array_map('trim', preg_split('/\n[ \t]*\n+/', trim($text)));
+        $this->assertSame($blocks($input), $blocks($result->output));
+
+        // None of the cash-style rewriting is applied.
+        $this->assertStringNotContainsString('$', $result->output);
+        $this->assertStringNotContainsString('Hold\'em No Limit', $result->output);
+        $this->assertStringContainsString('Hero: ALLIN 5,630', $result->output);
+        $this->assertStringContainsString('Hero collected 17,556.68 from pot', $result->output);
+    }
+
+    #[Test]
+    public function a_current_format_tournament_is_summarised_without_a_cash_stake(): void
+    {
+        $result = (new CoinPokerConverter)->convert($this->fixture('coinpoker-tournament-2026.txt'));
+        $hand = $result->hands[0];
+
+        $this->assertSame('Tournament', $hand->format);
+        $this->assertSame('NLH', $hand->game);
+        $this->assertSame('₮25 Early Hours Classic (99001)', $hand->table);
+        $this->assertSame(7, $hand->maxSeats);
+        $this->assertSame('Hero', $hand->hero);
+
+        // A tournament blind of 120 chips is not a 120-dollar cash game: the stakes gate ignores it.
+        $this->assertNull($hand->bigBlind());
+        $this->assertNull($result->maxCashBigBlind());
+        $this->assertNull($result->maxCashStakeLevel());
+    }
+
+    #[Test]
+    public function the_hero_rename_still_applies_to_a_current_format_tournament(): void
+    {
+        $out = (new CoinPokerConverter(new ConverterOptions(heroName: 'batu157')))
+            ->convert($this->fixture('coinpoker-tournament-2026.txt'))->output;
+
+        $this->assertStringContainsString('Seat 7: batu157 (10,000 in chips)', $out);
+        $this->assertStringNotContainsString('Hero', $out);
+    }
+
+    #[Test]
+    public function cash_amounts_with_thousands_separators_are_read_as_plain_numbers(): void
+    {
+        $hand = "CoinPoker Hand #9: NLH (₮5/₮10) 2026/09/09 12:01:21 CEST\n"
+            ."Table '1' 2-max Seat #2 is the button\n"
+            ."Seat 1: Hero (₮1,250.50 in chips)\n"
+            ."Seat 2: bob (₮2,000 in chips)\n"
+            ."bob: posts small blind ₮5\n"
+            ."Hero: posts big blind ₮10\n"
+            ."*** HOLE CARDS ***\n"
+            ."Dealt to Hero [Ah Ad]\n"
+            ."bob: raises ₮15 to ₮25\n"
+            ."Hero: ALLIN ₮1,240.50\n"
+            ."bob: folds\n"
+            ."Hero: RETURN ₮1,225.50\n"
+            ."Hero collected ₮50 from pot\n"
+            ."*** SUMMARY ***\n"
+            ."Total pot ₮50\n"
+            ."Seat 1: Hero won (₮50)\n"
+            .'Seat 2: bob folded before Flop';
+
+        $result = (new CoinPokerConverter)->convert($hand);
+
+        $this->assertStringContainsString('Seat 1: Hero ($1250.50 in chips)', $result->output);
+        $this->assertStringContainsString('Hero: raises $1225.50 to $1250.50 and is all-in', $result->output);
+        $this->assertStringContainsString('Uncalled bet ($1225.50) returned to Hero', $result->output);
+        $this->assertDoesNotMatchRegularExpression('/\d,\d{3}/', $result->output);
+        $this->assertSame([], $result->warnings);
+    }
+
+    #[Test]
     public function it_maps_game_codes(): void
     {
         $hand = "CoinPoker Hand #9: PLO (₮0.05/₮0.10) 2026/01/02 03:04:05 CET\n"
