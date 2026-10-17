@@ -72,10 +72,17 @@ antes + straight to a flop). `NLH BombPot` is normalised to `Hold'em No Limit`
 **Tournaments** — CoinPoker's current export writes a tournament hand as
 `NLH (60/120/15) <date>` followed by `Tournament '<name>' '<id>' 7-max Seat #3 is the button`,
 with chip amounts such as `20,641.57`. PokerTracker 4 reads that layout natively (since 4.18.21),
-so those hands are **kept exactly as exported** (the CoinPoker ID rename is not applied either: PokerTracker identifies the hero by the exported `Hero`) (still counted as tournaments, never stake-gated)
-and shown as "Tournament (kept as exported)". The older `Tournament #id, … Level V` layout is
-still converted to bare-chip PokerStars style. Amounts with thousands separators are read as plain
-numbers in the cash and legacy paths.
+so those hands stay in CoinPoker's own format (counted as tournaments, never stake-gated, shown as
+"Tournament (CoinPoker format)"). Two deliberate details:
+
+- the CoinPoker ID rename is **not** applied to them: PokerTracker identifies the hero by the
+  exported `Hero`, and a renamed hero is imported as one more anonymous seat ("Player 7");
+- the only edit is in the header: blinds of 1,000 or more arrive as `(35,000/70,000/10,500)`,
+  which PokerTracker's importer cannot read ("Was not able to fetch info from hand info line"),
+  so the separators are removed there: `(35000/70000/10500)`.
+
+The older `Tournament #id, … Level V` layout is still converted to bare-chip PokerStars style.
+Amounts with thousands separators are read as plain numbers in the cash and legacy paths.
 
 **Stake gate** — each package can set a **stake cap** (`stakes_cap`, e.g. `NL50`).
 On upload the file's highest cash big blind is compared to the cap

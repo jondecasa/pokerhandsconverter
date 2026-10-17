@@ -435,16 +435,32 @@ class CoinPokerConverter
     }
 
     /**
-     * Keep a native tournament hand exactly as exported and describe it for the
-     * stats. Not even the CoinPoker ID rename applies: PokerTracker identifies
-     * the hero by the exported "Hero", and renaming it makes the importer treat
-     * the hero as one more anonymous seat ("Player 7").
+     * Keep a native tournament hand in CoinPoker's own format and describe it
+     * for the stats. Two deliberate choices:
+     *  - The CoinPoker ID rename does not apply: PokerTracker identifies the hero
+     *    by the exported "Hero", and renaming it makes the importer treat the
+     *    hero as one more anonymous seat ("Player 7").
+     *  - The only edit is in the header: blinds of 1,000 or more come with
+     *    thousands separators, "(35,000/70,000/10,500)", which PokerTracker's
+     *    importer cannot read ("Was not able to fetch info from hand info line").
      *
      * @param  array<int, string>  $lines
      * @return array{0: string, 1: HandSummary|null, 2: array<int, string>}
      */
     private function keepNativeTournament(array $lines, string $hand): array
     {
+        $header = preg_replace_callback(
+            '/\(([\d.,\/]+)\)/',
+            fn (array $m) => '('.str_replace(',', '', $m[1]).')',
+            $lines[0],
+            1,
+        ) ?? $lines[0];
+
+        if ($header !== $lines[0]) {
+            $hand = $header.substr($hand, strlen($lines[0]));
+            $lines[0] = $header;
+        }
+
         $summary = $this->summarise($lines, true);
         if ($summary !== null) {
             $summary->keptAsExported = true;

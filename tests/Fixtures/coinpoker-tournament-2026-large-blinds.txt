@@ -1,0 +1,65 @@
+CoinPoker Hand #90000000011: NLH (35,000/70,000/10,500) 2026/10/16 18:32:30 CEST
+Tournament '₮8.80 Friday Asia Grind' '99002' 7-max Seat #5 is the button
+Seat 4: 8825343f (3,342,722.80 in chips)
+Seat 5: Hero (2,297,277.20 in chips)
+8825343f: posts ante 10,500
+Hero: posts ante 10,500
+Hero: posts small blind 35,000
+8825343f: posts big blind 70,000
+*** HOLE CARDS ***
+Dealt to 8825343f
+Dealt to Hero [2c Th]
+Hero: folds
+8825343f: RETURN 35,000
+*** SHOWDOWN ***
+8825343f collected 91,000 from pot
+*** SUMMARY ***
+Total pot 91,000
+Board [  ]
+Game ended: 2026/10/16 18:32:32 CEST
+Seat 4: 8825343f won (91,000)
+Seat 5: Hero folded before Flop (didn't bet)
+
+
+CoinPoker Hand #90000000012: NLH (6,000/12,000/1,800) 2026/10/16 16:41:16 CEST
+Tournament '₮8.80 Friday Asia Grind' '99002' 7-max Seat #7 is the button
+Seat 1: 7f29ccac (290,040.07 in chips)
+Seat 2: 3ef350e6 (163,027.17 in chips)
+Seat 3: c37e5eba (547,843.78 in chips)
+Seat 5: Hero (480,534.66 in chips)
+Seat 7: a2bf9ae1 (434,400.05 in chips)
+7f29ccac: posts ante 1,800
+3ef350e6: posts ante 1,800
+c37e5eba: posts ante 1,800
+Hero: posts ante 1,800
+a2bf9ae1: posts ante 1,800
+7f29ccac: posts small blind 6,000
+3ef350e6: posts big blind 12,000
+*** HOLE CARDS ***
+Dealt to 7f29ccac
+Dealt to 3ef350e6
+Dealt to c37e5eba
+Dealt to Hero [6h Ks]
+Dealt to a2bf9ae1
+c37e5eba: folds
+Hero: folds
+a2bf9ae1: folds
+7f29ccac: ALLIN 282,240.07
+3ef350e6: ALLIN 149,227.17
+7f29ccac: RETURN 127,012.90
+*** FLOP *** [9c 7c 9s]
+*** TURN *** [9c 7c 9s] [2s]
+*** RIVER *** [9c 7c 9s 2s] [5h]
+*** SHOWDOWN ***
+3ef350e6: shows [Kh Ac] (One Pair)
+3ef350e6 collected 331,454.34 from pot
+7f29ccac: shows [3c Ah] (One Pair)
+*** SUMMARY ***
+Total pot 331,454.34
+Board [ 9c 7c 9s 2s 5h ]
+Game ended: 2026/10/16 16:41:55 CEST
+Seat 1: 7f29ccac showed [3c Ah] and lost with One Pair
+Seat 2: 3ef350e6 showed [Kh Ac] and won (331,454.34) with One Pair
+Seat 3: c37e5eba folded before Flop (didn't bet)
+Seat 5: Hero folded before Flop (didn't bet)
+Seat 7: a2bf9ae1 folded before Flop (didn't bet)

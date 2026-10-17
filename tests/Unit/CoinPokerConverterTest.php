@@ -155,7 +155,7 @@ class CoinPokerConverterTest extends TestCase
         $result = (new CoinPokerConverter)->convert($input);
 
         $this->assertSame(3, $result->handCount);
-        $this->assertSame(['Tournament (kept as exported)' => 3], $result->formatBreakdown());
+        $this->assertSame(['Tournament (CoinPoker format)' => 3], $result->formatBreakdown());
         $this->assertSame([], $result->warnings);
 
         // Every hand comes back word for word: PokerTracker 4 reads this layout natively.
@@ -167,6 +167,29 @@ class CoinPokerConverterTest extends TestCase
         $this->assertStringNotContainsString('Hold\'em No Limit', $result->output);
         $this->assertStringContainsString('Hero: ALLIN 5,630', $result->output);
         $this->assertStringContainsString('Hero collected 17,556.68 from pot', $result->output);
+    }
+
+    #[Test]
+    public function blinds_with_thousands_separators_lose_them_in_the_header_only(): void
+    {
+        $input = $this->fixture('coinpoker-tournament-2026-large-blinds.txt');
+        $result = (new CoinPokerConverter)->convert($input);
+
+        // PokerTracker cannot read "(35,000/70,000/10,500)" ("Was not able to fetch info from hand info line").
+        $this->assertStringContainsString('NLH (35000/70000/10500) 2026/10/16 18:32:30 CEST', $result->output);
+        $this->assertStringContainsString('NLH (6000/12000/1800) 2026/10/16 16:41:16 CEST', $result->output);
+        $this->assertDoesNotMatchRegularExpression('/^CoinPoker Hand #\d+: NLH \([^)]*,/m', $result->output);
+
+        // Everything below the header is untouched, commas included.
+        $this->assertStringContainsString('Seat 5: Hero (2,297,277.20 in chips)', $result->output);
+        $this->assertStringContainsString('Hero: posts small blind 35,000', $result->output);
+        $this->assertSame([], $result->warnings);
+
+        $body = fn (string $text) => array_map(
+            fn (string $block) => substr($block, (int) strpos($block, "\n")),
+            array_map('trim', preg_split('/\n[ \t]*\n+/', trim($text))),
+        );
+        $this->assertSame($body($input), $body($result->output));
     }
 
     #[Test]

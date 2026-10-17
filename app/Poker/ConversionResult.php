@@ -29,7 +29,7 @@ class ConversionResult
     {
         $out = [];
         foreach ($this->hands as $h) {
-            $label = $h->format.($h->keptAsExported ? ' (kept as exported)' : '');
+            $label = $h->format.($h->keptAsExported ? ' (CoinPoker format)' : '');
             $out[$label] = ($out[$label] ?? 0) + 1;
         }
 

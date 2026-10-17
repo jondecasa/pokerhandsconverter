@@ -96,7 +96,7 @@ class StakesGateTest extends TestCase
 
         $conversion = $user->conversions()->firstOrFail();
         $this->assertSame(3, $conversion->hand_count);
-        $this->assertSame(['Tournament (kept as exported)' => 3], $conversion->format_breakdown);
+        $this->assertSame(['Tournament (CoinPoker format)' => 3], $conversion->format_breakdown);
         $this->assertSame(0, $conversion->warning_count);
     }
 
