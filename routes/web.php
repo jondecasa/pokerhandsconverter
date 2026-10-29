@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\ConversionFailureController as AdminConversionFailureController;
 use App\Http\Controllers\Admin\EmailController as AdminEmailController;
 use App\Http\Controllers\Admin\PlanController as AdminPlanController;
 use App\Http\Controllers\Admin\PostController as AdminPostController;
@@ -92,6 +93,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::resource('plans', AdminPlanController::class)->except('show');
         Route::resource('posts', AdminPostController::class)->except('show')->parameters(['posts' => 'post:id']);
         Route::get('subscribers', [AdminSubscriberController::class, 'index'])->name('subscribers.index');
+
+        // Uploads the converter turned down or crashed on (see ConverterController::store).
+        Route::get('failures', [AdminConversionFailureController::class, 'index'])->name('failures.index');
+        Route::delete('failures', [AdminConversionFailureController::class, 'destroyMany'])->name('failures.destroy-many');
+        Route::delete('failures/{failure}', [AdminConversionFailureController::class, 'destroy'])->name('failures.destroy');
 
         Route::get('emails/create', [AdminEmailController::class, 'create'])->name('emails.create');
         Route::post('emails', [AdminEmailController::class, 'store'])->name('emails.store');

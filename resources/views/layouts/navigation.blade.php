@@ -56,6 +56,13 @@
                 </svg>
                 Subscribers
             </a>
+            <a href="{{ route('admin.failures.index') }}"
+               @class(['pc-navlink', 'pc-navlink-active' => request()->routeIs('admin.failures.*')])>
+                <svg class="h-5 w-5 shrink-0 opacity-80" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v4m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/>
+                </svg>
+                Conversion logs
+            </a>
             <a href="{{ route('admin.emails.create') }}"
                @class(['pc-navlink', 'pc-navlink-active' => request()->routeIs('admin.emails.*')])>
                 <svg class="h-5 w-5 shrink-0 opacity-80" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">

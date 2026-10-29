@@ -6,9 +6,11 @@ use App\Http\Middleware\EnsureSubscribed;
 use App\Http\Middleware\SecurityHeaders;
 use App\Http\Middleware\SetLocale;
 use App\Support\CloudflareIps;
+use App\Support\UploadLimits;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use Illuminate\Http\Exceptions\PostTooLargeException;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 
@@ -38,5 +40,11 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->prependToPriorityList(before: SubstituteBindings::class, prepend: SetLocale::class);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
-        //
+        // A file over PHP's post_max_size is thrown away before the session or the controller run, so the
+        // admin conversion log would never see it: note it here, then let the normal 413 page render.
+        $exceptions->render(function (PostTooLargeException $e, Request $request) {
+            UploadLimits::recordOversizedPost($request);
+
+            return null;
+        });
     })->create();

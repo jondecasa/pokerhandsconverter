@@ -14,7 +14,7 @@
                 <p class="text-sm text-gray-600 mb-4">
                     Upload a <strong>CoinPoker</strong> hand-history <code>.txt</code> file. You will get back a
                     <code>.txt</code> in the format <strong>PokerTracker&nbsp;4</strong> reads (Hold'em Manager&nbsp;3
-                    and similar trackers import it too). Max {{ number_format($maxUploadKb / 1024, 0) }} MB per file.
+                    and similar trackers import it too). Max {{ rtrim(rtrim(number_format($maxUploadKb / 1024, 1), '0'), '.') }} MB per file.
                 </p>
 
                 <div class="mb-4 flex flex-wrap gap-2 text-xs">
@@ -31,13 +31,16 @@
                     </span>
                 </div>
 
-                <form method="POST" action="{{ route('convert.store') }}" enctype="multipart/form-data" class="space-y-4">
+                <form method="POST" action="{{ route('convert.store') }}" enctype="multipart/form-data" class="space-y-4"
+                      x-data="{ maxBytes: {{ $maxUploadKb * 1024 }}, tooBig: '' }">
                     @csrf
 
                     <div>
                         <label for="file" class="block text-sm font-medium text-gray-700">Hand history file</label>
                         <input id="file" name="file" type="file" accept=".txt,text/plain" required
+                               @change="const f = $event.target.files[0]; tooBig = f && f.size > maxBytes ? 'That file is ' + (f.size / 1048576).toFixed(1) + ' MB and the limit is ' + (maxBytes / 1048576).toFixed(1) + ' MB. Split the hand history into smaller files.' : ''"
                                class="mt-1 block w-full text-sm text-gray-700 border border-gray-300 rounded-md cursor-pointer focus:outline-none" />
+                        <p x-show="tooBig" x-cloak x-text="tooBig" class="mt-2 text-sm text-red-600"></p>
                         <x-input-error :messages="$errors->get('file')" class="mt-2" />
                     </div>
 
@@ -69,8 +72,8 @@
                         <p class="text-xs text-gray-400">Your choice is saved for next time.</p>
                     </fieldset>
 
-                    <button type="submit"
-                            class="inline-flex items-center px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-md hover:bg-indigo-500">
+                    <button type="submit" :disabled="tooBig !== ''"
+                            class="inline-flex items-center px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-md hover:bg-indigo-500 disabled:cursor-not-allowed disabled:opacity-50">
                         Convert
                     </button>
                 </form>
