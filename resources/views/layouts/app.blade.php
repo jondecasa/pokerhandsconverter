@@ -15,13 +15,23 @@
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600,700,800&display=swap" rel="stylesheet" />
 
+        <script>try { if (localStorage.getItem('pc.sidebar') === 'collapsed') document.documentElement.classList.add('sidebar-collapsed'); } catch (e) {}</script>
+
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
     <body class="font-sans antialiased text-slate-700">
-        <div x-data="{ sidebar: false }" class="min-h-screen bg-slate-50">
+        <div x-data="{
+                sidebar: false,
+                collapsed: document.documentElement.classList.contains('sidebar-collapsed'),
+                toggleCollapsed() {
+                    this.collapsed = ! this.collapsed;
+                    document.documentElement.classList.toggle('sidebar-collapsed', this.collapsed);
+                    try { localStorage.setItem('pc.sidebar', this.collapsed ? 'collapsed' : 'expanded'); } catch (e) {}
+                },
+            }" class="min-h-screen bg-slate-50">
 
             {{-- ---------- Sidebar: desktop ---------- --}}
-            <aside class="fixed inset-y-0 left-0 z-40 hidden w-64 lg:block">
+            <aside class="pc-sidebar fixed inset-y-0 left-0 z-40 hidden w-64 lg:block">
                 @include('layouts.navigation')
             </aside>
 
@@ -44,12 +54,20 @@
             </div>
 
             {{-- ---------- Content ---------- --}}
-            <div class="lg:pl-64">
+            <div class="pc-content lg:pl-64">
                 <header class="sticky top-0 z-30 flex h-16 items-center gap-3 border-b border-slate-200 bg-slate-50/80 px-4 backdrop-blur sm:px-6 lg:px-8">
                     <button type="button" class="-ml-1 rounded-md p-2 text-slate-500 hover:bg-slate-200/60 lg:hidden"
                             @click="sidebar = true" aria-label="Open menu">
                         <svg class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/>
+                        </svg>
+                    </button>
+
+                    <button type="button" class="-ml-2 hidden rounded-md p-2 text-slate-500 hover:bg-slate-200/60 lg:block"
+                            @click="toggleCollapsed()" :aria-label="collapsed ? 'Expand menu' : 'Collapse menu'"
+                            :title="collapsed ? 'Expand menu' : 'Collapse menu'" :aria-expanded="(! collapsed).toString()">
+                        <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M4 5h16v14H4zM9 5v14"/>
                         </svg>
                     </button>
 

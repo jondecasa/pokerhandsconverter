@@ -14,69 +14,76 @@
 
 <div class="flex h-full flex-col bg-slate-900">
     {{-- Brand --}}
-    <a href="{{ route('dashboard') }}" class="flex h-16 items-center gap-2.5 border-b border-white/10 px-5">
+    <a href="{{ route('dashboard') }}" class="pc-side-brand flex h-16 items-center gap-2.5 border-b border-white/10 px-5">
         <img src="{{ asset('logo.svg') }}" alt="" width="36" height="36" class="h-9 w-9 rounded-[10px]">
-        <span class="text-lg font-extrabold tracking-tight text-white">PokerHands<span class="text-indigo-400">Converter</span></span>
+        <span class="pc-side-label text-lg font-extrabold tracking-tight text-white">PokerHands<span class="text-indigo-400">Converter</span></span>
     </a>
 
     {{-- Primary nav --}}
     <nav class="flex-1 space-y-1 overflow-y-auto px-3 py-4">
         @foreach ($nav as $item)
-            <a href="{{ route($item['route']) }}"
+            <a href="{{ route($item['route']) }}" title="{{ $item['label'] }}"
                @class(['pc-navlink', 'pc-navlink-active' => $item['active']])
                @if ($item['active']) aria-current="page" @endif>
                 <svg class="h-5 w-5 shrink-0 opacity-80" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" d="{{ $item['icon'] }}"/>
                 </svg>
-                {{ $item['label'] }}
+                <span class="pc-side-label">{{ $item['label'] }}</span>
             </a>
         @endforeach
 
         @if (auth()->user()?->isAdmin())
-            <div class="px-3 pb-1 pt-4 text-[11px] font-semibold uppercase tracking-wider text-slate-500">Admin</div>
+            <div class="pc-side-label px-3 pb-1 pt-4 text-[11px] font-semibold uppercase tracking-wider text-slate-500">Admin</div>
+            <div class="pc-side-sep"></div>
             <a href="{{ route('admin.plans.index') }}"
+               title="Packages"
                @class(['pc-navlink', 'pc-navlink-active' => request()->routeIs('admin.plans.*')])>
                 <svg class="h-5 w-5 shrink-0 opacity-80" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
                     <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
                 </svg>
-                Packages
+                <span class="pc-side-label">Packages</span>
             </a>
             <a href="{{ route('admin.posts.index') }}"
+               title="Posts"
                @class(['pc-navlink', 'pc-navlink-active' => request()->routeIs('admin.posts.*')])>
                 <svg class="h-5 w-5 shrink-0 opacity-80" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M4 5a2 2 0 012-2h9l5 5v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5z"/>
                     <path stroke-linecap="round" stroke-linejoin="round" d="M14 3v5h5M8 13h8M8 17h5"/>
                 </svg>
-                Posts
+                <span class="pc-side-label">Posts</span>
             </a>
             <a href="{{ route('admin.subscribers.index') }}"
+               title="Subscribers"
                @class(['pc-navlink', 'pc-navlink-active' => request()->routeIs('admin.subscribers.*')])>
                 <svg class="h-5 w-5 shrink-0 opacity-80" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/>
                 </svg>
-                Subscribers
+                <span class="pc-side-label">Subscribers</span>
             </a>
             <a href="{{ route('admin.failures.index') }}"
+               title="Conversion logs"
                @class(['pc-navlink', 'pc-navlink-active' => request()->routeIs('admin.failures.*')])>
                 <svg class="h-5 w-5 shrink-0 opacity-80" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v4m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/>
                 </svg>
-                Conversion logs
+                <span class="pc-side-label">Conversion logs</span>
             </a>
             <a href="{{ route('admin.emails.create') }}"
+               title="Send email"
                @class(['pc-navlink', 'pc-navlink-active' => request()->routeIs('admin.emails.*')])>
                 <svg class="h-5 w-5 shrink-0 opacity-80" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M3 8l9 6 9-6M5 5h14a2 2 0 012 2v10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2z"/>
                 </svg>
-                Send email
+                <span class="pc-side-label">Send email</span>
             </a>
             <a href="{{ route('admin.range-studies.index') }}"
+               title="Range studies"
                @class(['pc-navlink', 'pc-navlink-active' => request()->routeIs('admin.range-studies.*') || request()->routeIs('admin.range-scenarios.*')])>
                 <svg class="h-5 w-5 shrink-0 opacity-80" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M4 4h16v16H4zM4 9.333h16M4 14.667h16M9.333 4v16M14.667 4v16"/>
                 </svg>
-                Range studies
+                <span class="pc-side-label">Range studies</span>
             </a>
         @endif
     </nav>
@@ -84,33 +91,34 @@
     {{-- Account --}}
     <div class="border-t border-white/10 p-3" x-data="{ menu: false }" @click.outside="menu = false">
         <button type="button" @click="menu = !menu"
-                class="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-left transition hover:bg-white/5">
+                class="pc-side-account flex w-full items-center gap-3 rounded-lg px-3 py-2 text-left transition hover:bg-white/5"
+                title="{{ Auth::user()->name }}">
             <span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-indigo-500/20 text-sm font-semibold text-indigo-300">{{ $initials }}</span>
-            <span class="min-w-0 flex-1">
+            <span class="pc-side-label min-w-0 flex-1">
                 <span class="block truncate text-sm font-medium text-white">{{ Auth::user()->name }}</span>
                 <span class="block truncate text-xs text-slate-400">{{ Auth::user()->email }}</span>
             </span>
-            <svg class="h-4 w-4 shrink-0 text-slate-400 transition" :class="menu && 'rotate-180'" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <svg class="pc-side-label h-4 w-4 shrink-0 text-slate-400 transition" :class="menu && 'rotate-180'" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
             </svg>
         </button>
 
         <div x-show="menu" x-cloak x-transition.origin.bottom class="mt-1 space-y-1">
-            <a href="{{ route('profile.edit') }}"
+            <a href="{{ route('profile.edit') }}" title="Profile &amp; CoinPoker ID"
                class="flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-slate-300 hover:bg-white/5 hover:text-white">
                 <svg class="h-5 w-5 opacity-80" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
                 </svg>
-                Profile &amp; CoinPoker ID
+                <span class="pc-side-label">Profile &amp; CoinPoker ID</span>
             </a>
             <form method="POST" action="{{ route('logout') }}">
                 @csrf
-                <button type="submit"
+                <button type="submit" title="Log out"
                         class="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-slate-300 hover:bg-white/5 hover:text-white">
                     <svg class="h-5 w-5 opacity-80" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7M13 16v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
                     </svg>
-                    Log out
+                    <span class="pc-side-label">Log out</span>
                 </button>
             </form>
         </div>

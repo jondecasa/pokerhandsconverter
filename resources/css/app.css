@@ -16,4 +16,24 @@
     .pc-navlink-active {
         @apply bg-indigo-600 text-white shadow-sm hover:bg-indigo-600 hover:text-white;
     }
+
+    /* Collapsed sidebar (desktop only): icons alone. The class lives on <html> so it is set before the first paint. */
+    .pc-sidebar,
+    .pc-content {
+        @apply lg:transition-[width,padding] lg:duration-200;
+    }
+
+    .pc-side-sep {
+        @apply hidden;
+    }
+}
+
+@media (min-width: 1024px) {
+    .sidebar-collapsed .pc-sidebar { width: 4.5rem; }
+    .sidebar-collapsed .pc-content { padding-left: 4.5rem; }
+    .sidebar-collapsed .pc-side-label { display: none; }
+    .sidebar-collapsed .pc-side-sep { display: block; margin: 0.75rem 0.5rem; border-top: 1px solid rgb(255 255 255 / 0.1); }
+    .sidebar-collapsed .pc-side-brand,
+    .sidebar-collapsed .pc-navlink,
+    .sidebar-collapsed .pc-side-account { justify-content: center; padding-left: 0; padding-right: 0; gap: 0; }
 }
