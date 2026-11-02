@@ -4,7 +4,8 @@
     "type": "module",
     "scripts": {
         "build": "vite build",
-        "dev": "vite"
+        "dev": "vite",
+        "test:js": "node --test tests/js/flopzer/evaluator.test.mjs tests/js/flopzer/categorize.test.mjs tests/js/flopzer/range-equity.test.mjs tests/js/flopzer/analysis.test.mjs"
     },
     "devDependencies": {
         "@tailwindcss/forms": "^0.5.2",

@@ -11,6 +11,7 @@ use App\Http\Controllers\BlogController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\ConverterController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\FlopzerController;
 use App\Http\Controllers\IndexNowKeyController;
 use App\Http\Controllers\MarketingController;
 use App\Http\Controllers\ProfileController;
@@ -81,6 +82,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
         // Preflop range charts
         Route::get('/ranges', [RangeController::class, 'index'])->name('ranges.index');
         Route::get('/ranges/{rangeStudy}', [RangeController::class, 'show'])->name('ranges.show');
+
+        // Range vs board analyser
+        Route::get('/flopzer', [FlopzerController::class, 'index'])->name('flopzer.index');
 
         // Range quiz
         Route::get('/quiz', [QuizController::class, 'index'])->name('quiz.index');
