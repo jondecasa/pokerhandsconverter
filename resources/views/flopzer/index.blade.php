@@ -16,7 +16,7 @@
 
                 {{-- ============ RANGE ============ --}}
                 <div class="space-y-3 min-w-0">
-                <div class="pc-card p-3 sm:p-4 space-y-3">
+                <div class="pc-card p-3 sm:p-4 space-y-3" @mouseleave="if (!painting) hoverClass = null">
                     <div class="flex gap-2">
                         <template x-for="s in ['hero', 'villain']" :key="s">
                             <div role="button" tabindex="0" @click="switchSide(s)" @keydown.enter.prevent="switchSide(s)" @keydown.space.prevent="switchSide(s)"
@@ -40,7 +40,7 @@
                     <div class="flex gap-3">
                         <div class="min-w-0 flex-1" style="max-width: 540px;">
                             <div style="display:grid; grid-template-columns: repeat(13, minmax(0,1fr)); gap:2px; touch-action:none; user-select:none;"
-                                 @pointermove="movePaint($event)" @mouseleave="if (!painting) hoverClass = null">
+                                 @pointermove="movePaint($event)">
                                 <template x-for="k in classIndexes" :key="k">
                                     <button type="button" :data-cell="k"
                                             @pointerdown.prevent="startPaint(k)" @pointerenter="hoverClass = k"
@@ -110,20 +110,30 @@
                         <span class="w-10 text-right font-semibold text-gray-800" x-text="top + '%'"></span>
                     </div>
 
-                    {{-- text --}}
-                    <div>
-                        <label for="range-text" class="block text-xs font-medium text-gray-600">Range as text</label>
-                        <textarea id="range-text" rows="3" x-model="draft" @focus="draftFocus = true" @blur="draftFocus = false"
-                                  @keydown.ctrl.enter.prevent="applyDraft()" spellcheck="false"
-                                  placeholder="AA-TT, AKs-ATs, KQo, A5s-A2s:50%, AhKh"
-                                  class="mt-1 block w-full rounded-md border-gray-300 text-xs font-mono shadow-sm"></textarea>
-                        <div class="mt-1 flex items-center gap-2">
-                            <button type="button" @click="applyDraft()" class="rounded-md bg-indigo-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-indigo-500">Apply text</button>
-                            <p class="text-xs text-red-600" x-show="draftError" x-text="draftError"></p>
-                            <p class="text-xs text-gray-400" x-show="!draftError">Pairs <code>77+</code>, suited <code>ATs+</code>, offsuit <code>KQo</code>, runs <code>A5s-A2s</code>, weights <code>:50%</code>, exact cards <code>AhKh</code>.</p>
+                    {{-- the hand under the mouse: its combos, what each is on this board and its equity --}}
+                    <div class="rounded-lg border border-gray-200 bg-gray-50 p-3" style="min-height: 8.5rem;">
+                        <div x-show="ready && detail" x-cloak>
+                            <p class="text-sm font-semibold text-gray-700" x-text="detail ? detail.name : ''"></p>
+                            <div class="mt-2 grid gap-x-4 gap-y-1 text-xs sm:grid-cols-2">
+                                <template x-for="c in (detail ? detail.combos : [])" :key="c.name">
+                                    <div class="flex items-center gap-2">
+                                        <button type="button" @click="useAsMyHand(c.name)" title="Use as your hand" class="inline-flex shrink-0 items-center gap-1 rounded-md px-0.5 py-0.5 hover:bg-indigo-50">
+                                            <template x-for="card in c.cards" :key="card.rank + card.suit">
+                                                <span class="inline-flex h-6 min-w-[2rem] items-center justify-center rounded border border-gray-300 bg-white px-1 text-xs font-bold shadow-sm"
+                                                      :style="'color:' + card.color" x-text="card.rank + symbols[card.suit]"></span>
+                                            </template>
+                                            <span class="text-[10px] font-medium text-gray-400" x-show="c.w < 0.995" x-text="Math.round(c.w * 100) + '%'"></span>
+                                        </button>
+                                        <span class="min-w-0 flex-1 text-[11px] leading-tight text-gray-600" x-text="c.made + (c.draw ? ' + ' + c.draw.toLowerCase() : '')"></span>
+                                        <span class="shrink-0 text-indigo-700" x-show="c.equity !== null" x-text="c.equity + '%'"></span>
+                                    </div>
+                                </template>
+                            </div>
+                            <p class="mt-1 text-xs text-gray-400" x-show="detail && detail.combos.length === 0">None of this hand&rsquo;s combos are in the range on this board.</p>
                         </div>
+                        <p class="text-xs text-gray-400" x-show="!(ready && detail)"
+                           x-text="ready ? 'Move the mouse over a hand to see its combos, what each one is on this board and its equity. Click a combo to use it as your hand.' : 'Deal the flop to see the combos of each hand.'"></p>
                     </div>
-
                     {{-- saved ranges (kept in this browser) --}}
                     <div class="border-t border-gray-100 pt-3">
                         <div class="flex items-center gap-2">
@@ -248,7 +258,7 @@
                 {{-- ============ BOARD + RESULTS ============ --}}
                 <div class="space-y-3 min-w-0">
 
-                    <div class="grid grid-cols-1 items-start gap-3 lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)]">
+                    <div class="grid grid-cols-1 items-start gap-3 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
                     {{-- board --}}
                     <div class="pc-card p-3 sm:p-4">
                         <div class="flex flex-wrap items-center justify-between gap-2">
@@ -278,10 +288,10 @@
                             <template x-for="s in suits" :key="s">
                                 <div class="flex gap-1">
                                     <template x-for="r in ranks" :key="r + s">
-                                        <button type="button" @click="toggleCard(r, s)"
+                                        <button type="button" @click="toggleCard(r, s)" :disabled="inHand(r, s)" :title="inHand(r, s) ? 'In your hand' : ''"
                                                 class="flex h-7 flex-1 items-center justify-center rounded text-[11px] font-bold sm:text-xs"
-                                                :class="onBoard(r, s) ? 'bg-gray-800 text-white' : (isDead(r, s) ? 'bg-gray-300 text-gray-400 line-through' : 'bg-gray-100 hover:bg-gray-200')"
-                                                :style="onBoard(r, s) || isDead(r, s) ? '' : 'color:' + ({ s: '#334155', h: '#dc2626', d: '#2563eb', c: '#16a34a' })[s]"
+                                                :class="inHand(r, s) ? 'bg-indigo-100 text-indigo-300' : (onBoard(r, s) ? 'bg-gray-800 text-white' : (isDead(r, s) ? 'bg-gray-300 text-gray-400 line-through' : 'bg-gray-100 hover:bg-gray-200'))"
+                                                :style="onBoard(r, s) || isDead(r, s) || inHand(r, s) ? '' : 'color:' + ({ s: '#334155', h: '#dc2626', d: '#2563eb', c: '#16a34a' })[s]"
                                                 x-text="r + symbols[s]"></button>
                                     </template>
                                 </div>
@@ -298,10 +308,10 @@
                                 <template x-for="s in suits" :key="'d' + s">
                                     <div class="flex gap-1">
                                         <template x-for="r in ranks" :key="'d' + r + s">
-                                            <button type="button" @click="toggleDead(r, s)" :disabled="onBoard(r, s)"
+                                            <button type="button" @click="toggleDead(r, s)" :disabled="onBoard(r, s) || inHand(r, s)" :title="inHand(r, s) ? 'In your hand' : ''"
                                                     class="flex h-6 flex-1 items-center justify-center rounded text-[10px] font-bold sm:text-[11px]"
-                                                    :class="isDead(r, s) ? 'bg-rose-600 text-white' : (onBoard(r, s) ? 'bg-gray-100 text-gray-300' : 'bg-gray-50 hover:bg-rose-50')"
-                                                    :style="isDead(r, s) || onBoard(r, s) ? '' : 'color:' + ({ s: '#334155', h: '#dc2626', d: '#2563eb', c: '#16a34a' })[s]"
+                                                    :class="isDead(r, s) ? 'bg-rose-600 text-white' : (inHand(r, s) ? 'bg-indigo-100 text-indigo-300' : (onBoard(r, s) ? 'bg-gray-100 text-gray-300' : 'bg-gray-50 hover:bg-rose-50'))"
+                                                    :style="isDead(r, s) || onBoard(r, s) || inHand(r, s) ? '' : 'color:' + ({ s: '#334155', h: '#dc2626', d: '#2563eb', c: '#16a34a' })[s]"
                                                     x-text="r + symbols[s]"></button>
                                         </template>
                                     </div>
@@ -328,28 +338,50 @@
                         </template>
                         <p class="mt-2 text-xs text-gray-500" x-show="eq.hero === null && !eq.running">Fill both ranges to see the equity of one against the other on this board.</p>
 
-                        {{-- your exact hand --}}
+                        {{-- your exact hand, picked from the deck --}}
                         <div class="mt-3 border-t border-gray-100 pt-3">
-                            <label for="my-hand" class="block text-xs font-medium text-gray-600">Your hand against the opponent range</label>
-                            <div class="mt-1 flex items-center gap-2">
-                                <input id="my-hand" type="text" x-model="myText" @input.debounce.300ms="scheduleEquity(); persist()" maxlength="8" placeholder="AhKd" autocomplete="off" spellcheck="false"
-                                       class="block w-28 rounded-md border-gray-300 font-mono text-sm shadow-sm">
-                                <button type="button" x-show="myText" @click="myText = ''; scheduleEquity(); persist()" class="text-xs text-gray-500 hover:text-gray-800">Clear</button>
-                                <p class="text-xs text-gray-400" x-show="!myText">Two cards: calculates their equity on this board.</p>
+                            <div class="flex items-center justify-between gap-2">
+                                <p class="text-xs font-medium text-gray-600">Your hand against the opponent range</p>
+                                <button type="button" x-show="myCards.length" @click="clearMyHand()" class="text-xs text-gray-500 hover:text-gray-800">Clear</button>
                             </div>
-                            <template x-if="my.state === 'error'"><p class="mt-1 text-xs text-red-600" x-text="my.message"></p></template>
-                            <template x-if="my.state === 'ok'">
-                                <div class="mt-2 flex flex-wrap items-baseline gap-x-3 gap-y-1 text-sm">
-                                    <span class="font-mono font-bold text-gray-900" x-text="my.name"></span>
-                                    <span class="text-gray-600" x-text="(my.made || '') + (my.draw ? ' + ' + my.draw.toLowerCase() : '')"></span>
-                                    <span class="ml-auto text-xl font-bold text-indigo-700" x-show="myEq.value !== null" x-text="pct(myEq.value * 100) + '%'"></span>
-                                    <span class="text-xs text-gray-400" x-show="myEq.running">calculating…</span>
-                                    <span class="text-xs text-gray-400" x-show="myEq.value === null && !myEq.running">Needs the flop and an opponent range.</span>
+
+                            <div class="mt-2 flex items-center gap-3">
+                                <template x-for="(slot, i) in myCardSlots" :key="i">
+                                    <span class="flex h-12 w-10 shrink-0 items-center justify-center rounded-lg border-2 text-base font-bold"
+                                          :class="slot ? 'border-indigo-600 bg-white' : 'border-dashed border-gray-300 bg-gray-50 text-gray-300'"
+                                          :style="slot ? 'color:' + slot.color : ''" x-text="slot ? slot.rank + symbols[slot.suit] : ''"></span>
+                                </template>
+                                <div class="min-w-0 flex-1 text-sm">
+                                    <p class="text-xs text-gray-400" x-show="my.state === 'empty'">Pick two cards below: their equity on this board.</p>
+                                    <p class="text-xs text-gray-400" x-show="my.state === 'partial'">Pick the second card.</p>
+                                    <template x-if="my.state === 'ok'">
+                                        <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+                                            <span class="text-gray-600" x-text="(my.made || '') + (my.draw ? ' + ' + my.draw.toLowerCase() : '')"></span>
+                                            <span class="ml-auto text-xl font-bold text-indigo-700" x-show="myEq.value !== null" x-text="pct(myEq.value * 100) + '%'"></span>
+                                            <span class="text-xs text-gray-400" x-show="myEq.running">calculating…</span>
+                                            <span class="text-xs text-gray-400" x-show="myEq.value === null && !myEq.running">Needs the flop and an opponent range.</span>
+                                        </div>
+                                    </template>
                                 </div>
-                            </template>
+                            </div>
+
+                            <div class="mt-2 space-y-1">
+                                <template x-for="s in suits" :key="'m' + s">
+                                    <div class="flex gap-1">
+                                        <template x-for="r in ranks" :key="'m' + r + s">
+                                            <button type="button" @click="toggleMyCard(r, s)" :disabled="onBoard(r, s) || isDead(r, s)"
+                                                    :title="onBoard(r, s) ? 'On the board' : (isDead(r, s) ? 'Marked dead' : '')"
+                                                    class="flex h-6 flex-1 items-center justify-center rounded text-[10px] font-bold sm:text-[11px]"
+                                                    :class="inHand(r, s) ? 'bg-indigo-600 text-white' : (onBoard(r, s) ? 'bg-gray-100 text-gray-300 line-through' : (isDead(r, s) ? 'bg-rose-100 text-rose-300 line-through' : 'bg-gray-50 hover:bg-indigo-50'))"
+                                                    :style="inHand(r, s) || onBoard(r, s) || isDead(r, s) ? '' : 'color:' + ({ s: '#334155', h: '#dc2626', d: '#2563eb', c: '#16a34a' })[s]"
+                                                    x-text="r + symbols[s]"></button>
+                                        </template>
+                                    </div>
+                                </template>
+                            </div>
+                            <p class="mt-1 text-[11px] text-gray-400">Cards of the board or marked dead cannot be picked, and the board cannot take cards of your hand.</p>
                         </div>
                     </div>
-
                     </div>
 
                     <p class="pc-card p-4 text-sm text-gray-500" x-show="!ready">Deal at least the three flop cards to see how the range hits the board.</p>
@@ -437,20 +469,6 @@
                         <button type="button" @click="keepSelected()" class="rounded-md bg-indigo-600 px-3 py-1.5 font-medium text-white hover:bg-indigo-500">Keep only these</button>
                         <button type="button" @click="dropSelected()" class="rounded-md border border-gray-300 bg-white px-3 py-1.5 font-medium text-gray-700 hover:bg-gray-50">Remove these</button>
                         <button type="button" @click="clearSelection()" class="rounded-md border border-gray-300 bg-white px-3 py-1.5 font-medium text-gray-700 hover:bg-gray-50">Clear filters</button>
-                    </div>
-                    {{-- hover detail --}}
-                    <div class="pc-card p-3 sm:p-4" x-show="ready && detail" x-cloak>
-                        <p class="text-sm font-semibold text-gray-700" x-text="detail ? detail.name : ''"></p>
-                        <div class="mt-2 grid gap-x-4 gap-y-1 text-xs sm:grid-cols-2">
-                            <template x-for="c in (detail ? detail.combos : [])" :key="c.name">
-                                <div class="flex items-baseline gap-2">
-                                    <button type="button" @click="useAsMyHand(c.name)" title="Use as your hand" class="font-mono font-semibold text-gray-900 hover:text-indigo-600" x-text="c.name + weightLabel(c.w)"></button>
-                                    <span class="text-gray-600" x-text="c.made + (c.draw ? ' + ' + c.draw.toLowerCase() : '')"></span>
-                                    <span class="ml-auto text-indigo-700" x-show="c.equity !== null" x-text="c.equity + '%'"></span>
-                                </div>
-                            </template>
-                        </div>
-                        <p class="mt-1 text-xs text-gray-400" x-show="detail && detail.combos.length === 0">None of this hand&rsquo;s combos are in the range on this board.</p>
                     </div>
                 </div>
             </div>

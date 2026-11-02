@@ -25,7 +25,7 @@ export function registerFlopzer(Alpine) {
         const ranges = { hero: emptyRange(), villain: emptyRange() };
         const eqCombo = { hero: null, villain: null };
         let history = [];
-        let job = null, jobToken = 0, handJob = null, handToken = 0, hotToken = 0, eqTimer = null, saveTimer = null;
+        let job = null, jobToken = 0, handJob = null, handToken = 0, hotToken = 0, eqTimer = null, handTimer = null, saveTimer = null;
         let memo = { key: '', rows: [], byClass: null };
         let deadMemo = { key: '', set: new Set() };
 
@@ -38,12 +38,11 @@ export function registerFlopzer(Alpine) {
             tierColors: TIER_COLORS.map((c) => rgba(c, 1)),
             painting: false,
             paintValue: 0,
-            draft: '', draftError: '', draftFocus: false,
             top: 20,
             selMade: [], selDraw: [], exMade: [], exDraw: [], openRows: {},
             hoverClass: null,
             eq: { running: false, progress: 0, hero: null, villain: null, rev: 0 },
-            myText: '', myEq: { running: false, value: null },
+            myCards: [], myEq: { running: false, value: null },
             saved: [], saveName: '',
             presets, presetOpen: false, presetSide: 'hero',
             showDead: false,
@@ -61,7 +60,7 @@ export function registerFlopzer(Alpine) {
                         if (saved.villain) ranges.villain = parseRange(saved.villain);
                         this.board = (saved.board || []).map(parseCard).slice(0, 5);
                         this.deadCards = (saved.dead || []).map(parseCard).filter((c) => !this.board.includes(c));
-                        this.myText = saved.my || '';
+                        this.myCards = this.cleanHand(parseCards(saved.my || ''));
                         if (Array.isArray(saved.tiers) && saved.tiers.length === TIER_WEIGHTS.length) this.tierWeights = saved.tiers.map((w, i) => Math.min(99, Math.max(1, Number(w) || TIER_WEIGHTS[i])));
                         this.activeTier = Number.isInteger(saved.tier) && saved.tier >= 0 && saved.tier <= TIER_WEIGHTS.length ? saved.tier : 0;
                         this.side = saved.side === 'villain' ? 'villain' : 'hero';
@@ -73,7 +72,6 @@ export function registerFlopzer(Alpine) {
                 }
                 this.saved = read(SAVED, []);
                 this.rev++;
-                this.syncDraft();
                 this.scheduleEquity();
                 window.addEventListener('pointerup', () => { this.painting = false; });
                 window.addEventListener('pointercancel', () => { this.painting = false; });
@@ -88,14 +86,13 @@ export function registerFlopzer(Alpine) {
                 clearTimeout(saveTimer);
                 saveTimer = setTimeout(() => write(STORE, {
                     hero: formatRange(ranges.hero), villain: formatRange(ranges.villain),
-                    board: this.board.map(cardName), dead: this.deadCards.map(cardName), my: this.myText, side: this.side,
+                    board: this.board.map(cardName), dead: this.deadCards.map(cardName), my: this.myCards.map(cardName).join(''), side: this.side,
                     tiers: this.tierWeights, tier: this.activeTier,
                 }), 400);
             },
 
             changed() {
                 this.rev++;
-                this.syncDraft();
                 this.persist();
                 this.scheduleEquity();
             },
@@ -143,17 +140,19 @@ export function registerFlopzer(Alpine) {
                 const outline = this.hoverClass === k ? '2px solid #111827' : '';
                 if (c.alive === 0) return { backgroundColor: '#e2e8f0', color: '#94a3b8', outline, backgroundImage: 'repeating-linear-gradient(45deg, transparent 0 4px, rgba(148,163,184,.35) 4px 6px)' };
                 if (c.weight <= 0) return { backgroundColor: '#f1f5f9', color: '#64748b', outline };
-                const alpha = 0.25 + 0.75 * c.weight;
+                // The colour fills the cell from the bottom up, as tall as the weight: a hand at 25 % is coloured in its lowest quarter.
                 const tier = this.tierWeights.findIndex((tw) => Math.abs(tw / 100 - c.weight) < 0.005);
-                const base = tier >= 0 ? rgba(TIER_COLORS[tier], 0.92) : `rgba(79,70,229,${alpha})`;
-                const light = c.weight > 0.45;
-                if (!this.selActive) return { backgroundColor: base, color: light ? '#fff' : '#312e81', outline };
-                const amber = `rgba(245,158,11,${0.35 + 0.65 * c.weight})`;
-                const cut = Math.round(c.share * 100);
-                return {
-                    background: `linear-gradient(to right, ${amber} 0%, ${amber} ${cut}%, ${base} ${cut}%, ${base} 100%)`,
-                    color: light ? '#fff' : '#312e81', outline,
-                };
+                const base = tier >= 0 ? rgba(TIER_COLORS[tier], 0.95) : 'rgba(79,70,229,0.95)';
+                const height = Math.max(8, Math.round(c.weight * 100));
+                const text = c.weight >= 0.6 ? { color: '#fff', textShadow: '0 0 2px rgba(0,0,0,.55)' } : { color: '#312e81' };
+                let fill = `linear-gradient(${base}, ${base})`;
+                if (this.selActive) {
+                    // amber: the share of the hand's combos that pass the filters, from the left
+                    const amber = 'rgba(245,158,11,0.95)';
+                    const cut = Math.round(c.share * 100);
+                    fill = `linear-gradient(to right, ${amber} 0%, ${amber} ${cut}%, ${base} ${cut}%, ${base} 100%)`;
+                }
+                return { background: `${fill} bottom / 100% ${height}% no-repeat, #f1f5f9`, ...text, outline };
             },
 
             // painting: click toggles a cell between the brush weight and empty; dragging applies the same value
@@ -208,22 +207,11 @@ export function registerFlopzer(Alpine) {
             totalsOf(side) { this.rev; return rangeTotals(ranges[side], this.dead); },
 
             // ---------- range tools ----------
-            syncDraft() { if (!this.draftFocus) { this.draft = formatRange(ranges[this.side]); this.draftError = ''; } },
-            applyDraft() {
-                try {
-                    const w = parseRange(this.draft);
-                    this.snapshot();
-                    ranges[this.side] = w;
-                    this.draftError = '';
-                    this.draftFocus = false;
-                    this.changed();
-                } catch (e) { this.draftError = e.message; }
-            },
             clearRange() { this.snapshot(); ranges[this.side] = emptyRange(); this.changed(); },
             fillRange() { this.snapshot(); ranges[this.side] = topPercent(100); this.changed(); },
             applyTop() { this.snapshot(); ranges[this.side] = topPercent(Number(this.top)); this.changed(); },
             copyOver() { this.snapshot(); ranges[this.otherSide] = cloneRange(ranges[this.side]); this.rev++; this.persist(); this.scheduleEquity(); },
-            switchSide(side) { this.side = side; this.clearSelection(); this.syncDraft(); this.persist(); this.scheduleEquity(); },
+            switchSide(side) { this.side = side; this.clearSelection(); this.persist(); this.scheduleEquity(); },
 
             /** Quick picks added with the brush weight: pocket pairs, broadway hands (both cards T or better), suited hands. */
             quick(kind) {
@@ -265,13 +253,14 @@ export function registerFlopzer(Alpine) {
             isDead(rank, suit) { return this.deadCards.includes(parseCard(rank + suit)); },
             toggleCard(rank, suit) {
                 const c = parseCard(rank + suit);
+                if (this.myCards.includes(c)) return;
                 this.deadCards = this.deadCards.filter((x) => x !== c);
                 this.board = this.board.includes(c) ? this.board.filter((x) => x !== c) : (this.board.length < 5 ? [...this.board, c] : this.board);
                 this.boardChanged();
             },
             toggleDead(rank, suit) {
                 const c = parseCard(rank + suit);
-                if (this.board.includes(c)) return;
+                if (this.board.includes(c) || this.myCards.includes(c)) return;
                 this.deadCards = this.deadCards.includes(c) ? this.deadCards.filter((x) => x !== c) : [...this.deadCards, c];
                 this.boardChanged();
             },
@@ -279,14 +268,14 @@ export function registerFlopzer(Alpine) {
             removeCard(card) { this.board = this.board.filter((c) => c !== card); this.boardChanged(); },
             clearBoard() { this.board = []; this.boardChanged(); },
             randomFlop() {
-                const deck = Array.from({ length: 52 }, (_, i) => i).filter((c) => !this.deadCards.includes(c));
+                const deck = Array.from({ length: 52 }, (_, i) => i).filter((c) => !this.deadCards.includes(c) && !this.myCards.includes(c));
                 for (let i = 0; i < 3; i++) { const j = i + Math.floor(Math.random() * (deck.length - i)); [deck[i], deck[j]] = [deck[j], deck[i]]; }
                 this.board = deck.slice(0, 3);
                 this.boardChanged();
             },
             randomCard() {
                 if (this.board.length < 3 || this.board.length >= 5) return;
-                const free = Array.from({ length: 52 }, (_, i) => i).filter((c) => !this.board.includes(c) && !this.deadCards.includes(c));
+                const free = Array.from({ length: 52 }, (_, i) => i).filter((c) => !this.board.includes(c) && !this.deadCards.includes(c) && !this.myCards.includes(c));
                 this.board = [...this.board, free[Math.floor(Math.random() * free.length)]];
                 this.boardChanged();
             },
@@ -441,22 +430,43 @@ export function registerFlopzer(Alpine) {
                 return {
                     name: CLASS_NAMES[k],
                     combos: rows.map((r) => ({
-                        name: comboName(r.i), w: r.w, made: madeLabel(r.made), draw: r.draw ? drawLabel(r.draw) : '',
+                        name: comboName(r.i), w: r.w,
+                        cards: COMBOS[r.i].map((c) => ({ rank: RANKS[c >> 2], suit: SUITS[c & 3], color: SUIT_COLORS[SUITS[c & 3]] })),
+                        made: madeLabel(r.made), draw: r.draw ? drawLabel(r.draw) : '',
                         equity: eqs && eqs[r.i] >= 0 ? (100 * eqs[r.i]).toFixed(1) : null,
                     })),
                 };
             },
-            useAsMyHand(name) { this.myText = name; this.scheduleEquity(); this.persist(); },
 
             // ---------- "your hand": two exact cards against the opponent range ----------
+            // Picked from the deck, so it can never hold a card of the board or a dead card, nor the same card twice.
+            /** Keeps only the cards that can really be in your hand: two at most, all different, none on the board or dead. */
+            cleanHand(cards) {
+                return cards.filter((c, i) => cards.indexOf(c) === i && !this.board.includes(c) && !this.deadCards.includes(c)).slice(0, 2);
+            },
+            inHand(rank, suit) { return this.myCards.includes(parseCard(rank + suit)); },
+            toggleMyCard(rank, suit) {
+                const c = parseCard(rank + suit);
+                if (this.board.includes(c) || this.deadCards.includes(c)) return;
+                // a third card pushes out the oldest one
+                this.myCards = this.myCards.includes(c) ? this.myCards.filter((x) => x !== c) : [...this.myCards, c].slice(-2);
+                this.scheduleHandEquity();
+                this.persist();
+            },
+            clearMyHand() { this.myCards = []; this.scheduleHandEquity(); this.persist(); },
+            /** From the hover detail: its combos are alive, so they cannot clash with the board or the dead cards. */
+            useAsMyHand(name) { this.myCards = this.cleanHand(parseCards(name)); this.scheduleHandEquity(); this.persist(); },
+            get myCardSlots() {
+                return [0, 1].map((i) => {
+                    const c = this.myCards[i];
+                    return c === undefined ? null : { rank: RANKS[c >> 2], suit: SUITS[c & 3], color: SUIT_COLORS[SUITS[c & 3]] };
+                });
+            },
             get my() {
                 this.rev; this.eq.rev;
-                const text = this.myText.trim();
-                if (!text) return { state: 'empty' };
-                let cards;
-                try { cards = parseCards(text); } catch (e) { cards = []; }
-                if (cards.length !== 2 || cards[0] === cards[1]) return { state: 'error', message: 'Enter two different cards, like AhKd.' };
-                if (cards.some((c) => this.dead.has(c))) return { state: 'error', message: 'One of those cards is on the board or marked dead.' };
+                const cards = this.myCards;
+                if (cards.length === 0) return { state: 'empty' };
+                if (cards.length === 1) return { state: 'partial', cards };
                 const info = this.ready ? classify(cards, this.board) : null;
                 return {
                     state: 'ok', cards, name: cards.map(cardName).join(''), index: comboIndex(cards[0], cards[1]),
@@ -464,8 +474,12 @@ export function registerFlopzer(Alpine) {
                     draw: info && info.draw ? drawLabel(info.draw) : null,
                 };
             },
-
             // ---------- equity ----------
+            /** Your exact hand only changes its own equity: the ranges' equity and Hotness are about the ranges, so they stay. */
+            scheduleHandEquity() {
+                clearTimeout(handTimer);
+                handTimer = setTimeout(() => this.runHandEquity(), 250);
+            },
             scheduleEquity() {
                 clearTimeout(eqTimer);
                 eqTimer = setTimeout(() => { this.runEquity(); this.runHandEquity(); if (this.analysisTab === 'hotness') this.runHotness(); }, 250);

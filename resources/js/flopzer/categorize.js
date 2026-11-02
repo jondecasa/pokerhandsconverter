@@ -5,13 +5,14 @@
 
 import { evaluate } from './evaluator.js';
 
-const kid = (key, label) => ({ key, label });
+// `full` is the name to use away from its row (the hover detail), when the short one only makes sense inside it
+const kid = (key, label, full) => ({ key, label, full });
 
 export const MADE_ROWS = [
     { key: 'straightFlush', label: 'Straight flush' },
     { key: 'quads', label: 'Quads' },
     { key: 'fullHouse', label: 'Full house' },
-    { key: 'flush', label: 'Flush', kids: [kid('nutFlush', 'Nut flush'), kid('otherFlush', 'Other flush')] },
+    { key: 'flush', label: 'Flush', kids: [kid('nutFlush', 'Nut flush'), kid('otherFlush', 'Flush')] },
     { key: 'straight', label: 'Straight' },
     { key: 'set', label: 'Set', kids: [kid('pocketSet', 'Set (pocket pair)'), kid('trips', 'Trips (pair on board)'), kid('boardTrips', 'Trips on board')] },
     {
@@ -20,7 +21,7 @@ export const MADE_ROWS = [
             kid('pocketBoardPair', 'Pocket pair + board pair'), kid('pairBoardPair', 'Pair + board pair'), kid('boardTwoPair', 'Two pair on board')],
     },
     { key: 'overpair', label: 'overpair' },
-    { key: 'topPair', label: 'Top pair', kids: [kid('topPairTK', 'Top kicker'), kid('topPairGK', 'Good kicker'), kid('topPairWK', 'Weak kicker')] },
+    { key: 'topPair', label: 'Top pair', kids: [kid('topPairTK', 'Top kicker', 'Top pair, top kicker'), kid('topPairGK', 'Good kicker', 'Top pair, good kicker'), kid('topPairWK', 'Weak kicker', 'Top pair, weak kicker')] },
     { key: 'middlePair', label: 'Middle pair', kids: [kid('middleCard', 'Pair with a middle card'), kid('ppAbove2nd', 'Pocket pair above the 2nd card')] },
     { key: 'ppBelow2nd', label: 'pp < 2nd card' },
     { key: 'bottomPair', label: 'Bottom pair' },
@@ -29,13 +30,13 @@ export const MADE_ROWS = [
 ];
 
 export const DRAW_ROWS = [
-    { key: 'flushDraw', label: 'flushdraw', kids: [kid('nutFlushDraw', 'Nut flush draw'), kid('otherFlushDraw', 'Other flush draw')] },
+    { key: 'flushDraw', label: 'flushdraw', kids: [kid('nutFlushDraw', 'Nut flush draw'), kid('otherFlushDraw', 'Flush draw')] },
     { key: 'oesd2', label: 'oesd (2 card)' },
     { key: 'oesd1', label: 'oesd (1 card)' },
     { key: 'gutshot2', label: 'gutshot (2 crd)' },
     { key: 'gutshot1', label: 'gutshot (1 crd)' },
     { key: 'overBdfd', label: '1 overc.+bdfd' },
-    { key: 'backdoorFd', label: 'backdoor fd', kids: [kid('bdfd2', '2 cards of the suit'), kid('bdfd1', '1 card of the suit')] },
+    { key: 'backdoorFd', label: 'backdoor fd', kids: [kid('bdfd2', '2 cards of the suit', 'backdoor fd (2 cards of the suit)'), kid('bdfd1', '1 card of the suit', 'backdoor fd (1 card of the suit)')] },
 ];
 
 export const COMBO_ROWS = [
@@ -52,7 +53,7 @@ function indexRows(rows) {
     for (const row of rows) {
         label[row.key] = row.label;
         parent[row.key] = row.key;
-        for (const k of row.kids ?? []) { label[k.key] = k.label; parent[k.key] = row.key; }
+        for (const k of row.kids ?? []) { label[k.key] = k.full ?? k.label; parent[k.key] = row.key; }
     }
     return { parent, label };
 }

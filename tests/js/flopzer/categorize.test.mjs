@@ -139,3 +139,19 @@ test('every bucket classify returns is declared, for every combo on a few boards
         }
     }
 });
+
+test('finer rows keep a readable name away from their row', async () => {
+    const { madeLabel, drawLabel } = await import('../../../resources/js/flopzer/categorize.js');
+    assert.equal(madeLabel('topPairGK'), 'Top pair, good kicker');
+    assert.equal(drawLabel('bdfd2'), 'backdoor fd (2 cards of the suit)');
+    assert.equal(madeLabel('aceHigh'), 'Ace high');
+    assert.equal(drawLabel('nutFlushDraw'), 'Nut flush draw');
+});
+
+test('a flush that is not the nuts is just a flush', async () => {
+    const { madeLabel, drawLabel } = await import('../../../resources/js/flopzer/categorize.js');
+    assert.equal(madeLabel('otherFlush'), 'Flush');
+    assert.equal(madeLabel('nutFlush'), 'Nut flush');
+    assert.equal(drawLabel('otherFlushDraw'), 'Flush draw');
+    assert.equal(drawLabel('nutFlushDraw'), 'Nut flush draw');
+});
