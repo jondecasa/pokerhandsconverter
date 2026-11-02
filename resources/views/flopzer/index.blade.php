@@ -6,12 +6,6 @@
     <div class="py-3 sm:py-4" x-data="flopzer(@js($presets))">
         <div class="w-full px-2 sm:px-3 space-y-3">
 
-            <p class="text-sm text-gray-600">
-                See how a range hits a board. Paint your range and the opponent&rsquo;s on the grid, deal the flop, turn and river,
-                and read how many combos are top pair, flush draws, sets&hellip; and how much equity each group has.
-                Click a row to light those hands up on the grid, or keep only them to follow the range to the next street.
-            </p>
-
             <div class="grid grid-cols-1 gap-3 xl:grid-cols-[minmax(0,660px)_minmax(0,1fr)]">
 
                 {{-- ============ RANGE ============ --}}
