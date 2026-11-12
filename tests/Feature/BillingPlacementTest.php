@@ -32,11 +32,12 @@ class BillingPlacementTest extends TestCase
     }
 
     #[Test]
-    public function the_dashboard_has_no_billing_or_cancel_buttons(): void
+    public function the_dashboard_has_no_subscription_block(): void
     {
         $this->actingAs($this->subscribedUser())->get('/dashboard')
             ->assertOk()
             ->assertDontSee('Manage billing')
+            ->assertDontSee('Subscription')
             ->assertDontSee(route('subscription.cancel'), false);
     }
 

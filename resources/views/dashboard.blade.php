@@ -14,33 +14,6 @@
                 </div>
             @endif
 
-            {{-- Subscription status --}}
-            <div class="pc-card p-4 sm:p-6">
-                <div class="flex flex-wrap items-center justify-between gap-4">
-                    <div>
-                        <h3 class="text-lg font-semibold text-gray-900">Subscription</h3>
-                        @if ($subscribed)
-                            <p class="text-sm text-gray-600 mt-1">
-                                @if ($onFreePlan)
-                                    Active on a free package.
-                                @elseif ($onTrial)
-                                    On free trial until {{ optional($subscription->trial_ends_at)->toFormattedDateString() }}.
-                                @elseif ($onGracePeriod)
-                                    Cancelled — access ends {{ optional($subscription->ends_at)->toFormattedDateString() }}.
-                                @else
-                                    Active. Thanks for supporting PokerHandsConverter.
-                                @endif
-                            </p>
-                        @else
-                            <p class="text-sm text-gray-600 mt-1">No active subscription. Subscribe to unlock the converter.</p>
-                        @endif
-                    </div>
-                    @unless ($subscribed)
-                        <a href="{{ route('subscription.plans') }}" class="inline-flex items-center px-4 py-2 bg-indigo-600 text-white text-sm rounded-md hover:bg-indigo-500">See plans</a>
-                    @endunless
-                </div>
-            </div>
-
             {{-- Quick stats --}}
             <div class="grid grid-cols-2 gap-4 sm:grid-cols-3">
                 <div class="pc-card p-4 sm:p-6">
