@@ -16,8 +16,17 @@ class ProfileController extends Controller
      */
     public function edit(Request $request): View
     {
+        $user = $request->user();
+        $name = config('pokerhandsconverter.subscription_name', 'default');
+        $subscription = $user->subscription($name);
+
         return view('profile.edit', [
-            'user' => $request->user(),
+            'user' => $user,
+            'subscribed' => (bool) $user->subscribed($name),
+            'onTrial' => (bool) $user->onTrial($name),
+            'onGracePeriod' => (bool) $subscription?->onGracePeriod(),
+            'onFreePlan' => str_starts_with((string) $subscription?->stripe_id, 'free_'),
+            'subscription' => $subscription,
         ]);
     }
 

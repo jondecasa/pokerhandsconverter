@@ -35,24 +35,9 @@
                             <p class="text-sm text-gray-600 mt-1">No active subscription. Subscribe to unlock the converter.</p>
                         @endif
                     </div>
-                    <div class="flex items-center gap-3">
-                        @if ($subscribed)
-                            @unless ($onFreePlan)
-                                <a href="{{ route('billing') }}" class="inline-flex items-center px-4 py-2 bg-gray-800 text-white text-sm rounded-md hover:bg-gray-700">Manage billing</a>
-                            @endunless
-                            @if ($onGracePeriod)
-                                <form method="POST" action="{{ route('subscription.resume') }}">@csrf
-                                    <button class="inline-flex items-center px-4 py-2 bg-green-600 text-white text-sm rounded-md hover:bg-green-500">Resume</button>
-                                </form>
-                            @else
-                                <form method="POST" action="{{ route('subscription.cancel') }}" onsubmit="return confirm(@js($onFreePlan ? 'Remove the free package? You will lose access to the converter.' : 'Cancel at the end of the billing period?'))">@csrf
-                                    <button class="inline-flex items-center px-4 py-2 border border-gray-300 text-sm rounded-md hover:bg-gray-50">{{ $onFreePlan ? 'Remove package' : 'Cancel' }}</button>
-                                </form>
-                            @endif
-                        @else
-                            <a href="{{ route('subscription.plans') }}" class="inline-flex items-center px-4 py-2 bg-indigo-600 text-white text-sm rounded-md hover:bg-indigo-500">See plans</a>
-                        @endif
-                    </div>
+                    @unless ($subscribed)
+                        <a href="{{ route('subscription.plans') }}" class="inline-flex items-center px-4 py-2 bg-indigo-600 text-white text-sm rounded-md hover:bg-indigo-500">See plans</a>
+                    @endunless
                 </div>
             </div>
 
