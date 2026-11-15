@@ -27,6 +27,21 @@ class BlogTest extends TestCase
     }
 
     #[Test]
+    public function each_page_of_the_blog_index_is_its_own_canonical_url(): void
+    {
+        Post::factory()->published()->count(11)->create();
+        Post::factory()->published()->count(11)->create(['locale' => 'zh-Hant']);
+
+        foreach (['' => 'http://localhost', '/zh-hant' => 'http://localhost/zh-hant'] as $prefix => $base) {
+            $canonical = fn (string $url) => preg_match('#<link rel="canonical" href="([^"]*)"#', $this->get($url)->getContent(), $m) ? html_entity_decode($m[1]) : null;
+
+            $this->assertSame($base.'/blog', $canonical($prefix.'/blog'));
+            $this->assertSame($base.'/blog', $canonical($prefix.'/blog?page=1'));
+            $this->assertSame($base.'/blog?page=2', $canonical($prefix.'/blog?page=2'));
+        }
+    }
+
+    #[Test]
     public function the_blog_index_shows_ten_posts_per_page_and_no_intro_line(): void
     {
         Post::factory()->published()->count(11)->create();

@@ -13,6 +13,7 @@
         @endphp
         <title>{{ $fullTitle }}</title>
         <meta name="description" content="{{ $metaDescription }}">
+        <meta name="robots" content="noindex, follow">
 
         <link rel="icon" type="image/svg+xml" href="{{ asset('favicon.svg') }}">
         <link rel="apple-touch-icon" href="{{ asset('images/icons/icon-192.png') }}">

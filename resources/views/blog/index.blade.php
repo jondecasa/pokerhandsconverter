@@ -1,5 +1,6 @@
 @use('App\Support\Locales')
 <x-marketing-layout
+    :canonical="$posts->currentPage() > 1 ? $posts->url($posts->currentPage()) : url()->current()"
     :title="__('Blog — PokerHandsConverter')"
     :description="__('Guides and notes on converting CoinPoker hand histories for PokerTracker 4, Hold\'em Manager 3 and Hand2Note.')">
 

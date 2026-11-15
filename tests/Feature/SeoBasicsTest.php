@@ -34,6 +34,19 @@ class SeoBasicsTest extends TestCase
     }
 
     #[Test]
+    #[DataProvider('guestPages')]
+    public function the_access_pages_are_kept_out_of_search_results(string $url): void
+    {
+        $this->get($url)->assertOk()->assertSee('<meta name="robots" content="noindex, follow">', false);
+    }
+
+    #[Test]
+    public function the_public_pages_are_not_noindexed(): void
+    {
+        $this->get('/blog')->assertOk()->assertDontSee('noindex', false);
+    }
+
+    #[Test]
     public function the_access_pages_do_not_share_one_description(): void
     {
         $descriptions = collect(['/login', '/register', '/forgot-password'])
