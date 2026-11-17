@@ -2,7 +2,9 @@
 
 namespace App\Providers;
 
+use App\Support\SubscriptionAlert;
 use Illuminate\Support\ServiceProvider;
+use Laravel\Cashier\Subscription;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -19,6 +21,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        Subscription::created(fn (Subscription $subscription) => app(SubscriptionAlert::class)->created($subscription));
+        Subscription::updated(fn (Subscription $subscription) => app(SubscriptionAlert::class)->updated($subscription));
     }
 }
