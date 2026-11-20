@@ -22,6 +22,7 @@
 
 
         @vite(['resources/css/app.css', 'resources/js/app.js'])
+        <x-analytics />
     </head>
     <body class="font-sans text-slate-700 antialiased">
         <div class="min-h-screen flex flex-col items-center justify-center bg-slate-50 px-4 py-10">

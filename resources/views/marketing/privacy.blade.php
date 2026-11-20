@@ -15,6 +15,11 @@
                 <li><strong>Uploaded files:</strong> the hand-history files you submit and the converted
                 output, stored so you can re-download past conversions.</li>
                 <li><strong>Usage metadata:</strong> conversion counts, hand counts and warnings.</li>
+                @if (filled(config('services.cloudflare.analytics_token')))
+                    <li><strong>Visit statistics:</strong> anonymous, aggregate figures about the pages of this
+                    website that are visited and where visitors come from, measured with Cloudflare Web
+                    Analytics. It sets no cookies and does not track you across sites.</li>
+                @endif
                 <li><strong>Billing data:</strong> handled by Stripe. We receive subscription status and the
                 last four digits / card brand, never full card numbers.</li>
             </ul>
@@ -25,7 +30,7 @@
             parties.</p>
 
             <h2 class="mt-8 text-lg font-semibold text-slate-900">Processors</h2>
-            <p>Stripe (payments).</p>
+            <p>Stripe (payments){{ filled(config('services.cloudflare.analytics_token')) ? ' and Cloudflare (anonymous visit statistics)' : '' }}.</p>
 
             <h2 class="mt-8 text-lg font-semibold text-slate-900">Retention &amp; deletion</h2>
             <p>Converted files are kept until you delete them or close your account. Email

@@ -41,6 +41,11 @@ return [
         'chat_id' => env('TELEGRAM_CHAT_ID'),
     ],
 
+    // Visit statistics without cookies: add the site in Cloudflare Web Analytics and paste the token of its snippet.
+    'cloudflare' => [
+        'analytics_token' => env('CLOUDFLARE_ANALYTICS_TOKEN'),
+    ],
+
     'google' => [
         'client_id' => env('GOOGLE_CLIENT_ID'),
         'client_secret' => env('GOOGLE_CLIENT_SECRET'),

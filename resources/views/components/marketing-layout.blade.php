@@ -65,6 +65,7 @@
     @stack('schema')
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <x-analytics />
 </head>
 <body class="font-sans antialiased text-slate-600 bg-white">
 
