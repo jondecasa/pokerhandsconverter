@@ -164,5 +164,16 @@
     "Pagination navigation": "分頁導覽",
     "Previous page": "上一頁",
     "Next page": "下一頁",
-    "Go to page :page": "前往第 :page 頁"
+    "Go to page :page": "前往第 :page 頁",
+    "Included with every plan": "所有方案皆包含",
+    "Flopzer: see how your range hits the board": "Flopzer：看看你的範圍如何打中公共牌",
+    "A range-vs-board analyser in the spirit of desktop tools like Flopzilla, but it lives in your browser. No install and no licence tied to one computer: open it on your laptop, tablet or phone, any time.": "一款範圍對公共牌的分析器，概念類似 Flopzilla 這類桌面工具，但直接在瀏覽器中使用。不用安裝，授權也不綁定單一電腦：隨時用筆電、平板或手機開啟。",
+    "Paint your range and your opponent's, with weights, or load any chart from the Ranges section.": "為你和對手的範圍塗色並設定權重，或從 Ranges 區載入任何範圍表。",
+    "Deal the flop, turn and river and read made hands, draws and combinations with their combos and equity.": "發出翻牌、轉牌與河牌，查看成牌、聽牌與組合的組合數與勝率。",
+    "Keep only the hands that continue to the next street, and test your own hand against the range.": "只保留會繼續到下一條街的手牌，並用你自己的手牌對照範圍測試。",
+    "Nothing to install or update: the same tool on every device, always the latest version.": "無需安裝或更新：每個裝置都是同一個工具，永遠是最新版本。",
+    "Open Flopzer": "開啟 Flopzer",
+    "See pricing": "查看價格",
+    "Flopzilla is a trademark of its owner. PokerHandsConverter is not affiliated with it.": "Flopzilla 是其擁有者的商標。PokerHandsConverter 與其沒有任何關聯。",
+    "Flopzer, the range analyser, is included too.": "範圍分析器 Flopzer 也一併包含。"
 }

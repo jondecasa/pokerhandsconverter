@@ -9,6 +9,20 @@
     [__('A hand didn\'t import cleanly. Now what?'), __('The converter flags anything unusual (like run-it-twice boards) as a warning on the result page. Send us the flagged hand and we\'ll tune the rules.')],
 ])
 
+{{-- a decorative 13x13 range for the Flopzer preview: pairs and the top suited and offsuit hands lit, the rest dim --}}
+@php($previewGrid = collect(range(0, 168))->map(function ($i) {
+    $row = intdiv($i, 13);
+    $col = $i % 13;
+
+    return match (true) {
+        $row === $col && $row <= 8 => 'bg-indigo-500',
+        $col > $row && $row + $col <= 7 => 'bg-indigo-500',
+        $col < $row && $row + $col <= 4 => 'bg-indigo-400',
+        $col > $row && $row + $col <= 11 && $row <= 4 => 'bg-indigo-700',
+        $row === $col => 'bg-indigo-800',
+        default => 'bg-slate-800',
+    };
+})->all())
 <x-marketing-layout>
 
     @push('schema')
@@ -209,13 +223,71 @@
         </div>
     </section>
 
+    {{-- ============================ FLOPZER ============================ --}}
+    <section id="flopzer" class="bg-slate-950 py-20 text-white">
+        <div class="mx-auto grid max-w-7xl items-center gap-12 px-6 lg:grid-cols-2">
+            <div>
+                <span class="inline-flex rounded-full bg-indigo-500/20 px-3 py-1 text-xs font-semibold uppercase tracking-widest text-indigo-300">{{ __('Included with every plan') }}</span>
+                <h2 class="mt-4 text-3xl font-bold tracking-tight sm:text-4xl">{{ __('Flopzer: see how your range hits the board') }}</h2>
+                <p class="mt-4 text-lg text-slate-300">
+                    {{ __('A range-vs-board analyser in the spirit of desktop tools like Flopzilla, but it lives in your browser. No install and no licence tied to one computer: open it on your laptop, tablet or phone, any time.') }}
+                </p>
+
+                <ul class="mt-6 space-y-3 text-sm text-slate-300">
+                    @foreach ([
+                        __('Paint your range and your opponent\'s, with weights, or load any chart from the Ranges section.'),
+                        __('Deal the flop, turn and river and read made hands, draws and combinations with their combos and equity.'),
+                        __('Keep only the hands that continue to the next street, and test your own hand against the range.'),
+                        __('Nothing to install or update: the same tool on every device, always the latest version.'),
+                    ] as $point)
+                        <li class="flex gap-3">
+                            <svg viewBox="0 0 24 24" fill="none" class="mt-0.5 h-5 w-5 shrink-0 text-indigo-400"><path d="m5 13 4 4L19 7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                            <span>{{ $point }}</span>
+                        </li>
+                    @endforeach
+                </ul>
+
+                <div class="mt-8 flex flex-wrap items-center gap-4">
+                    @auth
+                        <a href="{{ route('flopzer.index') }}" class="rounded-xl bg-indigo-600 px-5 py-3 text-sm font-semibold text-white hover:bg-indigo-500">{{ __('Open Flopzer') }}</a>
+                    @else
+                        <a href="{{ route('register') }}" class="rounded-xl bg-indigo-600 px-5 py-3 text-sm font-semibold text-white hover:bg-indigo-500">
+                            {{ $trialDays > 0 ? __('Start free trial') : __('Get started') }}
+                        </a>
+                    @endauth
+                    <a href="#pricing" class="text-sm font-semibold text-slate-300 hover:text-white">{{ __('See pricing') }} &rarr;</a>
+                </div>
+                <p class="mt-6 text-xs text-slate-500">{{ __('Flopzilla is a trademark of its owner. PokerHandsConverter is not affiliated with it.') }}</p>
+            </div>
+
+            {{-- decorative preview of the range grid and a board --}}
+            <div class="mx-auto w-full max-w-md" aria-hidden="true">
+                <div class="rounded-2xl border border-white/10 bg-slate-900 p-4 shadow-2xl">
+                    <div class="grid gap-[3px]" style="grid-template-columns: repeat(13, minmax(0, 1fr));">
+                        @foreach ($previewGrid as $shade)
+                            <span class="aspect-square rounded-[3px] {{ $shade }}"></span>
+                        @endforeach
+                    </div>
+                    <div class="mt-4 flex items-center gap-2">
+                        @foreach ([['K', '♠', 'text-slate-100'], ['7', '♦', 'text-sky-400'], ['2', '♣', 'text-emerald-400']] as [$rank, $suit, $color])
+                            <span class="flex h-12 w-9 flex-col items-center justify-center rounded-md border border-white/10 bg-slate-950 text-sm font-bold {{ $color }}">
+                                <span>{{ $rank }}</span><span class="text-base leading-none">{{ $suit }}</span>
+                            </span>
+                        @endforeach
+                        <span class="ml-auto text-xs font-medium text-slate-500">Flopzer</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     {{-- ============================ PRICING ============================ --}}
     <section id="pricing" class="bg-slate-50 py-20">
         <div class="mx-auto max-w-5xl px-6">
             <div class="mx-auto max-w-2xl text-center">
                 <h2 class="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">{{ __('Simple pricing') }}</h2>
                 <p class="mt-4 text-lg text-slate-600">
-                    {{ __('Unlimited conversions on every plan.') }}
+                    {{ __('Unlimited conversions on every plan.') }} {{ __('Flopzer, the range analyser, is included too.') }}
                     @if ($trialDays > 0) {{ __('Start with a :days-day free trial.', ['days' => $trialDays]) }} @endif
                 </p>
             </div>
