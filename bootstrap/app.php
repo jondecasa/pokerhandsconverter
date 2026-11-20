@@ -3,6 +3,7 @@
 use App\Http\Middleware\EnsureAdmin;
 use App\Http\Middleware\EnsureBlogApiToken;
 use App\Http\Middleware\EnsureSubscribed;
+use App\Http\Middleware\RedirectWwwToApex;
 use App\Http\Middleware\SecurityHeaders;
 use App\Http\Middleware\SetLocale;
 use App\Support\CloudflareIps;
@@ -26,6 +27,7 @@ return Application::configure(basePath: dirname(__DIR__))
         // is in X-Forwarded-For. Rate limits and logs need the visitor's.
         $middleware->trustProxies(at: CloudflareIps::ranges(), headers: Request::HEADER_X_FORWARDED_FOR);
 
+        $middleware->prepend(RedirectWwwToApex::class);
         $middleware->append(SecurityHeaders::class);
 
         $middleware->alias([
