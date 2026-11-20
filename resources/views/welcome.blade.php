@@ -9,18 +9,21 @@
     [__('A hand didn\'t import cleanly. Now what?'), __('The converter flags anything unusual (like run-it-twice boards) as a warning on the result page. Send us the flagged hand and we\'ll tune the rules.')],
 ])
 
-{{-- a decorative 13x13 range for the Flopzer preview: pairs and the top suited and offsuit hands lit, the rest dim --}}
+{{-- a decorative 13x13 range for the Flopzer preview: pairs and the stronger suited / offsuit hands lit in tiers, the rest dim --}}
 @php($previewGrid = collect(range(0, 168))->map(function ($i) {
     $row = intdiv($i, 13);
     $col = $i % 13;
 
     return match (true) {
         $row === $col && $row <= 8 => 'bg-indigo-500',
-        $col > $row && $row + $col <= 7 => 'bg-indigo-500',
-        $col < $row && $row + $col <= 4 => 'bg-indigo-400',
-        $col > $row && $row + $col <= 11 && $row <= 4 => 'bg-indigo-700',
-        $row === $col => 'bg-indigo-800',
-        default => 'bg-slate-800',
+        $row === $col => 'bg-indigo-700/60',
+        $col > $row && $row <= 3 && $col <= 7 => 'bg-violet-500',
+        $col > $row && $row <= 5 && $col <= 8 => 'bg-indigo-600/70',
+        $col > $row && $row <= 8 && $col <= 10 => 'bg-slate-700',
+        $col < $row && $col <= 2 && $row <= 6 => 'bg-sky-500',
+        $col < $row && $col <= 4 && $row <= 7 => 'bg-sky-700',
+        $col < $row && $col <= 5 && $row <= 8 => 'bg-cyan-900',
+        default => 'bg-slate-950',
     };
 })->all())
 <x-marketing-layout>
@@ -260,23 +263,44 @@
                 <p class="mt-6 text-xs text-slate-500">{{ __('Flopzilla is a trademark of its owner. PokerHandsConverter is not affiliated with it.') }}</p>
             </div>
 
-            {{-- decorative preview of the range grid and a board --}}
-            <div class="mx-auto w-full max-w-md" aria-hidden="true">
-                <div class="rounded-2xl border border-white/10 bg-slate-900 p-4 shadow-2xl">
-                    <div class="grid gap-[3px]" style="grid-template-columns: repeat(13, minmax(0, 1fr));">
-                        @foreach ($previewGrid as $shade)
-                            <span class="aspect-square rounded-[3px] {{ $shade }}"></span>
-                        @endforeach
+            {{-- decorative, illustrative preview of the tool: range grid, a flop and how the range hits it --}}
+            <div class="mx-auto w-full max-w-lg" aria-hidden="true">
+                <div class="overflow-hidden rounded-xl border border-white/10 bg-slate-800 shadow-2xl">
+                    <div class="flex items-center gap-1.5 border-b border-white/10 bg-slate-950 px-3 py-2">
+                        <span class="h-2.5 w-2.5 rounded-full bg-slate-600"></span>
+                        <span class="h-2.5 w-2.5 rounded-full bg-slate-600"></span>
+                        <span class="h-2.5 w-2.5 rounded-full bg-slate-600"></span>
+                        <span class="ml-3 rounded-md bg-slate-800 px-3 py-0.5 text-[11px] text-slate-400">{{ parse_url(config('app.url'), PHP_URL_HOST) ?: 'pokerhandsconverter.com' }}/flopzer</span>
                     </div>
-                    <div class="mt-4 flex items-center gap-2">
-                        @foreach ([['K', '♠', 'text-slate-100'], ['7', '♦', 'text-sky-400'], ['2', '♣', 'text-emerald-400']] as [$rank, $suit, $color])
-                            <span class="flex h-12 w-9 flex-col items-center justify-center rounded-md border border-white/10 bg-slate-950 text-sm font-bold {{ $color }}">
-                                <span>{{ $rank }}</span><span class="text-base leading-none">{{ $suit }}</span>
-                            </span>
-                        @endforeach
-                        <span class="ml-auto text-xs font-medium text-slate-500">Flopzer</span>
+                    <div class="grid grid-cols-[1.1fr_1fr] gap-4 p-4">
+                        <div class="grid gap-[2px]" style="grid-template-columns: repeat(13, minmax(0, 1fr));">
+                            @foreach ($previewGrid as $shade)
+                                <span class="aspect-square rounded-[2px] {{ $shade }}"></span>
+                            @endforeach
+                        </div>
+                        <div>
+                            <div class="mb-4 flex gap-1.5">
+                                @foreach ([['K', '♠', 'text-slate-900'], ['7', '♦', 'text-blue-600'], ['2', '♣', 'text-emerald-600']] as [$rank, $suit, $color])
+                                    <span class="flex h-[60px] w-11 flex-col items-center justify-center rounded-md bg-slate-50 text-[17px] font-semibold leading-tight {{ $color }}">
+                                        <span>{{ $rank }}</span><span>{{ $suit }}</span>
+                                    </span>
+                                @endforeach
+                            </div>
+                            @foreach ([
+                                [__('Top pair or better'), 62, 'bg-indigo-500'],
+                                [__('Middle pair'), 34, 'bg-violet-500'],
+                                [__('Flush draw'), 22, 'bg-sky-500'],
+                                [__('Nothing'), 30, 'bg-slate-600'],
+                            ] as [$label, $width, $bar])
+                                <div class="mb-2 text-[11px] text-slate-300">
+                                    <div class="mb-1">{{ $label }}</div>
+                                    <div class="h-2 overflow-hidden rounded-full bg-slate-950"><div class="h-full rounded-full {{ $bar }}" style="width: {{ $width }}%"></div></div>
+                                </div>
+                            @endforeach
+                        </div>
                     </div>
                 </div>
+                <p class="mt-3 text-center text-[11px] text-slate-500">{{ __('Illustrative example') }}</p>
             </div>
         </div>
     </section>
