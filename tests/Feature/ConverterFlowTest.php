@@ -218,6 +218,36 @@ class ConverterFlowTest extends TestCase
     }
 
     #[Test]
+    public function the_preview_only_shows_the_start_of_a_large_output_file(): void
+    {
+        Storage::fake('local');
+        $user = $this->subscribedUser();
+        $this->actingAs($user)->post('/convert', ['file' => $this->fixtureUpload()]);
+        $conversion = $user->conversions()->firstOrFail();
+        Storage::disk('local')->put($conversion->output_path, 'START-OF-FILE '.str_repeat('é', 20000).' END-OF-FILE');
+
+        $html = $this->actingAs($user)->get(route('conversions.show', $conversion))->getContent();
+
+        $this->assertStringContainsString('START-OF-FILE', $html);
+        $this->assertStringNotContainsString('END-OF-FILE', $html);
+        $this->assertStringContainsString('...</pre>', $html);
+    }
+
+    #[Test]
+    public function the_preview_of_a_short_file_is_shown_whole(): void
+    {
+        Storage::fake('local');
+        $user = $this->subscribedUser();
+        $this->actingAs($user)->post('/convert', ['file' => $this->fixtureUpload()]);
+        $conversion = $user->conversions()->firstOrFail();
+        Storage::disk('local')->put($conversion->output_path, "short output\nEND-OF-FILE");
+
+        $html = $this->actingAs($user)->get(route('conversions.show', $conversion))->getContent();
+
+        $this->assertStringContainsString('END-OF-FILE</pre>', $html);
+    }
+
+    #[Test]
     public function the_owner_can_email_feedback_about_a_pt4_import_problem(): void
     {
         Mail::fake();

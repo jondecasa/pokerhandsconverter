@@ -177,10 +177,31 @@ class ConverterController extends Controller
 
         return view('converter.show', [
             'conversion' => $conversion,
-            'preview' => $conversion->outputExists()
-                ? Str::of(Storage::disk('local')->get($conversion->output_path))->limit(6000)
-                : null,
+            'preview' => $conversion->outputExists() ? $this->preview($conversion) : null,
         ]);
+    }
+
+    /**
+     * The first few thousand characters of the converted file. It reads only that much from disk,
+     * because a hand-history output can be many megabytes and the page only shows the top of it.
+     */
+    private function preview(Conversion $conversion, int $bytes = 6000): ?string
+    {
+        $stream = Storage::disk('local')->readStream($conversion->output_path);
+
+        if (! is_resource($stream)) {
+            return null;
+        }
+
+        // One byte more than shown tells us whether the file was cut.
+        $head = (string) stream_get_contents($stream, $bytes + 1);
+        fclose($stream);
+
+        if (strlen($head) <= $bytes) {
+            return $head;
+        }
+
+        return mb_strcut($head, 0, $bytes, 'UTF-8').'...';
     }
 
     public function download(Request $request, Conversion $conversion): StreamedResponse

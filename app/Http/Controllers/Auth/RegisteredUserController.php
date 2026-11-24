@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Http\Middleware\CaptureAttribution;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
@@ -42,6 +43,7 @@ class RegisteredUserController extends Controller
             'email' => $request->email,
             'coinpoker_id' => trim((string) $request->input('coinpoker_id')) ?: null,
             'password' => Hash::make($request->password),
+            'signup_attribution' => $request->session()->get(CaptureAttribution::KEY),
         ]);
 
         event(new Registered($user));

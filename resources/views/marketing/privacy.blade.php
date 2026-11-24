@@ -15,6 +15,10 @@
                 <li><strong>Uploaded files:</strong> the hand-history files you submit and the converted
                 output, stored so you can re-download past conversions.</li>
                 <li><strong>Usage metadata:</strong> conversion counts, hand counts and warnings.</li>
+                <li><strong>Sign-up source:</strong> when you create an account, the website that linked to us and
+                any campaign tag in the link (such as utm_source), plus the first page you opened. We use it only
+                to learn which articles and links bring readers. It is kept in your session, not in an
+                extra cookie, and the referring address is reduced to its domain name.</li>
                 @if (filled(config('services.cloudflare.analytics_token')))
                     <li><strong>Visit statistics:</strong> anonymous, aggregate figures about the pages of this
                     website that are visited and where visitors come from, measured with Cloudflare Web
