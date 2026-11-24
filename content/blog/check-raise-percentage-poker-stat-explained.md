@@ -52,3 +52,7 @@ If your check-raise% is almost zero, you may be giving up a powerful weapon, and
 ## One caution
 
 Check-raising is a rare action, so the sample is small. [How many hands you need before your stats are reliable](/blog/sample-size-reliable-poker-stats) gives a feel for how much a number built on a few raises can move.
+
+## Keep your tracker reading the right hands
+
+Every stat on this page is only as good as the hand histories behind it. If you play on CoinPoker, [convert your hands with PokerHandsConverter](/) before importing them into PokerTracker 4 or Hold'em Manager 3, so the numbers your tracker shows are the ones you actually played.

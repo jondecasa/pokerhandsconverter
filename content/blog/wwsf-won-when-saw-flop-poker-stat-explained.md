@@ -46,3 +46,7 @@ If your WWSF is low while you play a lot of hands, you are probably entering too
 ## One caution
 
 WWSF includes small pots that were taken on the flop, so it does not weigh how much money was won. A player can have a high WWSF and still lose money by winning small pots and losing big ones. Always read it next to your [bb/100](/blog/bb-per-100-poker-win-rate-explained).
+
+## Keep your tracker reading the right hands
+
+Every stat on this page is only as good as the hand histories behind it. If you play on CoinPoker, [convert your hands with PokerHandsConverter](/) before importing them into PokerTracker 4 or Hold'em Manager 3, so the numbers your tracker shows are the ones you actually played.

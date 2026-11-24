@@ -45,3 +45,7 @@ published_at: "2026-12-06T09:00:00+00:00"
 ## 一個提醒
 
 轉牌持續下注率只計算你在翻牌持續下注、而且看到轉牌的手牌，所以樣本遠比翻牌的數據少。[需要多少手牌，你的數據才可靠](/zh-hant/blog/sample-size-reliable-poker-stats)說明了建立在幾十個機會上的數字能告訴你的有多有限。
+
+## 確保追蹤軟體讀到的是正確的手牌
+
+這裡的每一項數據，都取決於背後的手牌紀錄是否準確。如果你在 CoinPoker 打牌，請在匯入 PokerTracker 4 或 Hold'em Manager 3 之前，先[用 PokerHandsConverter 轉換手牌](/zh-hant)，讓追蹤軟體顯示的數字就是你實際打出來的結果。

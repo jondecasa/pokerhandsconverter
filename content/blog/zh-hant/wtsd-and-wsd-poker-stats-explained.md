@@ -45,3 +45,7 @@ WTSD 低並不一定是好事。從不打到攤牌的玩家可能放棄了太多
 ## 下一步
 
 如果你剛接觸 HUD 數據，請從 [VPIP、PFR 與 3-Bet%](/zh-hant/blog/understanding-vpip-pfr-3bet-hud-stats) 開始，它們描述你的翻牌前風格。WTSD 與 W$SD 就是那種風格在翻牌後的結果。
+
+## 確保追蹤軟體讀到的是正確的手牌
+
+這裡的每一項數據，都取決於背後的手牌紀錄是否準確。如果你在 CoinPoker 打牌，請在匯入 PokerTracker 4 或 Hold'em Manager 3 之前，先[用 PokerHandsConverter 轉換手牌](/zh-hant)，讓追蹤軟體顯示的數字就是你實際打出來的結果。

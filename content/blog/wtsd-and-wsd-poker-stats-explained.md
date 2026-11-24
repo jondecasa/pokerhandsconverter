@@ -43,3 +43,7 @@ For 6-max cash games, a commonly quoted rough guide is a WTSD in the high 20s an
 ## Where to go next
 
 If you're new to HUD stats, start with [VPIP, PFR and 3-bet%](/blog/understanding-vpip-pfr-3bet-hud-stats), which describe your preflop style. WTSD and W$SD are what that style turns into after the flop.
+
+## Keep your tracker reading the right hands
+
+Every stat on this page is only as good as the hand histories behind it. If you play on CoinPoker, [convert your hands with PokerHandsConverter](/) before importing them into PokerTracker 4 or Hold'em Manager 3, so the numbers your tracker shows are the ones you actually played.

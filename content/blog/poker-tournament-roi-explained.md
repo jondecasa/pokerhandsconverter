@@ -56,3 +56,7 @@ The idea of judging results by one headline number also appears in [the All Time
 ## Compare cash and tournament results
 
 If you play cash games too, [bb/100](/blog/bb-per-100-poker-win-rate-explained) is the matching measure there.
+
+## Keep your tracker reading the right hands
+
+Every stat on this page is only as good as the hand histories behind it. If you play on CoinPoker, [convert your hands with PokerHandsConverter](/) before importing them into PokerTracker 4 or Hold'em Manager 3, so the numbers your tracker shows are the ones you actually played.

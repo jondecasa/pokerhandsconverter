@@ -45,3 +45,7 @@ RFI% = 第一個加注進池的次數 / 擁有第一個加注進池機會的次�
 ## 一個提醒
 
 RFI 總共需要幾千手牌、每個位置需要幾百手牌才會穩定。[需要多少手牌，你的數據才可靠](/zh-hant/blog/sample-size-reliable-poker-stats)說明了如何判斷。
+
+## 確保追蹤軟體讀到的是正確的手牌
+
+這裡的每一項數據，都取決於背後的手牌紀錄是否準確。如果你在 CoinPoker 打牌，請在匯入 PokerTracker 4 或 Hold'em Manager 3 之前，先[用 PokerHandsConverter 轉換手牌](/zh-hant)，讓追蹤軟體顯示的數字就是你實際打出來的結果。

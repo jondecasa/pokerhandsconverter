@@ -56,3 +56,7 @@ AF tells you how many aggressive actions a player takes per call, AFq how often 
 ## One caution
 
 Postflop stats need many hands to settle. [How many hands you need before your stats are reliable](/blog/sample-size-reliable-poker-stats) explains how much to trust a number that is based on a few dozen decisions.
+
+## Keep your tracker reading the right hands
+
+Every stat on this page is only as good as the hand histories behind it. If you play on CoinPoker, [convert your hands with PokerHandsConverter](/) before importing them into PokerTracker 4 or Hold'em Manager 3, so the numbers your tracker shows are the ones you actually played.

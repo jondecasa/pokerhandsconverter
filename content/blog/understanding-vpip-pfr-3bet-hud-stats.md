@@ -34,3 +34,7 @@ These stats describe *how often*, not *how well*. A 22/20 player can be a strong
 ## Before you trust any of it
 
 None of these numbers mean much on a small sample — see [how many hands you need before your stats are reliable](/blog/sample-size-reliable-poker-stats) for roughly where VPIP, PFR and 3-bet% actually start to stabilize.
+
+## Keep your tracker reading the right hands
+
+Every stat on this page is only as good as the hand histories behind it. If you play on CoinPoker, [convert your hands with PokerHandsConverter](/) before importing them into PokerTracker 4 or Hold'em Manager 3, so the numbers your tracker shows are the ones you actually played.

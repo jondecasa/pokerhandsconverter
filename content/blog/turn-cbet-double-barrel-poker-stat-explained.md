@@ -43,3 +43,7 @@ If you fire the flop a lot but almost never the turn, good players will call the
 ## One caution
 
 Turn c-bet% only counts the hands where you c-bet the flop and then saw the turn, so the sample is much smaller than for flop stats. [How many hands you need before your stats are reliable](/blog/sample-size-reliable-poker-stats) explains how little a number built on a few dozen opportunities can tell you.
+
+## Keep your tracker reading the right hands
+
+Every stat on this page is only as good as the hand histories behind it. If you play on CoinPoker, [convert your hands with PokerHandsConverter](/) before importing them into PokerTracker 4 or Hold'em Manager 3, so the numbers your tracker shows are the ones you actually played.

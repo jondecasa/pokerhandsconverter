@@ -50,3 +50,7 @@ Your own steal stat links to your preflop style. If you play too tight from the 
 ## One caution
 
 These are situational stats, so they accumulate slowly. A few dozen opportunities isn't enough to rely on. [How many hands you need before your stats are reliable](/blog/sample-size-reliable-poker-stats) puts numbers on that.
+
+## Keep your tracker reading the right hands
+
+Every stat on this page is only as good as the hand histories behind it. If you play on CoinPoker, [convert your hands with PokerHandsConverter](/) before importing them into PokerTracker 4 or Hold'em Manager 3, so the numbers your tracker shows are the ones you actually played.

@@ -45,3 +45,7 @@ Your own fold to 3-bet is a leak detector. If it is very high, a good opponent c
 ## One caution
 
 This is a rare spot. You open maybe fifteen times per hundred hands and get 3-bet only in a small part of them, so a number built on 20 or 30 opportunities can swing a lot. See [how many hands you need before your stats are reliable](/blog/sample-size-reliable-poker-stats) before you decide that an opponent folds too much.
+
+## Keep your tracker reading the right hands
+
+Every stat on this page is only as good as the hand histories behind it. If you play on CoinPoker, [convert your hands with PokerHandsConverter](/) before importing them into PokerTracker 4 or Hold'em Manager 3, so the numbers your tracker shows are the ones you actually played.

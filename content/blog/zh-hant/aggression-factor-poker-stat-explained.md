@@ -58,3 +58,7 @@ AF 是一個**比值**，AFq 是一個**百分比**。攻擊頻率把棄牌也�
 ## 搭配攤牌數據使用
 
 AF 最有用的時候，是搭配 [WTSD 與 W$SD](/zh-hant/blog/wtsd-and-wsd-poker-stats-explained)。例如，低 AF 加上高 WTSD，是跟注太多的玩家的典型樣貌。如果你剛起步，[VPIP、PFR 與 3-Bet%](/zh-hant/blog/understanding-vpip-pfr-3bet-hud-stats) 涵蓋了翻牌前的部分。
+
+## 確保追蹤軟體讀到的是正確的手牌
+
+這裡的每一項數據，都取決於背後的手牌紀錄是否準確。如果你在 CoinPoker 打牌，請在匯入 PokerTracker 4 或 Hold'em Manager 3 之前，先[用 PokerHandsConverter 轉換手牌](/zh-hant)，讓追蹤軟體顯示的數字就是你實際打出來的結果。

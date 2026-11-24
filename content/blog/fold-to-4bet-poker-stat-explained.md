@@ -49,3 +49,7 @@ If you fold to 4-bets almost every time, good opponents will 3-bet you and 4-bet
 ## One caution
 
 You face 4-bets so rarely that this stat needs a very large sample. [How many hands you need before your stats are reliable](/blog/sample-size-reliable-poker-stats) shows why a handful of 4-bets proves nothing.
+
+## Keep your tracker reading the right hands
+
+Every stat on this page is only as good as the hand histories behind it. If you play on CoinPoker, [convert your hands with PokerHandsConverter](/) before importing them into PokerTracker 4 or Hold'em Manager 3, so the numbers your tracker shows are the ones you actually played.

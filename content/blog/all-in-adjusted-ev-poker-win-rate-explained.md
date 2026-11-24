@@ -48,3 +48,7 @@ All-in adjusted EV removes the luck from all-in spots, but only those. It does n
 ## One caution
 
 Even the EV win rate has a wide margin of error on a small sample. [How many hands you need before your stats are reliable](/blog/sample-size-reliable-poker-stats) shows how much a number can move.
+
+## Keep your tracker reading the right hands
+
+Every stat on this page is only as good as the hand histories behind it. If you play on CoinPoker, [convert your hands with PokerHandsConverter](/) before importing them into PokerTracker 4 or Hold'em Manager 3, so the numbers your tracker shows are the ones you actually played.

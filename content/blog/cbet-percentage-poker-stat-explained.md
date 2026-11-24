@@ -45,3 +45,7 @@ If your c-bet% is very high, your opponents can call or raise much wider. If it 
 ## One caution
 
 C-bet% needs a good sample, because it only counts the hands where you were the aggressor and could bet first. [How many hands you need before your stats are reliable](/blog/sample-size-reliable-poker-stats) explains how much to trust a number built on a few dozen opportunities.
+
+## Keep your tracker reading the right hands
+
+Every stat on this page is only as good as the hand histories behind it. If you play on CoinPoker, [convert your hands with PokerHandsConverter](/) before importing them into PokerTracker 4 or Hold'em Manager 3, so the numbers your tracker shows are the ones you actually played.

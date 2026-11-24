@@ -41,3 +41,7 @@ If you never donk, make sure you are using the check-raise well, because those a
 ## One caution
 
 Donk bets are rare spots, so a donk bet% can look very high or very low on a small sample. [How many hands you need before your stats are reliable](/blog/sample-size-reliable-poker-stats) shows how many opportunities you need before the number means anything.
+
+## Keep your tracker reading the right hands
+
+Every stat on this page is only as good as the hand histories behind it. If you play on CoinPoker, [convert your hands with PokerHandsConverter](/) before importing them into PokerTracker 4 or Hold'em Manager 3, so the numbers your tracker shows are the ones you actually played.

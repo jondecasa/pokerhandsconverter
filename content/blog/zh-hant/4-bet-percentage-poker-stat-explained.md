@@ -43,3 +43,7 @@ published_at: "2026-11-02T09:00:00+00:00"
 ## 桌型會改變它
 
 6-max 牌桌的範圍比滿桌寬，所以 6-max 的 3-bet 與 4-bet 頻率較高。[6-Max 與滿桌現金桌](/zh-hant/blog/6max-vs-full-ring-cash-games) 說明了這如何改變你的判讀。
+
+## 確保追蹤軟體讀到的是正確的手牌
+
+這裡的每一項數據，都取決於背後的手牌紀錄是否準確。如果你在 CoinPoker 打牌，請在匯入 PokerTracker 4 或 Hold'em Manager 3 之前，先[用 PokerHandsConverter 轉換手牌](/zh-hant)，讓追蹤軟體顯示的數字就是你實際打出來的結果。

@@ -41,3 +41,7 @@ Be careful with the meaning. This is a different number from how often you 4-bet
 ## Table size changes it
 
 Ranges at a 6-max table are wider than at full ring, so 3-bet and 4-bet frequencies are higher at 6-max. [6-max vs full ring cash games](/blog/6max-vs-full-ring-cash-games) covers how that changes your reads.
+
+## Keep your tracker reading the right hands
+
+Every stat on this page is only as good as the hand histories behind it. If you play on CoinPoker, [convert your hands with PokerHandsConverter](/) before importing them into PokerTracker 4 or Hold'em Manager 3, so the numbers your tracker shows are the ones you actually played.

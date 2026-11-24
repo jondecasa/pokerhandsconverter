@@ -48,3 +48,7 @@ WWSF = 看到翻牌後贏下的手牌數 / 看到翻牌的手牌數
 ## 一個提醒
 
 WWSF 包含在翻牌圈就收下的小底池，所以它不衡量贏了多少錢。一位玩家可能有很高的 WWSF，卻因為贏小底池、輸大底池而虧錢。請務必與你的 [bb/100](/zh-hant/blog/bb-per-100-poker-win-rate-explained) 一起閱讀。
+
+## 確保追蹤軟體讀到的是正確的手牌
+
+這裡的每一項數據，都取決於背後的手牌紀錄是否準確。如果你在 CoinPoker 打牌，請在匯入 PokerTracker 4 或 Hold'em Manager 3 之前，先[用 PokerHandsConverter 轉換手牌](/zh-hant)，讓追蹤軟體顯示的數字就是你實際打出來的結果。

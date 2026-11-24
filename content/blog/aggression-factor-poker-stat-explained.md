@@ -56,3 +56,7 @@ For 6-max cash games, many players aim for an overall postflop AF somewhere arou
 ## Use it with the showdown stats
 
 AF is most useful next to [WTSD and W$SD](/blog/wtsd-and-wsd-poker-stats-explained). For example, a low AF with a high WTSD is the classic profile of someone who calls too much. If you're just starting, [VPIP, PFR and 3-bet%](/blog/understanding-vpip-pfr-3bet-hud-stats) cover the preflop side.
+
+## Keep your tracker reading the right hands
+
+Every stat on this page is only as good as the hand histories behind it. If you play on CoinPoker, [convert your hands with PokerHandsConverter](/) before importing them into PokerTracker 4 or Hold'em Manager 3, so the numbers your tracker shows are the ones you actually played.

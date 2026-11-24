@@ -43,3 +43,7 @@ If your early-position RFI is far above the number you intend to open, you are p
 ## One caution
 
 RFI needs a few thousand hands in total, and a few hundred from each seat, before it is stable. [How many hands you need before your stats are reliable](/blog/sample-size-reliable-poker-stats) explains how to judge that.
+
+## Keep your tracker reading the right hands
+
+Every stat on this page is only as good as the hand histories behind it. If you play on CoinPoker, [convert your hands with PokerHandsConverter](/) before importing them into PokerTracker 4 or Hold'em Manager 3, so the numbers your tracker shows are the ones you actually played.
