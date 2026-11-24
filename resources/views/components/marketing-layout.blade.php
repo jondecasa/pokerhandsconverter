@@ -64,6 +64,10 @@
     ]) }}
     @stack('schema')
 
+    {{-- the body font is needed for the first paint, so fetch it early instead of waiting for the stylesheet --}}
+    @if ($fontUrl = rescue(fn () => \Illuminate\Support\Facades\Vite::asset('node_modules/@fontsource-variable/figtree/files/figtree-latin-wght-normal.woff2'), null, false))
+        <link rel="preload" href="{{ $fontUrl }}" as="font" type="font/woff2" crossorigin>
+    @endif
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <x-analytics />
 </head>

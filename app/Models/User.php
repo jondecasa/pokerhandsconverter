@@ -27,6 +27,7 @@ class User extends Authenticatable
         'coinpoker_id',
         'google_id',
         'preferences',
+        'signup_attribution',
         'password',
         'email_verified_at',
     ];
@@ -53,6 +54,7 @@ class User extends Authenticatable
             'password' => 'hashed',
             'is_admin' => 'boolean',
             'preferences' => 'array',
+            'signup_attribution' => 'array',
         ];
     }
 

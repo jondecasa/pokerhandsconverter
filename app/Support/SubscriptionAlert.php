@@ -49,11 +49,38 @@ class SubscriptionAlert
             $lines[] = '📦 Paquete: '.e((string) $subscription->stripe_price);
         }
 
+        if ($origin = $this->origin($user?->signup_attribution)) {
+            $lines[] = '🔎 Origen: '.e($origin);
+        }
+
         if ($subscription->onTrial()) {
             $lines[] = '🧪 En prueba gratuita hasta el '.$subscription->trial_ends_at->format('d/m/Y');
         }
 
         return implode("\n", $lines);
+    }
+
+    /** @param  array<string, string>|null  $attribution */
+    private function origin(?array $attribution): ?string
+    {
+        if (blank($attribution)) {
+            return null;
+        }
+
+        $source = $attribution['utm_source'] ?? $attribution['referrer'] ?? 'directo';
+        $parts = [$source];
+
+        if (! empty($attribution['utm_medium'])) {
+            $parts[] = $attribution['utm_medium'];
+        }
+
+        if (! empty($attribution['utm_campaign'])) {
+            $parts[] = $attribution['utm_campaign'];
+        }
+
+        $text = implode(' / ', $parts);
+
+        return isset($attribution['landing']) ? $text.' → '.$attribution['landing'] : $text;
     }
 
     private function notify(Subscription $subscription): void

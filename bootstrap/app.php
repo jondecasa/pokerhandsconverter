@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\CaptureAttribution;
 use App\Http\Middleware\EnsureAdmin;
 use App\Http\Middleware\EnsureBlogApiToken;
 use App\Http\Middleware\EnsureSubscribed;
@@ -29,6 +30,7 @@ return Application::configure(basePath: dirname(__DIR__))
 
         $middleware->prepend(RedirectWwwToApex::class);
         $middleware->append(SecurityHeaders::class);
+        $middleware->web(append: [CaptureAttribution::class]);
 
         $middleware->alias([
             'subscribed' => EnsureSubscribed::class,

@@ -4,6 +4,7 @@
             <tr>
                 <th class="px-4 py-3">User</th>
                 <th class="px-4 py-3">Package</th>
+                <th class="px-4 py-3">Came from</th>
                 <th class="px-4 py-3">Files imported</th>
                 <th class="px-4 py-3">Price</th>
                 <th class="px-4 py-3">Status</th>
@@ -29,6 +30,15 @@
                         @else
                             <span class="text-amber-600">Unmatched</span>
                             <div class="font-mono text-xs text-gray-400">{{ $subscription->stripe_price ?? '—' }}</div>
+                        @endif
+                    </td>
+                    @php($origin = $subscription->user?->signup_attribution ?? [])
+                    <td class="px-4 py-3 text-gray-700">
+                        @if ($origin)
+                            {{ $origin['utm_source'] ?? $origin['referrer'] ?? 'direct' }}
+                            @if (! empty($origin['landing']))<div class="text-xs text-gray-400">{{ $origin['landing'] }}</div>@endif
+                        @else
+                            <span class="text-gray-400">—</span>
                         @endif
                     </td>
                     <td class="px-4 py-3 text-gray-700">{{ $subscription->user?->conversions_count ?? 0 }}</td>

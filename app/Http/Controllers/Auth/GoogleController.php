@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Http\Middleware\CaptureAttribution;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
@@ -57,6 +58,7 @@ class GoogleController extends Controller
                 // Unusable random password — the account signs in through Google only.
                 'password' => Hash::make(Str::random(40)),
                 'email_verified_at' => now(),
+                'signup_attribution' => request()->session()->get(CaptureAttribution::KEY),
             ]);
         }
 
