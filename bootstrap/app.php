@@ -7,6 +7,7 @@ use App\Http\Middleware\EnsureSubscribed;
 use App\Http\Middleware\RedirectWwwToApex;
 use App\Http\Middleware\SecurityHeaders;
 use App\Http\Middleware\SetLocale;
+use App\Http\Middleware\UseCloudflareClientIp;
 use App\Support\CloudflareIps;
 use App\Support\UploadLimits;
 use Illuminate\Foundation\Application;
@@ -24,11 +25,16 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        // Behind Cloudflare the connecting address is Cloudflare's; the visitor's
-        // is in X-Forwarded-For. Rate limits and logs need the visitor's.
-        $middleware->trustProxies(at: CloudflareIps::ranges(), headers: Request::HEADER_X_FORWARDED_FOR);
+        // Behind Cloudflare the connecting address is Cloudflare's; the visitor's is in X-Forwarded-For or, when a
+        // reverse proxy sits in between, in CF-Connecting-IP. Rate limits and logs need the visitor's. The private
+        // ranges are the reverse proxy in front of the app (Caddy, on the same machine or Docker network).
+        $middleware->trustProxies(
+            at: [...CloudflareIps::ranges(), '127.0.0.1', '::1', '10.0.0.0/8', '172.16.0.0/12', '192.168.0.0/16'],
+            headers: Request::HEADER_X_FORWARDED_FOR,
+        );
 
         $middleware->prepend(RedirectWwwToApex::class);
+        $middleware->prepend(UseCloudflareClientIp::class);
         $middleware->append(SecurityHeaders::class);
         $middleware->web(append: [CaptureAttribution::class]);
 
