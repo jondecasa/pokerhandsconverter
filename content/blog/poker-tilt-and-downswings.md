@@ -42,6 +42,10 @@ Common warning signs: you're annoyed after a loss, you want to "get it back", yo
 
 Stop when you can't think clearly: when you feel angry or desperate, or when you're playing to avoid a loss rather than to make good decisions. Closing the table costs nothing compared with a tilted session.
 
+## See how normal your downswing is
+
+Before deciding something is wrong with your game, put your win rate and standard deviation into the [poker variance calculator](/blog/poker-variance-calculator). It shows how often a player with your numbers is down after a given number of hands, and draws simulated runs that look a lot like real downswings.
+
 ## A word on playing for money
 
 Poker involves real money and real risk. If gambling is causing you stress, financial trouble or harm to your life, talk to someone you trust and consider a support service in your country.

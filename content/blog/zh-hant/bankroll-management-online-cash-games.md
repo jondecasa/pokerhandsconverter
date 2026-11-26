@@ -35,6 +35,10 @@ published: true
 
 你的實際勝率需要很長時間才會穩定——請參考 [你需要多少手牌，撲克數據才可靠？](/zh-hant/blog/sample-size-reliable-poker-stats)——這代表在早期，你通常無法用「我的真實勝率是 X」來為資金規模辯護。在樣本累積的期間保守配置是較安全的預設。此外，由於變異本身也會隨牌桌類型而不同，可參考 [6-Max 與滿桌現金桌：實際有什麼不同](/zh-hant/blog/6max-vs-full-ring-cash-games)，了解兩者的波動如何比較。
 
+## 用你自己的數字試試
+
+你需要多少個買入，取決於你的贏率與標準差。[撲克變異數計算器](/zh-hant/blog/poker-variance-calculator)能算出任何資金下的破產風險，而[贏率計算器](/zh-hant/blog/poker-win-rate-calculator)則告訴你你的贏率有多可靠。
+
 ## 先把數字弄對
 
 如果餵給追蹤軟體的手牌本身不準確，以上這些都行不通。如果你在 CoinPoker 打牌，[先用 PokerHandsConverter 轉換牌譜](/zh-hant)再匯入，才能確保這些勝率與獲利數字值得信任。

@@ -50,6 +50,10 @@ So a 5 bb/100 result over 10,000 hands is compatible with a true win rate anywhe
 
 Many trackers show a second result that replaces your all-in outcomes with their expected value. It strips out some of the luck, which makes it a steadier measure of your play than raw results.
 
+## Try it with your own numbers
+
+The [poker win rate calculator](/blog/poker-win-rate-calculator) turns any result into bb/100 and an hourly rate and shows the 95% confidence range around it. To see how far real results stray from that number, try the [poker variance calculator](/blog/poker-variance-calculator).
+
 ## Keep your tracker reading the right hands
 
 Every stat on this page is only as good as the hand histories behind it. If you play on CoinPoker, [convert your hands with PokerHandsConverter](/) before importing them into PokerTracker 4 or Hold'em Manager 3, so the numbers your tracker shows are the ones you actually played.

@@ -51,6 +51,10 @@ published_at: "2026-12-16T09:00:00+00:00"
 
 即使是 EV 勝率，在小樣本上誤差範圍也很寬。[需要多少手牌，你的數據才可靠](/zh-hant/blog/sample-size-reliable-poker-stats)說明了一個數字可以變動多少。
 
+## 用你自己的數字試試
+
+全下調整後的 EV 是許多單一決定的總和。[撲克 EV 計算器](/zh-hant/blog/poker-ev-calculator)能算出單一下注、詐唬或跟注的期望值，而[變異數計算器](/zh-hant/blog/poker-variance-calculator)則顯示實際結果會偏離期望值多遠。
+
 ## 確保追蹤軟體讀到的是正確的手牌
 
 這裡的每一項數據，都取決於背後的手牌紀錄是否準確。如果你在 CoinPoker 打牌，請在匯入 PokerTracker 4 或 Hold'em Manager 3 之前，先[用 PokerHandsConverter 轉換手牌](/zh-hant)，讓追蹤軟體顯示的數字就是你實際打出來的結果。

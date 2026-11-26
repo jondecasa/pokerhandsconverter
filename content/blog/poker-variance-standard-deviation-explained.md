@@ -58,6 +58,10 @@ After 100,000 hands, a win rate of 5 bb/100 is compatible with a player who is b
 
 These formulas assume your results behave like independent samples, which is approximately true for hands but not perfect: your play changes, your opponents change and the games change. Use the interval as a sense of scale, not as an exact answer.
 
+## Try it with your own numbers
+
+The [poker variance calculator](/blog/poker-variance-calculator) does these sums for you: enter your win rate and standard deviation to see the 68% and 95% ranges, simulated runs and your risk of ruin. The [win rate calculator](/blog/poker-win-rate-calculator) builds the confidence interval for your own sample.
+
 ## Keep your tracker reading the right hands
 
 Every stat on this page is only as good as the hand histories behind it. If you play on CoinPoker, [convert your hands with PokerHandsConverter](/) before importing them into PokerTracker 4 or Hold'em Manager 3, so the numbers your tracker shows are the ones you actually played.

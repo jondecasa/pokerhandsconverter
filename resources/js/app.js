@@ -4,9 +4,15 @@ import Alpine from 'alpinejs';
 
 window.Alpine = Alpine;
 
-// The /flopzer page brings its own component; every other page loads nothing extra.
-const flopzer = document.querySelector('[x-data^="flopzer"]')
-    ? import('./flopzer/register.js').then((module) => module.registerFlopzer(Alpine))
-    : Promise.resolve();
+// Pages bring their own components only when they need them: /flopzer, and blog posts with an embedded calculator.
+const pending = [];
 
-flopzer.finally(() => Alpine.start());
+if (document.querySelector('[x-data^="flopzer"]')) {
+    pending.push(import('./flopzer/register.js').then((module) => module.registerFlopzer(Alpine)));
+}
+
+if (document.querySelector('[data-calculator]')) {
+    pending.push(import('./calculators/register.js').then((module) => module.registerCalculators(Alpine)));
+}
+
+Promise.allSettled(pending).finally(() => Alpine.start());
