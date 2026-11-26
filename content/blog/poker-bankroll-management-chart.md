@@ -56,6 +56,10 @@ A chart assumes you win. A losing or break-even player needs a different plan: i
 
 This is an educational guide to a risk framework, not financial advice, and no bankroll rule can guarantee you will not go broke.
 
+## Try it with your own numbers
+
+The chart uses rules of thumb. For a number based on your own results, the [poker variance calculator](/blog/poker-variance-calculator) gives the risk of ruin for your win rate, standard deviation and bankroll.
+
 ## Keep your tracker reading the right hands
 
 Every stat on this page is only as good as the hand histories behind it. If you play on CoinPoker, [convert your hands with PokerHandsConverter](/) before importing them into PokerTracker 4 or Hold'em Manager 3, so the numbers your tracker shows are the ones you actually played.

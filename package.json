@@ -5,7 +5,7 @@
     "scripts": {
         "build": "vite build",
         "dev": "vite",
-        "test:js": "node --test tests/js/flopzer/evaluator.test.mjs tests/js/flopzer/categorize.test.mjs tests/js/flopzer/range-equity.test.mjs tests/js/flopzer/analysis.test.mjs"
+        "test:js": "node --test tests/js/flopzer/evaluator.test.mjs tests/js/flopzer/categorize.test.mjs tests/js/flopzer/range-equity.test.mjs tests/js/flopzer/analysis.test.mjs tests/js/calculators/math.test.mjs"
     },
     "devDependencies": {
         "@tailwindcss/forms": "^0.5.2",

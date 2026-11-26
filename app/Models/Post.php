@@ -123,7 +123,25 @@ class Post extends Model
         return $this->is_published && $this->published_at?->isPast();
     }
 
+    /**
+     * Interactive calculators a post can embed by writing `[calculator:<name>]` on a line of its own. Raw HTML in a
+     * body is stripped, so this allowlist is the only way to put a widget in a post.
+     */
+    public const CALCULATORS = ['ev', 'winrate', 'variance'];
+
     public function bodyHtml(): string
+    {
+        return (string) preg_replace_callback(
+            '#<p>\[calculator:([a-z]+)\]</p>#',
+            fn (array $match) => in_array($match[1], self::CALCULATORS, true)
+                ? view('blog.calculators.'.$match[1])->render()
+                : $match[0],
+            $this->markdownHtml(),
+        );
+    }
+
+    /** The body as HTML without the embedded calculators, for excerpts and reading time. */
+    private function markdownHtml(): string
     {
         return Str::markdown((string) $this->body, ['html_input' => 'strip']);
     }
@@ -135,11 +153,11 @@ class Post extends Model
 
     public function metaDescription(): string
     {
-        return $this->meta_description ?: ($this->excerpt ?: Str::limit(trim(strip_tags($this->bodyHtml())), 155));
+        return $this->meta_description ?: ($this->excerpt ?: Str::limit(trim(strip_tags($this->markdownHtml())), 155));
     }
 
     public function readingMinutes(): int
     {
-        return max(1, (int) ceil(str_word_count(strip_tags($this->bodyHtml())) / 200));
+        return max(1, (int) ceil(str_word_count(strip_tags($this->markdownHtml())) / 200));
     }
 }

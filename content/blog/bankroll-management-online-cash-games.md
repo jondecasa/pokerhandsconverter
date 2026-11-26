@@ -33,6 +33,10 @@ Bankroll management isn't only about avoiding going broke — it's a framework f
 
 Your actual win rate takes a long time to stabilize — see [how many hands you need before your stats are reliable](/blog/sample-size-reliable-poker-stats) — which means you generally can't lean on "my real win rate is X" to justify a bankroll size early on. Sizing conservatively while your sample builds is the safer default. And since variance itself differs by game format, see [6-max vs full ring cash games](/blog/6max-vs-full-ring-cash-games) for how the swings compare between the two.
 
+## Try it with your own numbers
+
+How many buy-ins you need depends on your win rate and standard deviation. The [poker variance calculator](/blog/poker-variance-calculator) gives your risk of ruin for any bankroll, and the [win rate calculator](/blog/poker-win-rate-calculator) tells you how reliable your win rate is.
+
 ## Getting the numbers right in the first place
 
 None of this works if the hands feeding your tracker's win-rate and profit numbers aren't accurate. If you play on CoinPoker, [converting hands with PokerHandsConverter before importing them](/) is what keeps those numbers trustworthy in the first place.

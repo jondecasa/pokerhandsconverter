@@ -56,6 +56,10 @@ published_at: "2026-11-06T09:00:00+00:00"
 
 和所有情境型數據一樣，fold to c-bet 需要足夠的樣本，因為它只計算對手面對 c-bet 的那些手牌。[你需要多少手牌，撲克數據才可靠？](/zh-hant/blog/sample-size-reliable-poker-stats) 說明了建立在幾十次機會上的數字能信任多少。
 
+## 用你自己的數字試試
+
+[撲克 EV 計算器](/zh-hant/blog/poker-ev-calculator)能把對手面對持續下注的棄牌率變成具體數字：輸入底池、下注大小與他們棄牌的頻率，就能看出詐唬持續下注是否有利可圖。
+
 ## 確保追蹤軟體讀到的是正確的手牌
 
 這裡的每一項數據，都取決於背後的手牌紀錄是否準確。如果你在 CoinPoker 打牌，請在匯入 PokerTracker 4 或 Hold'em Manager 3 之前，先[用 PokerHandsConverter 轉換手牌](/zh-hant)，讓追蹤軟體顯示的數字就是你實際打出來的結果。
