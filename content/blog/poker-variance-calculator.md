@@ -5,7 +5,7 @@ excerpt: "A free poker variance calculator and simulator. Enter your win rate, s
 meta_title: "Poker Variance Calculator — Simulate Downswings and Risk of Ruin"
 meta_description: "Free poker variance calculator and simulator: see the 68% and 95% ranges of your results, the chance of losing over N hands, how many hands prove you are a winner, and your risk of ruin."
 published: true
-published_at: "2026-11-27T09:20:00+00:00"
+published_at: "2026-11-26T17:20:00+00:00"
 ---
 
 A winning player can lose for 50,000 hands, and a losing player can run well for just as long. This **poker variance calculator** shows how wide the range of results really is for your **win rate** and **standard deviation**, draws five random runs so you can see what that looks like, and works out your **risk of ruin** for a given bankroll.

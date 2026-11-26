@@ -5,7 +5,7 @@ excerpt: "A free poker win rate calculator. Enter your result and the hands you 
 meta_title: "Poker Win Rate Calculator — bb/100, Hourly Rate and Confidence"
 meta_description: "Free poker win rate calculator: turn your results into bb/100 and an hourly rate, and see the 95% confidence interval that shows whether you are really a winning player or just running well."
 published: true
-published_at: "2026-11-27T09:10:00+00:00"
+published_at: "2026-11-26T17:10:00+00:00"
 ---
 
 Your **win rate** is the clearest single number for how well you play cash games. This calculator turns a result and a hand count into **bb/100**, money per 100 hands and an **hourly rate**, and it adds the part most players skip: a **95% confidence range** that tells you how much of that number is skill and how much is still luck.

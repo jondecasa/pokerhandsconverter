@@ -5,7 +5,7 @@ excerpt: "A free poker EV calculator. Enter the pot, your bet, how often villain
 meta_title: "Poker EV Calculator — Expected Value of a Bet, Bluff or Call"
 meta_description: "Free poker EV calculator: compare the expected value of betting, bluffing, checking or calling. See break-even fold %, required equity, pot odds and implied odds, with the formulas explained."
 published: true
-published_at: "2026-11-27T09:00:00+00:00"
+published_at: "2026-11-26T17:00:00+00:00"
 ---
 
 Every decision in poker has an **expected value (EV)**: what the play wins or loses on average if you made it thousands of times. This calculator works it out for the two spots that come up most: **betting (or bluffing)** into a pot, and **calling** a bet. Change any number and the result updates as you type.
